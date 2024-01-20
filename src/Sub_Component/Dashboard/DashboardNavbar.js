@@ -97,12 +97,24 @@ function DashboardNavbar() {
                       href="/dashboard/addCategory"
                       class="mb-3 text-xl "
                     >
-                      Category
+                      Create Category
+                    </Nav.Link>
+                    <Nav.Link
+                      href="/dashboard/all_category"
+                      class="mb-3 text-xl "
+                    >
+                      Categories
                     </Nav.Link>
                     <Nav.Link href="/dashboard/addProduct" class="mb-3 text-xl">
-                      Product
+                      Create Products
                     </Nav.Link>
-                    <Nav.Link href="#" class="mb-3 text-xl">
+                    <Nav.Link
+                      href="/dashboard/all_product"
+                      class="mb-3 text-xl"
+                    >
+                      Products
+                    </Nav.Link>
+                    <Nav.Link href="/dashboard/orders" class="mb-3 text-xl">
                       Orders
                     </Nav.Link>
                   </Nav>
@@ -114,8 +126,8 @@ function DashboardNavbar() {
       </div>
 
       <div
-        class="w-48 bg-[#1B94A0] rounded-r-lg absolute p-5 md:block hidden h-screen"
-        style={{ zIndex: 1000 }}
+        class="w-48 bg-[#1B94A0] rounded-r-lg absolute p-5 md:block hidden fixed h-screen"
+        style={{ zIndex: 1000, position:'fixed' }}
       >
         <Link to="/">
           {" "}
@@ -158,6 +170,23 @@ function DashboardNavbar() {
               <span className="mr-4 py-1">
                 <IoGridSharp />
               </span>
+              <span>Create Category</span>
+            </NavLink>
+          </p>
+        </div>
+        <div className="d-flex text-white flex-row w-48 gap-3">
+          <p
+            className="flex items-center gap-2  w-48 text-base text-white hover:text-black  p-3
+            focus-within:bg-white border-y border-[#1B94A0]"
+            style={{ marginLeft: -48 }}
+          >
+            <NavLink
+              to="/dashboard/all_category"
+              className="flex hover:text-black align-baseline"
+            >
+              <span className="mr-4 py-1">
+                <IoGridSharp />
+              </span>
               <span>Categories</span>
             </NavLink>
           </p>
@@ -176,6 +205,23 @@ function DashboardNavbar() {
               <span className="mr-4 py-1">
                 <IoGridSharp />
               </span>
+              <span>Create Products</span>
+            </NavLink>
+          </p>
+        </div>
+        <div className="d-flex flex-row w-48 gap-3">
+          <p
+            className="flex items-center gap-2  w-48 text-base text-white hover:text-black  p-3
+            focus-within:bg-white border-y border-[#1B94A0]"
+            style={{ marginLeft: -48 }}
+          >
+            <NavLink
+              to="/dashboard/all_product"
+              className="flex hover:text-black align-baseline"
+            >
+              <span className="mr-4 py-1">
+                <IoGridSharp />
+              </span>
               <span>Products</span>
             </NavLink>
           </p>
@@ -187,7 +233,10 @@ function DashboardNavbar() {
             focus-within:bg-white border-y border-[#1B94A0]"
             style={{ marginLeft: -48 }}
           >
-            <a href="#" className="flex hover:text-black align-baseline">
+            <a
+              href="/dashboard/orders"
+              className="flex hover:text-black align-baseline"
+            >
               <span className="mr-4 py-1">
                 <IoGridSharp />
               </span>
