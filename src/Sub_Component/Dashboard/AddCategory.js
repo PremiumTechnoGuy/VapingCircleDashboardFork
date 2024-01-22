@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import DashboardNavbar from "./DashboardNavbar";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import { FiEdit } from "react-icons/fi";
+import Modal from "react-bootstrap/Modal";
 
 function AddCategory() {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   return (
     <div>
       <DashboardNavbar />
-      <div class=" mt-24 absolute lg:left-[260px]  z-5" >
+      <div class=" mt-24 absolute lg:left-[260px]  z-5">
         <Container>
           <h2 class="font-bold text-xl">Main Category</h2>
           <p class="font-bold mt-4">Add New Category</p>
@@ -115,13 +120,27 @@ function AddCategory() {
             </Row>
 
             <Row className="mb-3">
-              <Form.Group as={Col} controlId="" className="md:block hidden">
-                <Form.Label class="text-[#707070] font-semibold py-2">
+              <Form.Group as={Col} controlId="">
+                <label for="" class="text-[#707070] font-semibold py-2">
                   Filters
-                </Form.Label>
-                <Form.Control />
+                </label>
+                <select id="" class="form-select">
+                  <option muted hidden selected>
+                    Choose Filters
+                  </option>
+                  <option>Chocolate</option>
+                  <option>Ice Cream</option>
+                  <option>Honey</option>
+                </select>
               </Form.Group>
-
+              <Form.Group as={Col} controlId="">
+                <Button
+                  onClick={handleShow}
+                  class="bg-[#59A0B8] text-white mt-[35px] px-5 lg:text-xl font-semibold  py-2 rounded "
+                >
+                  Varients
+                </Button>
+              </Form.Group>
               <Form.Group as={Col} controlId="">
                 <Form.Label class="text-[#707070] font-semibold py-2">
                   Available Retail
@@ -189,6 +208,29 @@ function AddCategory() {
             </div>
           </Form>
         </Container>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Varients</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form.Group className="mb-3">
+              <Form.Label>input 1</Form.Label>
+              <Form.Control placeholder="input1" />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>input 2</Form.Label>
+              <Form.Control placeholder="input2" />
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <button
+              onClick={handleClose}
+              class="bg-[#59A0B8] text-white px-5 lg:text-xl font-semibold  py-2 rounded "
+            >
+              Save Changes
+            </button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </div>
   );
