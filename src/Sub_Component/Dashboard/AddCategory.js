@@ -134,12 +134,12 @@ function AddCategory() {
                 </select>
               </Form.Group>
               <Form.Group as={Col} controlId="">
-                <Button
+                <button
                   onClick={handleShow}
                   class="bg-[#59A0B8] text-white mt-[35px] px-5 lg:text-xl font-semibold  py-2 rounded "
                 >
                   Varients
-                </Button>
+                </button>
               </Form.Group>
               <Form.Group as={Col} controlId="">
                 <Form.Label class="text-[#707070] font-semibold py-2">
