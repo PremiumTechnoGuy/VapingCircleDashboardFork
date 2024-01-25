@@ -33,22 +33,31 @@ function AddCategory() {
                 sm={4}
                 className="hidden md:block"
               >
-                <Form.Label class="text-[#707070]  font-semibold py-2 "></Form.Label>
+                <Form.Label class="text-[#707070]  font-semibold py-2 ">
+                  Choose Cover Image
+                </Form.Label>
                 <Form.Control
-                  type="text"
+                  type="file"
                   style={{ height: "170px", width: "311px" }}
+                  accept="image/png, image/jpeg"
                 />
                 <div class="absolute text-center " style={{ marginTop: -94 }}>
-                  <p class=" text-xl px-36 text-[#707070]">
+                  {/* <p class=" text-xl px-36 text-[#707070]">
                     <FiEdit />
-                  </p>
+                  </p> */}
+                  <button
+                    class="rounded-1 p-2 bg-[#1B94A0] text-white"
+                    style={{ marginTop: 37 }}
+                  >
+                    Upload Selected Image
+                  </button>
                 </div>
-                <p
+                {/* <p
                   class="absolute text-center px-24"
                   style={{ marginTop: -66 }}
                 >
                   choose an image
-                </p>
+                </p> */}
               </Form.Group>
             </Row>
 
@@ -60,9 +69,9 @@ function AddCategory() {
                 className="hidden md:block"
               >
                 <Form.Label class="text-[#707070] font-semibold py-2">
-                  Priority
+                  Priority Number
                 </Form.Label>
-                <Form.Control type="text" />
+                <Form.Control type="number" min={1} />
               </Form.Group>
               <Form.Group
                 as={Col}
@@ -71,16 +80,23 @@ function AddCategory() {
                 className="hidden md:block"
               >
                 <Form.Label class="text-[#707070] font-semibold py-2">
-                  Icon
+                  Choose an icon
                 </Form.Label>
                 <Form.Control
-                  type="text"
+                  type="file"
                   style={{ height: "40px", width: "45px" }}
+                  accept="image/png, image/jpeg"
                 />
                 <div class="absolute text-center " style={{ marginTop: -28 }}>
-                  <p class=" px-3 text-[#707070]">
+                  <button
+                    class="rounded-1 p-2 bg-[#1B94A0] text-white"
+                    style={{ marginTop: 37 }}
+                  >
+                    Upload Selected Icon
+                  </button>
+                  {/* <p class=" px-3 text-[#707070]">
                     <FiEdit />
-                  </p>
+                  </p> */}
                 </div>
               </Form.Group>
             </Row>
@@ -94,9 +110,9 @@ function AddCategory() {
                 className="mt-16 py-3 block md:hidden "
               >
                 <Form.Label class="text-[#707070] font-semibold py-2">
-                  Priority
+                  Priority Number
                 </Form.Label>
-                <Form.Control type="text" />
+                <Form.Control type="number" />
               </Form.Group>
               <Form.Group
                 as={Col}
@@ -120,7 +136,7 @@ function AddCategory() {
             </Row>
 
             <Row className="mb-3">
-              <Form.Group as={Col} controlId="">
+              {/* <Form.Group as={Col} controlId="">
                 <label for="" class="text-[#707070] font-semibold py-2">
                   Filters
                 </label>
@@ -132,27 +148,33 @@ function AddCategory() {
                   <option>Ice Cream</option>
                   <option>Honey</option>
                 </select>
-              </Form.Group>
-              <Form.Group as={Col} controlId="">
-                <button
+              </Form.Group> */}
+              {/* <Form.Group as={Col} controlId="">
+                <Button
                   onClick={handleShow}
                   class="bg-[#59A0B8] text-white mt-[35px] px-5 lg:text-xl font-semibold  py-2 rounded "
                 >
                   Varients
-                </button>
-              </Form.Group>
+                </Button>
+              </Form.Group> */}
               <Form.Group as={Col} controlId="">
                 <Form.Label class="text-[#707070] font-semibold py-2">
-                  Available Retail
+                  Available For Retail
                 </Form.Label>
-                <Form.Control />
+                <Form.Select aria-label="Default select example">
+                  <option value={true}>Yes</option>
+                  <option value={false}>No</option>
+                </Form.Select>
               </Form.Group>
 
               <Form.Group as={Col} controlId="">
                 <Form.Label class="text-[#707070] font-semibold py-2">
-                  Available Wholesale
+                  Available For Wholesale
                 </Form.Label>
-                <Form.Control />
+                <Form.Select aria-label="Default select example">
+                  <option value={true}>Yes</option>
+                  <option value={false}>No</option>
+                </Form.Select>
               </Form.Group>
             </Row>
 

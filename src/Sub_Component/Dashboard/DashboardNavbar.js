@@ -105,6 +105,9 @@ function DashboardNavbar() {
                     >
                       Categories
                     </Nav.Link>
+                    <Nav.Link href="/dashboard/addFilter" class="mb-3 text-xl">
+                      Create Filters
+                    </Nav.Link>
                     <Nav.Link href="/dashboard/addProduct" class="mb-3 text-xl">
                       Create Products
                     </Nav.Link>
@@ -127,7 +130,7 @@ function DashboardNavbar() {
 
       <div
         class="w-48 bg-[#1B94A0] rounded-r-lg absolute p-5 md:block hidden fixed h-screen"
-        style={{ zIndex: 1000, position:'fixed' }}
+        style={{ zIndex: 1000, position: "fixed" }}
       >
         <Link to="/">
           {" "}
@@ -188,6 +191,24 @@ function DashboardNavbar() {
                 <IoGridSharp />
               </span>
               <span>Categories</span>
+            </NavLink>
+          </p>
+        </div>
+
+        <div className="d-flex text-white flex-row w-48 gap-3">
+          <p
+            className="flex items-center gap-2  w-48 text-base text-white hover:text-black  p-3
+            focus-within:bg-white border-y border-[#1B94A0]"
+            style={{ marginLeft: -48 }}
+          >
+            <NavLink
+              to="/dashboard/addFilter"
+              className="flex hover:text-black align-baseline"
+            >
+              <span className="mr-4 py-1">
+                <IoGridSharp />
+              </span>
+              <span>Create Filter</span>
             </NavLink>
           </p>
         </div>
