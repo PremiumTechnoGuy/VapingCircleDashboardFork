@@ -203,8 +203,8 @@ function AddCategory() {
                 </label>
 
                 {selectedFile2 && (
-                    <p class="w-75">Selected File: {selectedFile2.name}</p>
-                  )}
+                  <p class="w-75">Selected File: {selectedFile2.name}</p>
+                )}
 
                 {/* </div> */}
                 {/* <Form.Label class="text-[#707070] font-semibold py-2">
@@ -248,18 +248,31 @@ function AddCategory() {
                 sm={4}
                 className="block md:hidden "
               >
-                <Form.Label class="text-[#707070] font-semibold py-2">
-                  Icon
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  style={{ height: "40px", width: "45px" }}
+                <input
+                  type="file2"
+                  id="fileInput"
+                  accept="image/png, image/jpeg"
+                  class="text-center"
+                  style={{ display: "none" }}
+                  onChange={handleFileChange2}
                 />
-                <div class="absolute text-center " style={{ marginTop: -28 }}>
-                  <p class=" px-3 text-[#707070]">
-                    <FiEdit />
-                  </p>
-                </div>
+
+                <label htmlFor="fileInput" class="mt-[13px]">
+                  <span class="text-[#707070] font-semibold py-2 mb-4">
+                    Icon
+                  </span>
+
+                  <FiEdit
+                    icon={faUpload}
+                    class="text-4xl text-center border rounded-md py-2 px-2"
+                    style={{ cursor: "pointer", margin: "0 auto" }}
+                  />
+                  <br />
+                </label>
+
+                {selectedFile2 && (
+                  <p class="w-75">Selected File: {selectedFile2.name}</p>
+                )}
               </Form.Group>
             </Row>
 
@@ -340,24 +353,33 @@ function AddCategory() {
                 as={Col}
                 controlId=""
                 sm={4}
-                className="block md:hidden"
+                className="block md:hidden mt-4"
               >
-                <Form.Label class="text-[#707070] font-semibold py-2 "></Form.Label>
-                <Form.Control
-                  type="text"
-                  style={{ height: "170px", width: "311px" }}
-                />
-                <div class="absolute text-center " style={{ marginTop: -94 }}>
-                  <h1 class=" text-xl px-36 text-[#707070]">
-                    <FiEdit />
-                  </h1>
+                
+                <div class="border rounded-md w-[20rem] h-[13rem] flex flex-col justify-center items-center">
+                  <input
+                    type="file"
+                    id="fileInput"
+                    accept="image/png, image/jpeg"
+                    class="text-center"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+
+                  <label htmlFor="fileInput">
+                    <FiEdit
+                      icon={faUpload}
+                      class="text-2xl text-center "
+                      style={{ cursor: "pointer", margin: "0 auto" }}
+                    />
+                    <span>Upload an Image</span>
+                    <br />
+                  </label>
+
+                  {selectedFile && (
+                    <p class="w-75">Selected File: {selectedFile.name}</p>
+                  )}
                 </div>
-                <p
-                  class="absolute text-center px-24"
-                  style={{ marginTop: -66 }}
-                >
-                  choose an image
-                </p>
               </Form.Group>
             </Row>
 

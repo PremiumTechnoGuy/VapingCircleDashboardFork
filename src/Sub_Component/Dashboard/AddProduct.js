@@ -10,9 +10,13 @@ import { FiEdit } from "react-icons/fi";
 
 function AddProduct() {
   const [show, setShow] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleCloseFilter = () => setShowFilter(false);
+  const handleShowFilter = () => setShowFilter(true);
 
   return (
     <div>
@@ -190,12 +194,13 @@ function AddProduct() {
                         <RiDeleteBinLine class="text-[#707070] text-2xl" />
                       </button>
                     </Form.Group>
-                    <Form.Group as={Col} controlId="">
+                    <Form.Group as={Col} controlId="" class="flex ">
                       <Button
                         // class="rounded-1  bg-[#1B94A0] text-white"
 
                         style={{
                           marginTop: 37,
+                          marginRight: 5,
                           backgroundColor: "#1B94A0",
                           color: "white",
                         }}
@@ -204,21 +209,61 @@ function AddProduct() {
                       >
                         Add Variant
                       </Button>
+                      <Button
+                        // class="rounded-1  bg-[#1B94A0] text-white"
+
+                        style={{
+                          marginTop: 37,
+                          backgroundColor: "#1B94A0",
+                          color: "white",
+                        }}
+                        onClick={handleShowFilter}
+                        variant="info"
+                      >
+                        Add Filter
+                      </Button>
                     </Form.Group>
 
                     <Modal show={show} onHide={handleClose}>
-                      <Modal.Header closeButton>
-                        <Modal.Title>Varients</Modal.Title>
-                      </Modal.Header>
                       <Modal.Body>
-                        <Form.Group className="mb-3">
-                          <Form.Label>input 1</Form.Label>
-                          <Form.Control placeholder="input1" />
+                        <Form.Group className="mb-3 flex justify-center items-center">
+                          <Form.Label class="font-semibold">
+                            Variant Type:
+                          </Form.Label>
+                          <Form.Control placeholder="" />
                         </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label>input 2</Form.Label>
-                          <Form.Control placeholder="input2" />
-                        </Form.Group>
+                        <Row className="mb-3">
+                          <Form.Group as={Col} controlId="">
+                            <Form.Label class="font-semibold">Value</Form.Label>
+                            <Form.Control />
+                          </Form.Group>
+                          <Form.Group as={Col} controlId="">
+                            <Form.Label class="font-semibold">Price</Form.Label>
+                            <Form.Control />
+                          </Form.Group>
+
+                          <Form.Group as={Col} controlId="">
+                            <Form.Label class="font-semibold">
+                              Quantity
+                            </Form.Label>
+                            <Form.Control />
+                          </Form.Group>
+                        </Row>
+                        <Row className="mb-3">
+                          <Form.Group as={Col} xs={4} controlId="">
+                            <Form.Label class="font-semibold">SKU</Form.Label>
+                            <Form.Control type="" placeholder="" />
+                          </Form.Group>
+
+                          <Form.Group as={Col} xs={6} controlId="">
+                            <Form.Label class="font-semibold">Image</Form.Label>
+                            <Form.Control type="file" />
+                          </Form.Group>
+                          <Form.Group as={Col} xs={2} controlId="">
+                            <Form.Label></Form.Label>
+                            <RiDeleteBinLine class="text-xl mt-2 cursor-pointer" />
+                          </Form.Group>
+                        </Row>
                       </Modal.Body>
                       <Modal.Footer>
                         <Button
@@ -226,7 +271,31 @@ function AddProduct() {
                           variant="info"
                           class="rounded-1 py-2 px-2 bg-[#1B94A0] text-white hover:bg-[#1B94A0] hover:text-white"
                         >
-                          Save Changes
+                          Add Model
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
+
+                    <Modal show={showFilter} onHide={handleCloseFilter}>
+                      <Modal.Body>
+                        <Form.Group className="mb-3 flex justify-center items-center">
+                          <Form.Label class="font-semibold">
+                            Filter Name:
+                          </Form.Label>
+                          <Form.Select aria-label="Default select example">
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                          </Form.Select>
+                        </Form.Group>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button
+                          onClick={handleCloseFilter}
+                          variant="info"
+                          class="rounded-1 py-2 px-2 bg-[#1B94A0] text-white hover:bg-[#1B94A0] hover:text-white"
+                        >
+                          Add Filter
                         </Button>
                       </Modal.Footer>
                     </Modal>
