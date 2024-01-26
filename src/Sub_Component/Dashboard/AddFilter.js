@@ -6,7 +6,40 @@ import { RiDeleteBinLine } from "react-icons/ri";
 
 import { FiEdit } from "react-icons/fi";
 
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
+import { apiUrl } from "../../data/env";
+
 function AddFilter() {
+  const [fetchedCategories, setFetchedCategories] = React.useState([]);
+
+  React.useEffect(() => {
+    const id = toast.loading("Fetching Data... Please Wait!");
+
+    axios
+      .get(`${apiUrl}/api/v1/category`)
+      .then((res) => {
+        setFetchedCategories(res.data.data);
+        console.log(res.data.data);
+        toast.update(id, {
+          render: "Successfully Fetched Data!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render: err.response.data.message || "Error! Try Again & See Console",
+          type: "error",
+          isLoading: false,
+          autoClose: 3500,
+        });
+      });
+  }, []);
+
   return (
     <div>
       <DashboardNavbar />
@@ -227,6 +260,7 @@ function AddFilter() {
           </Container>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
