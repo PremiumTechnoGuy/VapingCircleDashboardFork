@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/VapingCircleDashboardFork/static/css/main.19c4e835.css",
+    "main.js": "/VapingCircleDashboardFork/static/js/main.61c4223a.js",
+    "static/js/787.a1d7b318.chunk.js": "/VapingCircleDashboardFork/static/js/787.a1d7b318.chunk.js",
+    "index.html": "/VapingCircleDashboardFork/index.html",
+    "main.19c4e835.css.map": "/VapingCircleDashboardFork/static/css/main.19c4e835.css.map",
+    "main.61c4223a.js.map": "/VapingCircleDashboardFork/static/js/main.61c4223a.js.map",
+    "787.a1d7b318.chunk.js.map": "/VapingCircleDashboardFork/static/js/787.a1d7b318.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.19c4e835.css",
+    "static/js/main.61c4223a.js"
+  ]
+}
