@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import ImageUploads from "./Sub_Component/Dashboard/ImageUploads";
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
 // import "antd/dist/reset.css";
@@ -10,6 +11,7 @@ import reportWebVitals from "./reportWebVitals";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <App />
+  // <ImageUploads/>
   // <React.StrictMode></React.StrictMode>
 );
 

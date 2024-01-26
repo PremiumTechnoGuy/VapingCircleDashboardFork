@@ -9,12 +9,25 @@ import axios from "axios";
 import { apiUrl } from "../../data/env";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
 
 function AddCategory() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile2, setSelectedFile2] = useState(null);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+  };
+  const handleFileChange2 = (event) => {
+    const file2 = event.target.files[0];
+    setSelectedFile2(file2);
+  };
 
   const [isLoadingState, setIsLoadingState] = useState(false);
 
@@ -117,31 +130,30 @@ function AddCategory() {
                 sm={4}
                 className="hidden md:block"
               >
-                <Form.Label class="text-[#707070]  font-semibold py-2 ">
-                  Choose Cover Image
-                </Form.Label>
-                <Form.Control
-                  type="file"
-                  style={{ height: "170px", width: "311px" }}
-                  accept="image/png, image/jpeg"
-                />
-                <div class="absolute text-center " style={{ marginTop: -94 }}>
-                  {/* <p class=" text-xl px-36 text-[#707070]">
-                    <FiEdit />
-                  </p> */}
-                  <button
-                    class="rounded-1 p-2 bg-[#1B94A0] text-white"
-                    style={{ marginTop: 37 }}
-                  >
-                    Upload Selected Image
-                  </button>
+                <div class="border rounded-md w-[20rem] h-[13rem] flex flex-col justify-center items-center">
+                  <input
+                    type="file"
+                    id="fileInput"
+                    accept="image/png, image/jpeg"
+                    class="text-center"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+
+                  <label htmlFor="fileInput">
+                    <FiEdit
+                      icon={faUpload}
+                      class="text-2xl text-center "
+                      style={{ cursor: "pointer", margin: "0 auto" }}
+                    />
+                    <span>Upload an Image</span>
+                    <br />
+                  </label>
+
+                  {selectedFile && (
+                    <p class="w-75">Selected File: {selectedFile.name}</p>
+                  )}
                 </div>
-                {/* <p
-                  class="absolute text-center px-24"
-                  style={{ marginTop: -66 }}
-                >
-                  choose an image
-                </p> */}
               </Form.Group>
             </Row>
 
@@ -168,7 +180,34 @@ function AddCategory() {
                 sm={4}
                 className="hidden md:block"
               >
-                <Form.Label class="text-[#707070] font-semibold py-2">
+                <input
+                  type="file2"
+                  id="fileInput"
+                  accept="image/png, image/jpeg"
+                  class="text-center"
+                  style={{ display: "none" }}
+                  onChange={handleFileChange2}
+                />
+
+                <label htmlFor="fileInput" class="mt-[13px]">
+                  <span class="text-[#707070] font-semibold py-2 mb-4">
+                    Icon
+                  </span>
+
+                  <FiEdit
+                    icon={faUpload}
+                    class="text-4xl text-center border rounded-md py-2 px-2"
+                    style={{ cursor: "pointer", margin: "0 auto" }}
+                  />
+                  <br />
+                </label>
+
+                {selectedFile2 && (
+                    <p class="w-75">Selected File: {selectedFile2.name}</p>
+                  )}
+
+                {/* </div> */}
+                {/* <Form.Label class="text-[#707070] font-semibold py-2">
                   Choose an icon
                 </Form.Label>
                 <Form.Control
@@ -182,11 +221,11 @@ function AddCategory() {
                     style={{ marginTop: 37 }}
                   >
                     Upload Selected Icon
-                  </button>
-                  {/* <p class=" px-3 text-[#707070]">
+                  </button> */}
+                {/* <p class=" px-3 text-[#707070]">
                     <FiEdit />
                   </p> */}
-                </div>
+                {/* </div> */}
               </Form.Group>
             </Row>
 

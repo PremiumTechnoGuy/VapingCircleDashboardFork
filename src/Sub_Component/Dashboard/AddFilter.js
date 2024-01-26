@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import DashboardNavbar from "./DashboardNavbar";
 import { Container, Row, Col } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 import { FiEdit } from "react-icons/fi";
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
+
 
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -51,6 +53,12 @@ function AddFilter() {
   const [priorityNum, setPriorityNum] = React.useState(1);
   const [showInNavbar, setShowInNavbar] = React.useState("true");
   const [showInFilterbar, setShowInFilterbar] = React.useState("true");
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+  };
 
   const handleSubmitNewFilter = (e) => {
     e.preventDefault();
@@ -117,30 +125,31 @@ function AddFilter() {
             <Row class="">
               <Col md={4}>
                 <Form.Group as={Col} controlId="" sm={4} className=" mt-3">
-                  <Form.Label class="text-[#707070]  font-semibold py-2 "></Form.Label>
-                  <Form.Control
+                <div class="border rounded-md w-[20rem] h-[13rem] flex flex-col justify-center items-center">
+                  <input
                     type="file"
-                    style={{ height: "170px", width: "278px" }}
+                    id="fileInput"
                     accept="image/png, image/jpeg"
+                    class="text-center"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
                   />
-                  <div class="absolute text-center " style={{ marginTop: -94 }}>
-                    {/* <p class=" text-xl px-36 text-[#707070]">
-                      <FiEdit />
-                      hello
-                    </p> */}
-                    <button
-                      class="rounded-1 p-2 bg-[#1B94A0] text-white"
-                      style={{ marginTop: 37 }}
-                    >
-                      Upload Icon
-                    </button>
-                  </div>
-                  {/* <p
-                    class="absolute text-center px-24"
-                    style={{ marginTop: -66 }}
-                  >
-                    choose an image
-                  </p> */}
+
+                  <label htmlFor="fileInput">
+                    <FiEdit
+                      icon={faUpload}
+                      class="text-2xl text-center "
+                      style={{ cursor: "pointer", margin: "0 auto" }}
+                    />
+                    <span>Upload an Image</span>
+                    <br />
+                  </label>
+
+                  {selectedFile && (
+                    <p class="w-75">Selected File: {selectedFile.name}</p>
+                  )}
+                </div>
+                
                 </Form.Group>
                 {/* <Row>
                   <Col>
@@ -314,8 +323,8 @@ function AddFilter() {
                     </Form.Group>
                     <Form.Group as={Col} controlId="">
                       <button
-                        class="rounded-1 p-2 bg-[#1B94A0] text-white"
-                        style={{ marginTop: 37 }}
+                        class="rounded-1 p-2 mt-[4rem] bg-[#1B94A0] text-white"
+                        
                         onClick={(e) => {
                           e.preventDefault();
                           setOptionsArray((arr) => [...arr, typedOption]);
@@ -363,7 +372,7 @@ function AddFilter() {
                         }}
                       >
                         {" "}
-                        <RiDeleteBinLine class="text-[#707070] text-2xl" />
+                        <RiDeleteBinLine class="text-[#707070] mt-[1rem] text-2xl" />
                       </button>
                     </Form.Group>
                   </Row>
