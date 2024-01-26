@@ -32,13 +32,80 @@ function AddFilter() {
       .catch((err) => {
         console.log(err);
         toast.update(id, {
-          render: err.response.data.message || "Error! Try Again & See Console",
+          render:
+            err.response?.data?.message || "Error! Try Again & See Console",
           type: "error",
           isLoading: false,
           autoClose: 3500,
         });
       });
   }, []);
+
+  // hooks for post request
+  const [selectedCategory, setSelectedCategory] = React.useState("");
+  const [selectedOption, setSelectedOption] = React.useState("");
+  const [typedOption, setTypedOption] = React.useState("");
+  const [optionsArray, setOptionsArray] = React.useState([]);
+  const [filterName, setFilterName] = React.useState("");
+  const [filterAlternateName, setFilterAlternateName] = React.useState("");
+  const [priorityNum, setPriorityNum] = React.useState(1);
+  const [showInNavbar, setShowInNavbar] = React.useState("true");
+  const [showInFilterbar, setShowInFilterbar] = React.useState("true");
+
+  const handleSubmitNewFilter = (e) => {
+    e.preventDefault();
+
+    const id = toast.loading("Please wait...");
+
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    const payload = {
+      name: filterName,
+      alternateName: filterAlternateName,
+      priority: priorityNum,
+      categoryId: selectedCategory,
+      showNavbar: showInNavbar === "true" ? true : false,
+      showFilterbar: showInFilterbar === "true" ? true : false,
+      options: optionsArray,
+    };
+
+    axios
+      .post(`${apiUrl}/api/v1/filter`, payload, config)
+      .then((res) => {
+        // setIsLoadingState(false);
+        console.log(res.data);
+        toast.update(id, {
+          render: "Created Filter Successfully",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
+        setSelectedOption("");
+        setFilterName("");
+        setFilterAlternateName("");
+        setPriorityNum(1);
+        setShowInFilterbar("true");
+        setShowInNavbar("true");
+        setSelectedCategory("");
+        setOptionsArray([]);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render:
+            err.response?.data?.message ||
+            "Error Occured! See more using console!",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      });
+
+    console.log(payload);
+  };
 
   return (
     <div>
@@ -157,11 +224,15 @@ function AddFilter() {
                       <Form.Label class="text-[#707070] font-semibold py-2">
                         Select Category
                       </Form.Label>
-                      <Form.Select aria-label="Default select example">
-                        <option value={0}>Zero</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                      <Form.Select
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        aria-label="Default select example"
+                      >
+                        {fetchedCategories?.map((cat) => (
+                          <option key={cat._id} value={cat._id}>
+                            {cat.name}
+                          </option>
+                        ))}
                       </Form.Select>
                     </Form.Group>
 
@@ -169,14 +240,22 @@ function AddFilter() {
                       <Form.Label class="text-[#707070]  font-semibold py-2">
                         Name
                       </Form.Label>
-                      <Form.Control type="text" />
+                      <Form.Control
+                        type="text"
+                        value={filterName}
+                        onChange={(e) => setFilterName(e.target.value)}
+                      />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="">
                       <Form.Label class="text-[#707070]  font-semibold py-2">
                         Alternate Name
                       </Form.Label>
-                      <Form.Control type="text" />
+                      <Form.Control
+                        type="text"
+                        value={filterAlternateName}
+                        onChange={(e) => setFilterAlternateName(e.target.value)}
+                      />
                     </Form.Group>
                   </Row>
 
@@ -185,16 +264,25 @@ function AddFilter() {
                       <Form.Label class="text-[#707070]  font-semibold py-2">
                         Priority Number
                       </Form.Label>
-                      <Form.Control type="text" />
+                      <Form.Control
+                        type="number"
+                        min={1}
+                        value={priorityNum}
+                        onChange={(e) => setPriorityNum(Number(e.target.value))}
+                      />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="">
                       <Form.Label class="text-[#707070] font-semibold py-2">
                         Show in Navbar
                       </Form.Label>
-                      <Form.Select aria-label="Default select example">
-                        <option value={true}>Yes</option>
-                        <option value={false}>No</option>
+                      <Form.Select
+                        value={showInNavbar}
+                        onChange={(e) => setShowInNavbar(e.target.value)}
+                        aria-label="Default select example"
+                      >
+                        <option value={"true"}>Yes</option>
+                        <option value={"false"}>No</option>
                       </Form.Select>
                     </Form.Group>
 
@@ -202,9 +290,13 @@ function AddFilter() {
                       <Form.Label class="text-[#707070] font-semibold py-2">
                         Show in Filterbar
                       </Form.Label>
-                      <Form.Select aria-label="Default select example">
-                        <option value={true}>Yes</option>
-                        <option value={false}>No</option>
+                      <Form.Select
+                        value={showInFilterbar}
+                        onChange={(e) => setShowInFilterbar(e.target.value)}
+                        aria-label="Default select example"
+                      >
+                        <option value={"true"}>Yes</option>
+                        <option value={"false"}>No</option>
                       </Form.Select>
                     </Form.Group>
                   </Row>
@@ -212,16 +304,25 @@ function AddFilter() {
                   <Row className="mb-3 lg:px-16 mt-3">
                     <Form.Group as={Col} controlId="" md={2}>
                       <Form.Label class="text-[#707070]  font-semibold py-2">
-                        Add New Options
+                        New Options
                       </Form.Label>
-                      <Form.Control type="text" />
+                      <Form.Control
+                        type="text"
+                        value={typedOption}
+                        onChange={(e) => setTypedOption(e.target.value)}
+                      />
                     </Form.Group>
                     <Form.Group as={Col} controlId="">
                       <button
                         class="rounded-1 p-2 bg-[#1B94A0] text-white"
                         style={{ marginTop: 37 }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setOptionsArray((arr) => [...arr, typedOption]);
+                          setTypedOption("");
+                        }}
                       >
-                        Add Variant
+                        Add Option
                       </button>
                     </Form.Group>
 
@@ -234,17 +335,32 @@ function AddFilter() {
                       <Form.Label class="text-[#707070]  font-semibold py-2">
                         Current Options
                       </Form.Label>
-                      <Form.Select aria-label="Default select example">
-                        <option></option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                      <Form.Select
+                        onChange={(e) => setSelectedOption(e.target.value)}
+                        aria-label="Default select example"
+                      >
+                        {optionsArray?.map((opt, i) => (
+                          <option key={i} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
                       </Form.Select>
                     </Form.Group>
                     <Form.Group as={Col} controlId="">
                       <button
                         class="rounded-1 p-2  text-white"
                         style={{ marginTop: 37 }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (optionsArray.length >= 1) {
+                            const newArr = [...optionsArray];
+                            newArr.splice(
+                              optionsArray.indexOf(selectedOption),
+                              1
+                            );
+                            setOptionsArray(newArr);
+                          }
+                        }}
                       >
                         {" "}
                         <RiDeleteBinLine class="text-[#707070] text-2xl" />
@@ -254,7 +370,10 @@ function AddFilter() {
                 </Form>
               </Col>
             </Row>
-            <button class="rounded-1 p-2 w-32 font-semibold   mt-4 bg-[#1B94A0] text-white">
+            <button
+              onClick={handleSubmitNewFilter}
+              class="rounded-1 p-2 w-32 font-semibold   mt-4 bg-[#1B94A0] text-white"
+            >
               Submit
             </button>
           </Container>
