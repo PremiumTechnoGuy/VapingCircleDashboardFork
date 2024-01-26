@@ -5,12 +5,53 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import { FiEdit } from "react-icons/fi";
 import Modal from "react-bootstrap/Modal";
+import axios from "axios";
+import { apiUrl } from "../../data/env";
 
 function AddCategory() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  // form value states
+  const [categoryName, setCategoryName] = useState("");
+  const [description, setDescription] = useState("");
+  const [priorityNum, setPriorityNum] = useState(1);
+  const [availableRetail, setAvailableRetail] = useState("true");
+  const [availableWholesale, setAvailableWholesale] = useState("false");
+
+  const handleAddNewCategory = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    const payload = {
+      name: categoryName,
+      description,
+      priority: priorityNum,
+      availableRetail: availableRetail === "true" ? true : false,
+      availableWholesale: availableWholesale === "true" ? true : false,
+    };
+
+    axios
+      .post(`${apiUrl}/api/v1/category`, payload, config)
+      .then((res) => {
+        setIsLoading(false);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        console.log(err);
+      });
+    // console.log(payload);
+  };
+
   return (
     <div>
       <DashboardNavbar />
@@ -24,7 +65,11 @@ function AddCategory() {
                 <Form.Label class="text-[#707070] font-semibold py-2">
                   Name
                 </Form.Label>
-                <Form.Control type="text" />
+                <Form.Control
+                  type="text"
+                  value={categoryName}
+                  onChange={(e) => setCategoryName(e.target.value)}
+                />
               </Form.Group>
 
               <Form.Group
@@ -71,7 +116,12 @@ function AddCategory() {
                 <Form.Label class="text-[#707070] font-semibold py-2">
                   Priority Number
                 </Form.Label>
-                <Form.Control type="number" min={1} />
+                <Form.Control
+                  type="number"
+                  min={1}
+                  value={priorityNum}
+                  onChange={(e) => setPriorityNum(Number(e.target.value))}
+                />
               </Form.Group>
               <Form.Group
                 as={Col}
@@ -161,9 +211,13 @@ function AddCategory() {
                 <Form.Label class="text-[#707070] font-semibold py-2">
                   Available For Retail
                 </Form.Label>
-                <Form.Select aria-label="Default select example">
-                  <option value={true}>Yes</option>
-                  <option value={false}>No</option>
+                <Form.Select
+                  aria-label="Default select example"
+                  value={availableRetail}
+                  onChange={(e) => setAvailableRetail(e.target.value)}
+                >
+                  <option value={"true"}>Yes</option>
+                  <option value={"false"}>No</option>
                 </Form.Select>
               </Form.Group>
 
@@ -171,9 +225,13 @@ function AddCategory() {
                 <Form.Label class="text-[#707070] font-semibold py-2">
                   Available For Wholesale
                 </Form.Label>
-                <Form.Select aria-label="Default select example">
-                  <option value={true}>Yes</option>
-                  <option value={false}>No</option>
+                <Form.Select
+                  aria-label="Default select example"
+                  value={availableWholesale}
+                  onChange={(e) => setAvailableWholesale(e.target.value)}
+                >
+                  <option value={"true"}>Yes</option>
+                  <option value={"false"}>No</option>
                 </Form.Select>
               </Form.Group>
             </Row>
@@ -194,6 +252,8 @@ function AddCategory() {
                 as="textarea"
                 placeholder="Leave a comment here"
                 style={{ height: "100px" }}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </FloatingLabel>
 
@@ -224,7 +284,10 @@ function AddCategory() {
             </Row>
 
             <div class="flex flex-col justify-start items-start mt-3 mb-2 ">
-              <button class="bg-[#59A0B8] text-white px-5 lg:text-xl font-semibold  py-2 rounded ">
+              <button
+                class="bg-[#59A0B8] text-white px-5 lg:text-xl font-semibold  py-2 rounded "
+                onClick={handleAddNewCategory}
+              >
                 Submit
               </button>
             </div>
