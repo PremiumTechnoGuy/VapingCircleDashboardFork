@@ -64,7 +64,7 @@ function AddCategory() {
         console.log(err);
         toast.update(id, {
           render:
-            err.response.data.message ||
+            err.response?.data?.message ||
             "Error Occured! See more using console!",
           type: "error",
           isLoading: false,
