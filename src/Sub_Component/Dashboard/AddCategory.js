@@ -7,6 +7,8 @@ import { FiEdit } from "react-icons/fi";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 import { apiUrl } from "../../data/env";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
 function AddCategory() {
   const [show, setShow] = useState(false);
@@ -14,7 +16,7 @@ function AddCategory() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingState, setIsLoadingState] = useState(false);
 
   // form value states
   const [categoryName, setCategoryName] = useState("");
@@ -25,7 +27,9 @@ function AddCategory() {
 
   const handleAddNewCategory = (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    // setIsLoadingState(true);
+    const id = toast.loading("Please wait...");
+
     const token = localStorage.getItem("token");
     const config = {
       headers: { Authorization: `Bearer ${token}` },
@@ -42,14 +46,49 @@ function AddCategory() {
     axios
       .post(`${apiUrl}/api/v1/category`, payload, config)
       .then((res) => {
-        setIsLoading(false);
+        // setIsLoadingState(false);
         console.log(res.data);
+        toast.update(id, {
+          render: "Created Category Successfully",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
+        setCategoryName("");
+        setDescription("");
+        setPriorityNum(1);
+        setAvailableRetail(true);
+        setAvailableWholesale(false);
       })
       .catch((err) => {
-        setIsLoading(false);
         console.log(err);
+        toast.update(id, {
+          render:
+            err.response.data.message ||
+            "Error Occured! See more using console!",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
       });
-    // console.log(payload);
+  };
+
+  const showToastMessage = (e) => {
+    e.preventDefault();
+    const id = toast.loading("Please wait...");
+
+    setTimeout(() => {
+      toast.update(id, {
+        render: "All is good",
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
+    }, 5000);
+
+    // toast.success("Success Notification !", {
+    //   position: toast.POSITION.TOP_RIGHT,
+    // });
   };
 
   return (
@@ -317,6 +356,7 @@ function AddCategory() {
           </Modal.Footer>
         </Modal>
       </div>
+      <ToastContainer />
     </div>
   );
 }
