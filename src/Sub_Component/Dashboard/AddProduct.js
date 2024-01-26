@@ -192,7 +192,7 @@ function AddProduct() {
                     </Form.Group>
                     <Form.Group as={Col} controlId="">
                       <Button
-                        class="rounded-1 py-2 px-2 bg-[#1B94A0] text-white"
+                        class="rounded-1  bg-[#1B94A0] text-white"
                         style={{ marginTop: 37 }}
                         onClick={handleShow}
                         variant="info"
@@ -200,6 +200,31 @@ function AddProduct() {
                         Add Variant
                       </Button>
                     </Form.Group>
+
+                    <Modal show={show} onHide={handleClose}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Varients</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <Form.Group className="mb-3">
+                          <Form.Label>input 1</Form.Label>
+                          <Form.Control placeholder="input1" />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label>input 2</Form.Label>
+                          <Form.Control placeholder="input2" />
+                        </Form.Group>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button
+                          onClick={handleClose}
+                          variant="info"
+                          class="rounded-1 py-2 px-2 bg-[#1B94A0] text-white hover:bg-[#1B94A0] hover:text-white"
+                        >
+                          Save Changes
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
                   </Row>
                 </Form>
               </Col>
@@ -208,30 +233,6 @@ function AddProduct() {
               Submit
             </button>
           </Container>
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Varients</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form.Group className="mb-3">
-                <Form.Label>input 1</Form.Label>
-                <Form.Control placeholder="input1" />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>input 2</Form.Label>
-                <Form.Control placeholder="input2" />
-              </Form.Group>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                onClick={handleClose}
-                variant="info"
-                class="rounded-1 py-2 px-2 bg-[#1B94A0] text-white hover:bg-[#1B94A0] hover:text-white"
-              >
-                Save Changes
-              </Button>
-            </Modal.Footer>
-          </Modal>
         </div>
       </div>
     </div>
