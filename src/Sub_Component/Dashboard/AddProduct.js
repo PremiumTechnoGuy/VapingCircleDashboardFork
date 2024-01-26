@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import DashboardNavbar from "./DashboardNavbar";
 import { Container, Row, Col } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { RiDeleteBinLine } from "react-icons/ri";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 import { FiEdit } from "react-icons/fi";
 
 function AddProduct() {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <div>
       <DashboardNavbar />
@@ -184,12 +191,14 @@ function AddProduct() {
                       </button>
                     </Form.Group>
                     <Form.Group as={Col} controlId="">
-                      <button
-                        class="rounded-1 p-2 bg-[#1B94A0] text-white"
+                      <Button
+                        class="rounded-1 py-2 px-2 bg-[#1B94A0] text-white"
                         style={{ marginTop: 37 }}
+                        onClick={handleShow}
+                        variant="info"
                       >
                         Add Variant
-                      </button>
+                      </Button>
                     </Form.Group>
                   </Row>
                 </Form>
@@ -199,6 +208,30 @@ function AddProduct() {
               Submit
             </button>
           </Container>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Varients</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form.Group className="mb-3">
+                <Form.Label>input 1</Form.Label>
+                <Form.Control placeholder="input1" />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>input 2</Form.Label>
+                <Form.Control placeholder="input2" />
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                onClick={handleClose}
+                variant="info"
+                class="rounded-1 py-2 px-2 bg-[#1B94A0] text-white hover:bg-[#1B94A0] hover:text-white"
+              >
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       </div>
     </div>
