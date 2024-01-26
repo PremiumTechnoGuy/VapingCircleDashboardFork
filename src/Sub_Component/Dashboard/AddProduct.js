@@ -192,8 +192,13 @@ function AddProduct() {
                     </Form.Group>
                     <Form.Group as={Col} controlId="">
                       <Button
-                        class="rounded-1  bg-[#1B94A0] text-white"
-                        style={{ marginTop: 37 }}
+                        // class="rounded-1  bg-[#1B94A0] text-white"
+
+                        style={{
+                          marginTop: 37,
+                          backgroundColor: "#1B94A0",
+                          color: "white",
+                        }}
                         onClick={handleShow}
                         variant="info"
                       >
