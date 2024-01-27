@@ -346,6 +346,7 @@ function AddFilter() {
                         onChange={(e) => setSelectedOption(e.target.value)}
                         aria-label="Default select example"
                       >
+                        <option value={""}></option>
                         {optionsArray?.map((opt, i) => (
                           <option key={i} value={opt}>
                             {opt}
@@ -366,6 +367,7 @@ function AddFilter() {
                               1
                             );
                             setOptionsArray(newArr);
+                            setSelectedOption("");
                           }
                         }}
                       >

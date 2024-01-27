@@ -116,8 +116,9 @@ function AddProduct() {
   const [imagesArr, setImagesArr] = React.useState([]);
   const [selectedCategory, setSelectedCategory] = React.useState("");
 
-  const [variantOptions, setVariantOptions] = React.useState(["options1"]);
+  const [variantsArray, setVariantsArray] = React.useState([]);
   const [selectedVariantType, setSelectedVariantType] = React.useState("");
+  const [typedNewVariant, setTypedNewVariant] = React.useState("");
 
   const handleSubmitNewProduct = (e) => {
     e.preventDefault();
@@ -308,15 +309,19 @@ function AddProduct() {
                       <Form.Label class="text-[#707070]  font-semibold py-2">
                         Variant
                       </Form.Label>
-                      <Form.Control type="text" />
+                      <Form.Control
+                        type="text"
+                        value={typedNewVariant}
+                        onChange={(e) => setTypedNewVariant(e.target.value)}
+                      />
                     </Form.Group>
                     <Form.Group as={Col} controlId="">
                       <button
                         class="rounded-1 p-2 mt-[2rem] bg-[#1B94A0] text-white"
                         onClick={(e) => {
                           e.preventDefault();
-                          // setOptionsArray((arr) => [...arr, typedOption]);
-                          // setTypedOption("");
+                          setVariantsArray((arr) => [...arr, typedNewVariant]);
+                          setTypedNewVariant("");
                         }}
                       >
                         Add Variant Type
@@ -333,13 +338,15 @@ function AddProduct() {
                         Current Variant Types
                       </Form.Label>
                       <Form.Select
-                        //  onChange={(e) => setSelectedOption(e.target.value)}
+                        onChange={(e) => setSelectedVariantType(e.target.value)}
                         aria-label="Default select example"
                       >
-                        <option></option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option value={""}></option>
+                        {variantsArray?.map((variant, i) => (
+                          <option key={i} value={variant}>
+                            {variant}
+                          </option>
+                        ))}
                       </Form.Select>
                     </Form.Group>
                     <Form.Group as={Col} controlId="">
@@ -348,14 +355,15 @@ function AddProduct() {
                         style={{ marginTop: 37 }}
                         onClick={(e) => {
                           e.preventDefault();
-                          // if (optionsArray.length >= 1) {
-                          //   const newArr = [...optionsArray];
-                          //   newArr.splice(
-                          //     optionsArray.indexOf(selectedOption),
-                          //     1
-                          //   );
-                          //   setOptionsArray(newArr);
-                          // }
+                          if (variantsArray.length >= 1) {
+                            const newArr = [...variantsArray];
+                            newArr.splice(
+                              variantsArray.indexOf(selectedVariantType),
+                              1
+                            );
+                            setVariantsArray(newArr);
+                            setSelectedVariantType("");
+                          }
                         }}
                       >
                         {" "}
@@ -418,13 +426,13 @@ function AddProduct() {
                             value={selectedVariantType}
                           />
                         </Form.Group>
-                        {variantOptions?.map((varOpt, i) => (
+                        {/* {variantOptions?.map((varOpt, i) => (
                           <VariantOption
                             key={i}
                             varOpt={varOpt}
                             variantOptionsArr={variantOptions}
                           />
-                        ))}
+                        ))} */}
                         <Button
                           style={{
                             marginTop: 10,
