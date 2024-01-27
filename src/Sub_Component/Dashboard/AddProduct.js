@@ -210,14 +210,53 @@ function AddProduct() {
 
   const handleSubmitNewProduct = (e) => {
     e.preventDefault();
-    console.log({
-      productName,
-      description,
-      available,
+    const id = toast.loading("Please wait...");
+
+    // const token = localStorage.getItem("token");
+    // const config = {
+    //   headers: { Authorization: `Bearer ${token}` },
+    // };
+    const payload = {
+      available: available === "true" ? true : false,
+      name: productName,
       basePrice,
       sku,
-      selectedCategory,
-    });
+      description,
+      coverImage: "cover.jpeg",
+      images: ["1.jpeg", "2.jpeg", "3.jpeg"],
+      category: selectedCategory,
+      variants: finalVariantsArray,
+    };
+
+    axios
+      .post(`${apiUrl}/api/v1/product`, payload)
+      .then((res) => {
+        console.log(res.data);
+        toast.update(id, {
+          render: "Created Product Successfully",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
+        setProductName("");
+        setDescription("");
+        setBasePrice(0);
+        setFinalVariantsArray([]);
+        setVariantsArray([]);
+        setSelectedVariantType("");
+        setSelectedCategory("");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render:
+            err.response?.data?.message ||
+            "Error Occured! See more using console!",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      });
   };
 
   return (
