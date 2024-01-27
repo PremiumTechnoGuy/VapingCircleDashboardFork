@@ -70,8 +70,8 @@ function AddCategory() {
         setCategoryName("");
         setDescription("");
         setPriorityNum(1);
-        setAvailableRetail(true);
-        setAvailableWholesale(false);
+        setAvailableRetail("true");
+        setAvailableWholesale("false");
       })
       .catch((err) => {
         console.log(err);
@@ -319,10 +319,11 @@ function AddCategory() {
                 <Form.Select
                   aria-label="Default select example"
                   value={availableWholesale}
-                  onChange={(e) => setAvailableWholesale(e.target.value)}
+                  disabled
+                  // onChange={(e) => setAvailableWholesale(e.target.value)}
                 >
                   <option value={"true"}>Yes</option>
-                  <option value={"false"}>No</option>
+                  <option value={"false"}>No (Upgrade Plan)</option>
                 </Form.Select>
               </Form.Group>
             </Row>
@@ -355,7 +356,6 @@ function AddCategory() {
                 sm={4}
                 className="block md:hidden mt-4"
               >
-                
                 <div class="border rounded-md w-[20rem] h-[13rem] flex flex-col justify-center items-center">
                   <input
                     type="file"
