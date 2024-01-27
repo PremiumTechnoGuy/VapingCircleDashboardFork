@@ -1,3 +1,5 @@
+/* eslint-disable no-unreachable */
+/* eslint-disable no-lone-blocks */
 import React, { useState } from "react";
 import DashboardNavbar from "./DashboardNavbar";
 import { Container, Row, Col, FloatingLabel } from "react-bootstrap";
@@ -11,41 +13,78 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { apiUrl } from "../../data/env";
 
-function VariantOption({ varOpt, variantOptionsArr }) {
+function VariantOption({ variantOptionsObj, selectedVariant }) {
+  const [optionVal, setOptionVal] = React.useState(
+    variantOptionsObj.optionValue
+  );
+  const [optionPrc, setOptionPrc] = React.useState(
+    variantOptionsObj.optionPrice
+  );
+  const [optionQuant, setOptionQuant] = React.useState(
+    variantOptionsObj.optionQuantity
+  );
+  const [optionStk, setOptionStk] = React.useState(variantOptionsObj.optionSku);
+
   return (
     <span>
       <h1 class="font-bold text-xl underline">Option Info:</h1>
-      {variantOptionsArr?.map((opt) => {
-        return (
-          <Row className="mb-3">
-            <Form.Group as={Col} controlId="">
-              <Form.Label class="font-semibold">Value</Form.Label>
-              <Form.Control type="text" />
-            </Form.Group>
-            <Form.Group as={Col} controlId="">
-              <Form.Label class="font-semibold">Price</Form.Label>
-              <Form.Control type="number" min={0} />
-            </Form.Group>
+      <Row className="mb-3">
+        <Form.Group as={Col} controlId="">
+          <Form.Label class="font-semibold">Value</Form.Label>
+          <Form.Control
+            type="text"
+            id={selectedVariant}
+            data-value={optionVal}
+            value={optionVal}
+            onChange={(e) => setOptionVal(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group as={Col} controlId="">
+          <Form.Label class="font-semibold">Price</Form.Label>
+          <Form.Control
+            type="number"
+            min={0}
+            id={selectedVariant}
+            data-price={optionPrc}
+            value={optionPrc}
+            onChange={(e) => setOptionPrc(Number(e.target.value))}
+          />
+        </Form.Group>
 
-            <Form.Group as={Col} controlId="">
-              <Form.Label class="font-semibold">Quantity</Form.Label>
-              <Form.Control type="number" min={1} />
-            </Form.Group>
+        <Form.Group as={Col} controlId="">
+          <Form.Label class="font-semibold">Quantity</Form.Label>
+          <Form.Control
+            type="number"
+            min={1}
+            id={selectedVariant}
+            data-quantity={optionQuant}
+            value={optionQuant}
+            onChange={(e) => setOptionQuant(Number(e.target.value))}
+          />
+        </Form.Group>
 
-            {/* new row should be here */}
-            <Form.Group as={Col} xs={2} controlId="">
-              <Form.Label class="font-semibold">SKU</Form.Label>
-              <Form.Control type="" placeholder="" />
-            </Form.Group>
+        {/* new row should be here */}
+        <Form.Group as={Col} xs={2} controlId="">
+          <Form.Label class="font-semibold">SKU</Form.Label>
+          <Form.Control
+            type=""
+            placeholder=""
+            id={selectedVariant}
+            data-sku={optionStk}
+            value={optionStk}
+            onChange={(e) => setOptionStk(e.target.value)}
+          />
+        </Form.Group>
 
-            <Form.Group as={Col} xs={2} controlId="">
-              <Form.Label></Form.Label>
-              <RiDeleteBinLine class="text-xl mt-2 cursor-pointer" />
-            </Form.Group>
-          </Row>
-        );
-      })}
-      {/* <Row className="mb-3">
+        {/* <Form.Group as={Col} xs={2} controlId="">
+          <Form.Label></Form.Label>
+          <RiDeleteBinLine class="text-xl mt-2 cursor-pointer" />
+        </Form.Group> */}
+      </Row>
+    </span>
+  );
+  {
+    /* <Row className="mb-3">
     <Form.Group as={Col} xs={4} controlId="">
       <Form.Label class="font-semibold">SKU</Form.Label>
       <Form.Control type="" placeholder="" />
@@ -61,9 +100,8 @@ function VariantOption({ varOpt, variantOptionsArr }) {
       <Form.Label></Form.Label>
       <RiDeleteBinLine class="text-xl mt-2 cursor-pointer" />
     </Form.Group>
-  </Row> */}
-    </span>
-  );
+  </Row> */
+  }
 }
 
 function AddProduct() {
@@ -119,6 +157,16 @@ function AddProduct() {
   const [variantsArray, setVariantsArray] = React.useState([]);
   const [selectedVariantType, setSelectedVariantType] = React.useState("");
   const [typedNewVariant, setTypedNewVariant] = React.useState("");
+
+  const [selectedVariantOptionsArr, setSelectedVariantOptionsArr] =
+    React.useState([
+      {
+        optionValue: "",
+        optionPrice: 0,
+        optionQuantity: 1,
+        optionSku: "",
+      },
+    ]);
 
   const handleSubmitNewProduct = (e) => {
     e.preventDefault();
@@ -426,13 +474,15 @@ function AddProduct() {
                             value={selectedVariantType}
                           />
                         </Form.Group>
-                        {/* {variantOptions?.map((varOpt, i) => (
-                          <VariantOption
-                            key={i}
-                            varOpt={varOpt}
-                            variantOptionsArr={variantOptions}
-                          />
-                        ))} */}
+                        {selectedVariantOptionsArr?.map(
+                          (variantOptionsObj, i) => (
+                            <VariantOption
+                              key={i}
+                              selectedVariant={selectedVariantType}
+                              variantOptionsObj={variantOptionsObj}
+                            />
+                          )
+                        )}
                         <Button
                           style={{
                             marginTop: 10,
@@ -440,6 +490,19 @@ function AddProduct() {
                             color: "white",
                           }}
                           variant="info"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedVariantOptionsArr((arr) => {
+                              const newArr = [...arr];
+                              newArr.push({
+                                optionValue: "",
+                                optionPrice: "",
+                                optionQuantity: 1,
+                                optionSku: "",
+                              });
+                              return newArr;
+                            });
+                          }}
                         >
                           New Option
                         </Button>
