@@ -5,8 +5,7 @@ import Form from "react-bootstrap/Form";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 import { FiEdit } from "react-icons/fi";
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
-
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
 
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -125,31 +124,30 @@ function AddFilter() {
             <Row class="">
               <Col md={4}>
                 <Form.Group as={Col} controlId="" sm={4} className=" mt-3">
-                <div class="border rounded-md w-[20rem] h-[13rem] flex flex-col justify-center items-center">
-                  <input
-                    type="file"
-                    id="fileInput"
-                    accept="image/png, image/jpeg"
-                    class="text-center"
-                    style={{ display: "none" }}
-                    onChange={handleFileChange}
-                  />
-
-                  <label htmlFor="fileInput">
-                    <FiEdit
-                      icon={faUpload}
-                      class="text-2xl text-center "
-                      style={{ cursor: "pointer", margin: "0 auto" }}
+                  <div class="border rounded-md w-[20rem] h-[13rem] flex flex-col justify-center items-center">
+                    <input
+                      type="file"
+                      id="fileInput"
+                      accept="image/png, image/jpeg"
+                      class="text-center"
+                      style={{ display: "none" }}
+                      onChange={handleFileChange}
                     />
-                    <span>Upload an Image</span>
-                    <br />
-                  </label>
 
-                  {selectedFile && (
-                    <p class="w-75">Selected File: {selectedFile.name}</p>
-                  )}
-                </div>
-                
+                    <label htmlFor="fileInput">
+                      <FiEdit
+                        icon={faUpload}
+                        class="text-2xl text-center "
+                        style={{ cursor: "pointer", margin: "0 auto" }}
+                      />
+                      <span>Upload an Image</span>
+                      <br />
+                    </label>
+
+                    {selectedFile && (
+                      <p class="w-75">Selected File: {selectedFile.name}</p>
+                    )}
+                  </div>
                 </Form.Group>
                 {/* <Row>
                   <Col>
@@ -237,6 +235,7 @@ function AddFilter() {
                         onChange={(e) => setSelectedCategory(e.target.value)}
                         aria-label="Default select example"
                       >
+                        <option></option>
                         {fetchedCategories?.map((cat) => (
                           <option key={cat._id} value={cat._id}>
                             {cat.name}
@@ -324,7 +323,6 @@ function AddFilter() {
                     <Form.Group as={Col} controlId="">
                       <button
                         class="rounded-1 p-2 mt-[4rem] bg-[#1B94A0] text-white"
-                        
                         onClick={(e) => {
                           e.preventDefault();
                           setOptionsArray((arr) => [...arr, typedOption]);
