@@ -13,7 +13,18 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { apiUrl } from "../../data/env";
 
-function VariantOption({ variantOptionsObj, selectedVariant }) {
+function slugify(str) {
+  return String(str)
+    .normalize("NFKD") // split accented characters into their base characters and diacritical marks
+    .replace(/[\u0300-\u036f]/g, "") // remove all the accents, which happen to be all in the \u03xx UNICODE block.
+    .trim() // trim leading or trailing whitespace
+    .toLowerCase() // convert to lowercase
+    .replace(/[^a-z0-9 -]/g, "") // remove non-alphanumeric characters
+    .replace(/\s+/g, "-") // replace spaces with hyphens
+    .replace(/-+/g, "-"); // remove consecutive hyphens
+}
+
+function VariantOption({ variantOptionsObj, selectedVariant, i }) {
   const [optionVal, setOptionVal] = React.useState(
     variantOptionsObj.optionValue
   );
@@ -33,7 +44,7 @@ function VariantOption({ variantOptionsObj, selectedVariant }) {
           <Form.Label class="font-semibold">Value</Form.Label>
           <Form.Control
             type="text"
-            id={selectedVariant}
+            id={`${slugify(selectedVariant)}-${i}`}
             data-value={optionVal}
             value={optionVal}
             onChange={(e) => setOptionVal(e.target.value)}
@@ -44,7 +55,7 @@ function VariantOption({ variantOptionsObj, selectedVariant }) {
           <Form.Control
             type="number"
             min={0}
-            id={selectedVariant}
+            id={`${slugify(selectedVariant)}-${i}`}
             data-price={optionPrc}
             value={optionPrc}
             onChange={(e) => setOptionPrc(Number(e.target.value))}
@@ -56,7 +67,7 @@ function VariantOption({ variantOptionsObj, selectedVariant }) {
           <Form.Control
             type="number"
             min={1}
-            id={selectedVariant}
+            id={`${slugify(selectedVariant)}-${i}`}
             data-quantity={optionQuant}
             value={optionQuant}
             onChange={(e) => setOptionQuant(Number(e.target.value))}
@@ -69,7 +80,7 @@ function VariantOption({ variantOptionsObj, selectedVariant }) {
           <Form.Control
             type=""
             placeholder=""
-            id={selectedVariant}
+            id={`${slugify(selectedVariant)}-${i}`}
             data-sku={optionStk}
             value={optionStk}
             onChange={(e) => setOptionStk(e.target.value)}
@@ -157,6 +168,7 @@ function AddProduct() {
   const [variantsArray, setVariantsArray] = React.useState([]);
   const [selectedVariantType, setSelectedVariantType] = React.useState("");
   const [typedNewVariant, setTypedNewVariant] = React.useState("");
+  const [finalVariantsArray, setFinalVariantsArray] = React.useState([]);
 
   const [selectedVariantOptionsArr, setSelectedVariantOptionsArr] =
     React.useState([
@@ -167,6 +179,34 @@ function AddProduct() {
         optionSku: "",
       },
     ]);
+
+  const handleCloseVariantModal = () => {
+    const newArrayOfOptionsObjects = [];
+    selectedVariantOptionsArr.forEach((_, i) => {
+      const newObj = {};
+      document
+        .querySelectorAll(`#${slugify(selectedVariantType)}-${i}`)
+        .forEach((el) => {
+          if (el.dataset.price) newObj.optionPrice = Number(el.dataset.price);
+          if (el.dataset.value) newObj.optionValue = el.dataset.value;
+          if (el.dataset.quantity)
+            newObj.optionQuantity = Number(el.dataset.quantity);
+          if (el.dataset.sku) newObj.optionSku = el.dataset.sku;
+        });
+      newArrayOfOptionsObjects.push(newObj);
+    });
+    console.log(newArrayOfOptionsObjects);
+
+    setFinalVariantsArray((arr) => [
+      ...arr,
+      {
+        variantType: selectedVariantType,
+        options: newArrayOfOptionsObjects,
+      },
+    ]);
+    console.log(finalVariantsArray);
+    setSelectedVariantType("");
+  };
 
   const handleSubmitNewProduct = (e) => {
     e.preventDefault();
@@ -431,9 +471,9 @@ function AddProduct() {
                         onClick={handleShow}
                         variant="info"
                       >
-                        Add Variant
+                        Add Options
                       </Button>
-                      <Button
+                      {/* <Button
                         // class="rounded-1  bg-[#1B94A0] text-white"
 
                         style={{
@@ -445,7 +485,7 @@ function AddProduct() {
                         variant="info"
                       >
                         Add Filter
-                      </Button>
+                      </Button> */}
                     </Form.Group>
 
                     <label class="text-[#707070] font-semibold py-2">
@@ -480,6 +520,7 @@ function AddProduct() {
                               key={i}
                               selectedVariant={selectedVariantType}
                               variantOptionsObj={variantOptionsObj}
+                              i={i}
                             />
                           )
                         )}
@@ -509,7 +550,11 @@ function AddProduct() {
                       </Modal.Body>
                       <Modal.Footer>
                         <Button
-                          onClick={handleClose}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleCloseVariantModal();
+                            handleClose();
+                          }}
                           variant="info"
                           class="rounded-1 py-2 px-2 bg-[#1B94A0] text-white hover:bg-[#1B94A0] hover:text-white"
                         >
