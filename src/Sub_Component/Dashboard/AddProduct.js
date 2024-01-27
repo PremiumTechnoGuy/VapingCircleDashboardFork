@@ -232,12 +232,22 @@ function AddProduct() {
       .post(`${apiUrl}/api/v1/product`, payload)
       .then((res) => {
         console.log(res.data);
-        toast.update(id, {
-          render: "Created Product Successfully",
-          type: "success",
-          isLoading: false,
-          autoClose: 3000,
-        });
+        if (uploadingImage) {
+          handleUploadImage(res.data.data._id);
+          toast.update(id, {
+            render: "Created Product Successfully & Uploaded Image",
+            type: "success",
+            isLoading: false,
+            autoClose: 3000,
+          });
+        } else {
+          toast.update(id, {
+            render: "Created Product Successfully (No Image Upload)",
+            type: "success",
+            isLoading: false,
+            autoClose: 3000,
+          });
+        }
         setProductName("");
         setDescription("");
         setBasePrice(0);
@@ -259,6 +269,36 @@ function AddProduct() {
       });
   };
 
+  const [image, setImage] = React.useState({ preview: "", data: "" });
+  const [uploadingImage, setUploadingImage] = React.useState(false);
+
+  const handleUploadImage = (pId) => {
+    let formData = new FormData();
+    formData.append("image", image.data);
+
+    axios
+      .post(`${apiUrl}/api/v1/product/imageUpload?productId=${pId}`, formData)
+      .then((res) => {
+        console.log(res.data);
+        console.log("uploaded image");
+        // alert("successfully uploaded image!");
+        // return 'success';
+      })
+      .catch((err) => {
+        console.log(err);
+        // alert("Could not upload image. ", `${err.message || "server error"}`);
+        // return 'error';
+      });
+  };
+
+  const handleFileChange = (e) => {
+    const img = {
+      preview: URL.createObjectURL(e.target.files[0]),
+      data: e.target.files[0],
+    };
+    setImage(img);
+  };
+
   return (
     <div>
       <DashboardNavbar />
@@ -272,8 +312,12 @@ function AddProduct() {
                 <Form.Group as={Col} controlId="" sm={4} className=" mt-3">
                   <Form.Label class="text-[#707070]  font-semibold py-2 "></Form.Label>
                   <Form.Control
-                    type="text"
+                    type="file"
                     style={{ height: "170px", width: "278px" }}
+                    onChange={(e) => {
+                      setUploadingImage(true);
+                      handleFileChange(e);
+                    }}
                   />
                   <div class="absolute text-center " style={{ marginTop: -94 }}>
                     <p class=" text-xl px-36 text-[#707070]">
@@ -287,7 +331,13 @@ function AddProduct() {
                     choose an image
                   </p>
                 </Form.Group>
-                <Row>
+                {/* <button
+                  onClick={handleUploadImage}
+                  class="rounded-1 p-2 w-32 font-semibold   mt-4 bg-[#1B94A0] text-white"
+                >
+                  Upload Image
+                </button> */}
+                {/* <Row>
                   <Col>
                     <Form.Group as={Col} controlId="" sm={4} className="">
                       <Form.Label class="text-[#707070] font-semibold py-2"></Form.Label>
@@ -359,7 +409,7 @@ function AddProduct() {
                       </div>
                     </Form.Group>
                   </Col>
-                </Row>
+                </Row> */}
               </Col>
 
               <Col md={8}>
