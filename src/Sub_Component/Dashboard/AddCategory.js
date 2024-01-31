@@ -19,14 +19,35 @@ function AddCategory() {
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFile2, setSelectedFile2] = useState(null);
+  const [uploadingImage, setUploadingImage] = React.useState(false);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
+    setUploadingImage(true);
   };
   const handleFileChange2 = (event) => {
     const file2 = event.target.files[0];
     setSelectedFile2(file2);
+  };
+
+  const handleUploadCategoryImage = (cId) => {
+    let formData = new FormData();
+    formData.append("image", selectedFile);
+
+    return axios
+      .post(`${apiUrl}/api/v1/category/imageUpload?categoryId=${cId}`, formData)
+      .then((res) => {
+        console.log(res.data);
+        console.log("uploaded image");
+        // alert("successfully uploaded image!");
+        return true;
+      })
+      .catch((err) => {
+        console.log(err);
+        // alert("Could not upload image. ", `${err.message || "server error"}`);
+        return false;
+      });
   };
 
   const [isLoadingState, setIsLoadingState] = useState(false);
@@ -61,17 +82,29 @@ function AddCategory() {
       .then((res) => {
         // setIsLoadingState(false);
         console.log(res.data);
-        toast.update(id, {
-          render: "Created Category Successfully",
-          type: "success",
-          isLoading: false,
-          autoClose: 3000,
-        });
+        if (uploadingImage) {
+          if (handleUploadCategoryImage(res.data.data._id)) {
+            toast.update(id, {
+              render: "Created Category Successfully & Uploaded Image",
+              type: "success",
+              isLoading: false,
+              autoClose: 3000,
+            });
+          }
+        } else {
+          toast.update(id, {
+            render: "Created Category Successfully (No Image Upload)",
+            type: "success",
+            isLoading: false,
+            autoClose: 3000,
+          });
+        }
         setCategoryName("");
         setDescription("");
         setPriorityNum(1);
         setAvailableRetail("true");
         setAvailableWholesale("false");
+        setUploadingImage(false);
       })
       .catch((err) => {
         console.log(err);
@@ -86,23 +119,23 @@ function AddCategory() {
       });
   };
 
-  const showToastMessage = (e) => {
-    e.preventDefault();
-    const id = toast.loading("Please wait...");
+  // const showToastMessage = (e) => {
+  //   e.preventDefault();
+  //   const id = toast.loading("Please wait...");
 
-    setTimeout(() => {
-      toast.update(id, {
-        render: "All is good",
-        type: "success",
-        isLoading: false,
-        autoClose: 3000,
-      });
-    }, 5000);
+  //   setTimeout(() => {
+  //     toast.update(id, {
+  //       render: "All is good",
+  //       type: "success",
+  //       isLoading: false,
+  //       autoClose: 3000,
+  //     });
+  //   }, 5000);
 
-    // toast.success("Success Notification !", {
-    //   position: toast.POSITION.TOP_RIGHT,
-    // });
-  };
+  //   // toast.success("Success Notification !", {
+  //   //   position: toast.POSITION.TOP_RIGHT,
+  //   // });
+  // };
 
   return (
     <div>
@@ -153,6 +186,12 @@ function AddCategory() {
                   {selectedFile && (
                     <p class="w-75">Selected File: {selectedFile.name}</p>
                   )}
+                  {/* <button
+                    onClick={handleUploadCategoryImage}
+                    class="rounded-1 p-2 w-32 font-semibold   mt-4 bg-[#1B94A0] text-white"
+                  >
+                    Upload Image
+                  </button> */}
                 </div>
               </Form.Group>
             </Row>
