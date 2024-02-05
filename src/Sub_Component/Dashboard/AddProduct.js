@@ -210,7 +210,7 @@ function AddProduct() {
 
   const handleSubmitNewProduct = (e) => {
     e.preventDefault();
-    const id = toast.loading("Please wait...");
+    const id = toast.loading("Creating New Product...");
 
     // const token = localStorage.getItem("token");
     // const config = {
@@ -232,22 +232,19 @@ function AddProduct() {
       .post(`${apiUrl}/api/v1/product`, payload)
       .then((res) => {
         console.log(res.data);
-        if (uploadingImage) {
-          handleUploadImage(res.data.data._id);
-          toast.update(id, {
-            render: "Created Product Successfully & Uploaded Image",
-            type: "success",
-            isLoading: false,
-            autoClose: 3000,
-          });
-        } else {
-          toast.update(id, {
-            render: "Created Product Successfully (No Image Upload)",
-            type: "success",
-            isLoading: false,
-            autoClose: 3000,
-          });
-        }
+        toast.update(id, {
+          render: "Created Product Successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
+
+        // Upload Cover Image
+        if (uploadingImage) handleUploadImage(res.data.data._id);
+
+        // Upload Multiple Images
+        if (multipleUpload) handleUploadImages(res.data.data._id);
+
         setProductName("");
         setDescription("");
         setBasePrice(0);
@@ -273,6 +270,7 @@ function AddProduct() {
   const [uploadingImage, setUploadingImage] = React.useState(false);
 
   const handleUploadImage = (pId) => {
+    const id = toast.loading("Uploading Cover Image...");
     let formData = new FormData();
     formData.append("image", image.data);
 
@@ -283,11 +281,26 @@ function AddProduct() {
         console.log("uploaded image");
         // alert("successfully uploaded image!");
         // return 'success';
+        toast.update(id, {
+          render: "Uploaded Cover Image Successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+
+        setImage({ preview: "", data: "" });
+        setUploadingImage(false);
       })
       .catch((err) => {
         console.log(err);
-        // alert("Could not upload image. ", `${err.message || "server error"}`);
-        // return 'error';
+        toast.update(id, {
+          render:
+            err.response?.data?.message ||
+            "Cover Image Upload Error! See more using console!",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
       });
   };
 
@@ -297,6 +310,51 @@ function AddProduct() {
       data: e.target.files[0],
     };
     setImage(img);
+  };
+
+  // Multiple Image Upload
+  const [files, setFiles] = useState([]);
+  const [multipleUpload, setMultipleUpload] = useState(false);
+
+  const handleMultipleFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    setFiles(selectedFiles);
+  };
+
+  const handleUploadImages = (pId) => {
+    const id = toast.loading("Uploading Multiple Images...");
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append(`images`, file);
+    });
+
+    axios
+      .post(
+        `${apiUrl}/api/v1/product/multipleImageUpload?productId=${pId}`,
+        formData
+      )
+      .then((res) => {
+        toast.update(id, {
+          render: "Multiple Images Uploaded!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+        console.log(res.data);
+        setFiles([]);
+        setMultipleUpload(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render:
+            err.response?.data?.message ||
+            "Multiple Image Upload Error! See more using console!",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      });
   };
 
   return (
@@ -328,7 +386,7 @@ function AddProduct() {
                     class="absolute text-center px-24"
                     style={{ marginTop: -66 }}
                   >
-                    choose an image
+                    Choose a Cover Image
                   </p>
                 </Form.Group>
                 {/* <button
@@ -337,8 +395,39 @@ function AddProduct() {
                 >
                   Upload Image
                 </button> */}
-                {/* <Row>
+                <Row>
                   <Col>
+                    <Form.Group as={Col} controlId="" sm={4} className="">
+                      <Form.Label class="text-[#707070] font-semibold py-2">
+                        Choose Images (Max 4)
+                      </Form.Label>
+                      <Form.Control
+                        type="file"
+                        multiple
+                        style={{ height: "40px", width: "145px" }}
+                        onChange={(e) => {
+                          setMultipleUpload(true);
+                          handleMultipleFileChange(e);
+                        }}
+                      />
+                      <div
+                        class="absolute text-center "
+                        style={{ marginTop: -28 }}
+                      >
+                        <p class=" px-3 text-[#707070]">{/* <FiEdit /> */}</p>
+                      </div>
+                    </Form.Group>
+                  </Col>
+                  {/* <Col>
+                    <button
+                      onClick={handleUploadImages}
+                      class="rounded-1 p-2 w-32 font-semibold   mt-4 bg-[#1B94A0] text-white"
+                    >
+                      Upload Image
+                    </button>
+                  </Col> */}
+
+                  {/* <Col>
                     <Form.Group as={Col} controlId="" sm={4} className="">
                       <Form.Label class="text-[#707070] font-semibold py-2"></Form.Label>
                       <Form.Control
@@ -390,26 +479,8 @@ function AddProduct() {
                         </p>
                       </div>
                     </Form.Group>
-                  </Col>
-
-                  <Col>
-                    <Form.Group as={Col} controlId="" sm={4} className="">
-                      <Form.Label class="text-[#707070] font-semibold py-2"></Form.Label>
-                      <Form.Control
-                        type="text"
-                        style={{ height: "40px", width: "45px" }}
-                      />
-                      <div
-                        class="absolute text-center "
-                        style={{ marginTop: -28 }}
-                      >
-                        <p class=" px-3 text-[#707070]">
-                          <FiEdit />
-                        </p>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row> */}
+                  </Col> */}
+                </Row>
               </Col>
 
               <Col md={8}>
