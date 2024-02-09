@@ -190,6 +190,10 @@ function AddProduct() {
   const [imagesArr, setImagesArr] = React.useState([]);
   const [selectedCategory, setSelectedCategory] = React.useState("");
   const [filteredFilters, setFilteredFilters] = React.useState([]);
+  const [selectedFilter, setSelectedFilter] = React.useState("");
+  const [filteredFilterOptions, setFilteredFilterOptions] = React.useState([]);
+  const [selectedFilteredFilterOption, setSelectedFilteredFilterOption] =
+    React.useState("");
 
   const [variantsArray, setVariantsArray] = React.useState([]);
   const [selectedVariantType, setSelectedVariantType] = React.useState("");
@@ -632,16 +636,53 @@ function AddProduct() {
                       style={{ marginTop: 15 }}
                     >
                       <Form.Label class="text-[#707070]  font-semibold py-2">
-                        Current Category Filters
+                        1. Select Filters
                       </Form.Label>
                       <Form.Select
-                        // onChange={(e) => setSelectedFilter(e.target.value)}
+                        onChange={(e) => {
+                          // console.log(e.target.value);
+                          const [fil] = filteredFilters.filter(
+                            (fil) => fil._id === e.target.value
+                          );
+
+                          setSelectedFilter(() => {
+                            setFilteredFilterOptions(fil.options);
+                            return e.target.value;
+                          });
+                        }}
                         aria-label="Default select example"
+                        value={selectedFilter}
                       >
                         <option value={""}></option>
                         {filteredFilters?.map((filter) => (
-                          <option key={filter._id} value={filter.name}>
+                          <option key={filter._id} value={filter._id}>
                             {filter.name}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      controlId=""
+                      md={4}
+                      style={{ marginTop: 15 }}
+                    >
+                      <Form.Label class="text-[#707070]  font-semibold py-2">
+                        2. Select it's Options
+                      </Form.Label>
+                      <Form.Select
+                        onChange={(e) => {
+                          console.log(e.target.value);
+                          setSelectedFilteredFilterOption(e.target.value);
+                        }}
+                        aria-label="Default select example"
+                        value={selectedFilteredFilterOption}
+                      >
+                        <option value={""}></option>
+                        {filteredFilterOptions?.map((option, i) => (
+                          <option key={i} value={option}>
+                            {option}
                           </option>
                         ))}
                       </Form.Select>
