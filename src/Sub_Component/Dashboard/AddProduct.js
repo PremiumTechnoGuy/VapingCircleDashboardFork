@@ -127,17 +127,19 @@ function AddProduct() {
 
   // custom hooks
   const [fetchedCategories, setFetchedCategories] = React.useState([]);
+  const [fetchedFilters, setFetchedFilters] = React.useState([]);
 
   React.useEffect(() => {
-    const id = toast.loading("Fetching Data... Please Wait!");
+    const id1 = toast.loading("Fetching Categories... Please Wait!");
+    const id2 = toast.loading("Fetching Filters... Please Wait!");
 
     axios
       .get(`${apiUrl}/api/v1/category`)
       .then((res) => {
         setFetchedCategories(res.data.data);
-        console.log(res.data.data);
-        toast.update(id, {
-          render: "Successfully Fetched Data!",
+        // console.log(res.data.data);
+        toast.update(id1, {
+          render: "Successfully Fetched Categories!",
           type: "success",
           isLoading: false,
           autoClose: 2000,
@@ -145,7 +147,30 @@ function AddProduct() {
       })
       .catch((err) => {
         console.log(err);
-        toast.update(id, {
+        toast.update(id1, {
+          render:
+            err.response?.data?.message || "Error! Try Again & See Console",
+          type: "error",
+          isLoading: false,
+          autoClose: 3500,
+        });
+      });
+
+    axios
+      .get(`${apiUrl}/api/v1/filter`)
+      .then((res) => {
+        // console.log(res.data);
+        setFetchedFilters(res.data.data);
+        toast.update(id2, {
+          render: "Successfully Fetched Filters!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id1, {
           render:
             err.response?.data?.message || "Error! Try Again & See Console",
           type: "error",
@@ -164,6 +189,7 @@ function AddProduct() {
   const [coverImage, setCoverImage] = React.useState("");
   const [imagesArr, setImagesArr] = React.useState([]);
   const [selectedCategory, setSelectedCategory] = React.useState("");
+  const [filteredFilters, setFilteredFilters] = React.useState([]);
 
   const [variantsArray, setVariantsArray] = React.useState([]);
   const [selectedVariantType, setSelectedVariantType] = React.useState("");
@@ -422,68 +448,6 @@ function AddProduct() {
                       </div>
                     </Form.Group>
                   </Col>
-                  {/* <Col>
-                    <button
-                      onClick={handleUploadImages}
-                      class="rounded-1 p-2 w-32 font-semibold   mt-4 bg-[#1B94A0] text-white"
-                    >
-                      Upload Image
-                    </button>
-                  </Col> */}
-
-                  {/* <Col>
-                    <Form.Group as={Col} controlId="" sm={4} className="">
-                      <Form.Label class="text-[#707070] font-semibold py-2"></Form.Label>
-                      <Form.Control
-                        type="text"
-                        style={{ height: "40px", width: "45px" }}
-                      />
-                      <div
-                        class="absolute text-center "
-                        style={{ marginTop: -28 }}
-                      >
-                        <p class=" px-3 text-[#707070]">
-                          <FiEdit />
-                        </p>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col>
-                    <Form.Group as={Col} controlId="" sm={4} className="">
-                      <Form.Label class="text-[#707070] font-semibold py-2"></Form.Label>
-                      <Form.Control
-                        type="text"
-                        style={{ height: "40px", width: "45px" }}
-                      />
-                      <div
-                        class="absolute text-center "
-                        style={{ marginTop: -28 }}
-                      >
-                        <p class=" px-3 text-[#707070]">
-                          <FiEdit />
-                        </p>
-                      </div>
-                    </Form.Group>
-                  </Col>
-
-                  <Col>
-                    <Form.Group as={Col} controlId="" sm={4} className="">
-                      <Form.Label class="text-[#707070] font-semibold py-2"></Form.Label>
-                      <Form.Control
-                        type="text"
-                        style={{ height: "40px", width: "45px" }}
-                      />
-                      <div
-                        class="absolute text-center "
-                        style={{ marginTop: -28 }}
-                      >
-                        <p class=" px-3 text-[#707070]">
-                          <FiEdit />
-                        </p>
-                      </div>
-                    </Form.Group>
-                  </Col> */}
                 </Row>
               </Col>
 
@@ -496,7 +460,16 @@ function AddProduct() {
                       </Form.Label>
                       <Form.Select
                         aria-label="Default select example"
-                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        onChange={(e) => {
+                          setSelectedCategory(() => {
+                            const changedCat = e.target.value;
+                            const newFilters = fetchedFilters.filter(
+                              (f) => f.categoryId === changedCat
+                            );
+                            setFilteredFilters(newFilters);
+                            return changedCat;
+                          });
+                        }}
                       >
                         <option></option>
                         {fetchedCategories?.map((cat) => (
@@ -650,6 +623,28 @@ function AddProduct() {
                       >
                         Add Filter
                       </Button> */}
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      controlId=""
+                      md={4}
+                      style={{ marginTop: 15 }}
+                    >
+                      <Form.Label class="text-[#707070]  font-semibold py-2">
+                        Current Category Filters
+                      </Form.Label>
+                      <Form.Select
+                        // onChange={(e) => setSelectedFilter(e.target.value)}
+                        aria-label="Default select example"
+                      >
+                        <option value={""}></option>
+                        {filteredFilters?.map((filter) => (
+                          <option key={filter._id} value={filter.name}>
+                            {filter.name}
+                          </option>
+                        ))}
+                      </Form.Select>
                     </Form.Group>
 
                     <label class="text-[#707070] font-semibold py-2">
