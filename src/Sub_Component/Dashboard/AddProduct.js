@@ -196,6 +196,7 @@ function AddProduct() {
   const [selectedFilteredFilterOption, setSelectedFilteredFilterOption] =
     React.useState("");
   const [chosenFiltersArray, setChosenFiltersArray] = React.useState([]);
+  const [finalFiltersObjArray, setFinalFiltersObjArray] = React.useState([]);
 
   const [variantsArray, setVariantsArray] = React.useState([]);
   const [selectedVariantType, setSelectedVariantType] = React.useState("");
@@ -472,7 +473,15 @@ function AddProduct() {
                             const newFilters = fetchedFilters.filter(
                               (f) => f.categoryId === changedCat
                             );
+                            const finalFiltersArray = newFilters?.map((f) => {
+                              return {
+                                filterId: f._id,
+                                filterName: f.name,
+                                chosenOption: "",
+                              };
+                            });
                             setFilteredFilters(newFilters);
+                            setFinalFiltersObjArray(finalFiltersArray);
                             return changedCat;
                           });
                         }}
@@ -701,19 +710,29 @@ function AddProduct() {
                         }}
                         onClick={(e) => {
                           e.preventDefault();
-                          // console.log("selectedFilter: ", selectedFilter);
-                          // console.log(
-                          //   "selectedFilteredFilterOption: ",
-                          //   selectedFilteredFilterOption
-                          // );
-                          setChosenFiltersArray((arr) => [
-                            ...arr,
-                            {
-                              filterId: selectedFilter,
-                              filterName: selectedFilterObj.name,
-                              chosenOption: selectedFilteredFilterOption,
-                            },
-                          ]);
+
+                          setFinalFiltersObjArray((f) => {
+                            const test = f?.map((finalObj) => {
+                              if (finalObj.filterId === selectedFilter)
+                                return {
+                                  filterId: selectedFilter,
+                                  filterName: selectedFilterObj.name,
+                                  chosenOption: selectedFilteredFilterOption,
+                                };
+                              else return finalObj;
+                            });
+
+                            return test;
+                          });
+
+                          // setChosenFiltersArray((arr) => [
+                          //   ...arr,
+                          //   {
+                          //     filterId: selectedFilter,
+                          //     filterName: selectedFilterObj.name,
+                          //     chosenOption: selectedFilteredFilterOption,
+                          //   },
+                          // ]);
                           setSelectedFilter("");
                           setSelectedFilteredFilterOption("");
                           setSelectedFilterObj(null);
@@ -723,20 +742,6 @@ function AddProduct() {
                         Confirm Choice
                       </Button>
                     </Form.Group>
-
-                    <p
-                      style={{
-                        marginTop: 10,
-                        // backgroundColor: "#1B94A0",
-                        // color: "white",
-                      }}
-                    >
-                      <ul>
-                        <li>1. First Filter: '2'</li>
-                        <li>2. Shop by brand: 'pointer'</li>
-                        <li>3. Shop by type: 'very good'</li>
-                      </ul>
-                    </p>
 
                     <label
                       onClick={() => console.log(chosenFiltersArray)}
