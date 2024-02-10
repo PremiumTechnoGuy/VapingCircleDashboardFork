@@ -191,9 +191,11 @@ function AddProduct() {
   const [selectedCategory, setSelectedCategory] = React.useState("");
   const [filteredFilters, setFilteredFilters] = React.useState([]);
   const [selectedFilter, setSelectedFilter] = React.useState("");
+  const [selectedFilterObj, setSelectedFilterObj] = React.useState(null);
   const [filteredFilterOptions, setFilteredFilterOptions] = React.useState([]);
   const [selectedFilteredFilterOption, setSelectedFilteredFilterOption] =
     React.useState("");
+  const [chosenFiltersArray, setChosenFiltersArray] = React.useState([]);
 
   const [variantsArray, setVariantsArray] = React.useState([]);
   const [selectedVariantType, setSelectedVariantType] = React.useState("");
@@ -647,6 +649,7 @@ function AddProduct() {
 
                           setSelectedFilter(() => {
                             setFilteredFilterOptions(fil.options);
+                            setSelectedFilterObj(fil);
                             return e.target.value;
                           });
                         }}
@@ -688,7 +691,57 @@ function AddProduct() {
                       </Form.Select>
                     </Form.Group>
 
-                    <label class="text-[#707070] font-semibold py-2">
+                    <Form.Group as={Col} controlId="" class="flex ">
+                      <Button
+                        // class="rounded-1  bg-[#1B94A0] text-white"
+                        style={{
+                          marginTop: 50,
+                          backgroundColor: "#1B94A0",
+                          color: "white",
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          // console.log("selectedFilter: ", selectedFilter);
+                          // console.log(
+                          //   "selectedFilteredFilterOption: ",
+                          //   selectedFilteredFilterOption
+                          // );
+                          setChosenFiltersArray((arr) => [
+                            ...arr,
+                            {
+                              filterId: selectedFilter,
+                              filterName: selectedFilterObj.name,
+                              chosenOption: selectedFilteredFilterOption,
+                            },
+                          ]);
+                          setSelectedFilter("");
+                          setSelectedFilteredFilterOption("");
+                          setSelectedFilterObj(null);
+                        }}
+                        variant="info"
+                      >
+                        Confirm Choice
+                      </Button>
+                    </Form.Group>
+
+                    <p
+                      style={{
+                        marginTop: 10,
+                        // backgroundColor: "#1B94A0",
+                        // color: "white",
+                      }}
+                    >
+                      <ul>
+                        <li>1. First Filter: '2'</li>
+                        <li>2. Shop by brand: 'pointer'</li>
+                        <li>3. Shop by type: 'very good'</li>
+                      </ul>
+                    </p>
+
+                    <label
+                      onClick={() => console.log(chosenFiltersArray)}
+                      class="text-[#707070] font-semibold py-2"
+                    >
                       Description
                     </label>
 
