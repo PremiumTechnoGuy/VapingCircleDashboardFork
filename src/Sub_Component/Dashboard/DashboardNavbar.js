@@ -108,6 +108,9 @@ function DashboardNavbar() {
                     <Nav.Link href="/dashboard/addFilter" class="mb-3 text-xl">
                       Create Filters
                     </Nav.Link>
+                    <Nav.Link href="/dashboard/addFlavour" class="mb-3 text-xl">
+                      Create Flavour
+                    </Nav.Link>
                     <Nav.Link href="/dashboard/addProduct" class="mb-3 text-xl">
                       Create Products
                     </Nav.Link>
