@@ -216,6 +216,24 @@ function DashboardNavbar() {
           </p>
         </div>
 
+        <div className="d-flex text-white flex-row w-48 gap-3">
+          <p
+            className="flex items-center gap-2  w-48 text-base text-white hover:text-black  p-3
+            focus-within:bg-white border-y border-[#1B94A0]"
+            style={{ marginLeft: -48 }}
+          >
+            <NavLink
+              to="/dashboard/addFlavour"
+              className="flex hover:text-black align-baseline"
+            >
+              <span className="mr-4 py-1">
+                <IoGridSharp />
+              </span>
+              <span>Create Flavour</span>
+            </NavLink>
+          </p>
+        </div>
+
         <div className="d-flex flex-row w-48 gap-3">
           <p
             className="flex items-center gap-2  w-48 text-base text-white hover:text-black  p-3
