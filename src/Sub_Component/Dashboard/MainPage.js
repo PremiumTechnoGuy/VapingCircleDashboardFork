@@ -16,7 +16,10 @@ function MainPage() {
                 Daily Sign
               </p>
               <span>
-                <img src="https://ik.imagekit.io/p2slevyg1/Group%20330.png?updatedAt=1705436503731" />
+                <img
+                  alt="img-icon"
+                  src="https://ik.imagekit.io/p2slevyg1/Group%20330.png?updatedAt=1705436503731"
+                />
               </span>
             </div>
           </div>
@@ -28,7 +31,10 @@ function MainPage() {
                 Daily Visitors
               </p>
               <span>
-                <img src="https://ik.imagekit.io/p2slevyg1/Group%20330.png?updatedAt=1705436503731" />
+                <img
+                  alt="img-icon"
+                  src="https://ik.imagekit.io/p2slevyg1/Group%20330.png?updatedAt=1705436503731"
+                />
               </span>
             </div>
           </div>
@@ -40,7 +46,10 @@ function MainPage() {
                 Daily Orders
               </p>
               <span>
-                <img src="https://ik.imagekit.io/p2slevyg1/Group%20330.png?updatedAt=1705436503731" />
+                <img
+                  alt="img-icon"
+                  src="https://ik.imagekit.io/p2slevyg1/Group%20330.png?updatedAt=1705436503731"
+                />
               </span>
             </div>
           </div>
@@ -52,7 +61,10 @@ function MainPage() {
                 Daily Revenue
               </p>
               <span>
-                <img src="https://ik.imagekit.io/p2slevyg1/Group%20330.png?updatedAt=1705436503731" />
+                <img
+                  alt="img-icon"
+                  src="https://ik.imagekit.io/p2slevyg1/Group%20330.png?updatedAt=1705436503731"
+                />
               </span>
             </div>
           </div>
@@ -61,42 +73,46 @@ function MainPage() {
 
       <div class="absolute mt-72 lg:left-[200px] bg-white p-4">
         <h2 class="font-bold mb-3 text-xl">Recent Orders</h2>
-        <Table responsive>
-          <thead>
-            <tr>
-              <th>#</th>
-              {Array.from({ length: 10 }).map((_, index) => (
-                <th key={index}>Title</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              {Array.from({ length: 10 }).map((_, index) => (
-                <td key={index}>Table cell {index}</td>
-              ))}
-            </tr>
-            <tr>
-              <td>2</td>
-              {Array.from({ length: 10 }).map((_, index) => (
-                <td key={index}>Table cell {index}</td>
-              ))}
-            </tr>
-            <tr>
-              <td>3</td>
-              {Array.from({ length: 10 }).map((_, index) => (
-                <td key={index}>Table cell {index}</td>
-              ))}
-            </tr>
-            <tr>
-              <td>4</td>
-              {Array.from({ length: 10 }).map((_, index) => (
-                <td key={index}>Table cell {index}</td>
-              ))}
-            </tr>
-          </tbody>
-        </Table>
+        {true ? (
+          <h1>No Orders Yet!</h1>
+        ) : (
+          <Table responsive>
+            <thead>
+              <tr>
+                <th>#</th>
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <th key={index}>Title</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <td key={index}>Table cell {index}</td>
+                ))}
+              </tr>
+              <tr>
+                <td>2</td>
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <td key={index}>Table cell {index}</td>
+                ))}
+              </tr>
+              <tr>
+                <td>3</td>
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <td key={index}>Table cell {index}</td>
+                ))}
+              </tr>
+              <tr>
+                <td>4</td>
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <td key={index}>Table cell {index}</td>
+                ))}
+              </tr>
+            </tbody>
+          </Table>
+        )}
       </div>
     </div>
   );
