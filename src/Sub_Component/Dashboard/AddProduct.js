@@ -259,6 +259,7 @@ function AddProduct() {
       images: ["1.jpeg", "2.jpeg", "3.jpeg"],
       category: selectedCategory,
       variants: finalVariantsArray,
+      chosenFilters: finalFiltersObjArray,
     };
 
     axios
