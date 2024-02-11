@@ -50,6 +50,7 @@ function DashboardNavbar() {
               <NavbarBrand className="block md:hidden">
                 <img
                   width="60px"
+                  alt="wa icon"
                   src="https://ik.imagekit.io/p2slevyg1/WhatsApp%20Image%202024-01-01%20at%2012.04.01%20AM.jpeg?updatedAt=1704049949841"
                 />
               </NavbarBrand>
@@ -73,6 +74,7 @@ function DashboardNavbar() {
                     height="30px"
                     width="32px"
                     //   class="py-3"
+                    alt="icon img"
                     src="https://ik.imagekit.io/p2slevyg1/profile%20(1).png?updatedAt=1704099476479"
                   />
                 </span>
@@ -180,23 +182,6 @@ function DashboardNavbar() {
             </NavLink>
           </p>
         </div>
-        <div className="d-flex text-white flex-row w-48 gap-3">
-          <p
-            className="flex items-center gap-2  w-48 text-base text-white hover:text-black  p-3
-            focus-within:bg-white border-y border-[#1B94A0]"
-            style={{ marginLeft: -48 }}
-          >
-            <NavLink
-              to="/dashboard/all_category"
-              className="flex hover:text-black align-baseline"
-            >
-              <span className="mr-4 py-1">
-                <IoGridSharp />
-              </span>
-              <span>Categories</span>
-            </NavLink>
-          </p>
-        </div>
 
         <div className="d-flex text-white flex-row w-48 gap-3">
           <p
@@ -251,6 +236,25 @@ function DashboardNavbar() {
             </NavLink>
           </p>
         </div>
+
+        <div className="d-flex text-white flex-row w-48 gap-3">
+          <p
+            className="flex items-center gap-2  w-48 text-base text-white hover:text-black  p-3
+            focus-within:bg-white border-y border-[#1B94A0]"
+            style={{ marginLeft: -48 }}
+          >
+            <NavLink
+              to="/dashboard/all_category"
+              className="flex hover:text-black align-baseline"
+            >
+              <span className="mr-4 py-1">
+                <IoGridSharp />
+              </span>
+              <span>Categories</span>
+            </NavLink>
+          </p>
+        </div>
+
         <div className="d-flex flex-row w-48 gap-3">
           <p
             className="flex items-center gap-2  w-48 text-base text-white hover:text-black  p-3
