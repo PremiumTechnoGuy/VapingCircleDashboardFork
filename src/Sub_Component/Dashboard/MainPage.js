@@ -12,8 +12,8 @@ function MainPage() {
           <div class="col bg-white shadow-md p-2 w-44">
             <div className="d-flex flex-row p-2 gap-3 ">
               <p class="font-bold ">
-                1503 <br />
-                Daily Sign
+                0 <br />
+                Daily Orders
               </p>
               <span>
                 <img
@@ -27,8 +27,8 @@ function MainPage() {
           <div class="col bg-white shadow-md p-2 w-44">
             <div className="d-flex flex-row gap-3 p-1 ">
               <p class="font-bold ">
-                1503 <br />
-                Daily Visitors
+                0 <br />
+                Weekly Orders
               </p>
               <span>
                 <img
@@ -42,8 +42,8 @@ function MainPage() {
           <div class="col bg-white shadow-md p-2 w-44">
             <div className="d-flex flex-row gap-3 p-1">
               <p class="font-bold">
-                1503 <br />
-                Daily Orders
+                0 <br />
+                Total Products
               </p>
               <span>
                 <img
@@ -57,8 +57,9 @@ function MainPage() {
           <div class="col bg-white shadow-md p-2 w-44">
             <div className="d-flex flex-row gap-3  ">
               <p class="font-bold">
-                1503 <br />
-                Daily Revenue
+                0 <br />
+                {/* Daily Revenue */}
+                Total Categories
               </p>
               <span>
                 <img
