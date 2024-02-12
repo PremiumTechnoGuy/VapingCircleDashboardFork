@@ -279,15 +279,15 @@ function DashboardNavbar() {
             focus-within:bg-white border-y border-[#1B94A0]"
             style={{ marginLeft: -48 }}
           >
-            <a
-              href="/dashboard/orders"
+            <NavLink
+              to="/dashboard/orders"
               className="flex hover:text-black align-baseline"
             >
               <span className="mr-4 py-1">
                 <IoGridSharp />
               </span>
               <span>Orders</span>
-            </a>
+            </NavLink>
           </p>
         </div>
       </div>
