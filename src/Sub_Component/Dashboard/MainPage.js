@@ -43,7 +43,7 @@ function MainPage() {
             <div className="d-flex flex-row gap-3 p-1">
               <p class="font-bold">
                 0 <br />
-                Total Products
+                Daily Revenue
               </p>
               <span>
                 <img
@@ -58,8 +58,7 @@ function MainPage() {
             <div className="d-flex flex-row gap-3  ">
               <p class="font-bold">
                 0 <br />
-                {/* Daily Revenue */}
-                Total Categories
+                Weekly Revenue
               </p>
               <span>
                 <img
