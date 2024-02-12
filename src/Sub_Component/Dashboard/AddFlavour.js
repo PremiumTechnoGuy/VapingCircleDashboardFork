@@ -21,11 +21,7 @@ function AddFlavour() {
   const [priorityNum, setPriorityNum] = React.useState(1);
   const [available, setAvailable] = React.useState("true");
   const [selectedFile, setSelectedFile] = useState(null);
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-  };
+  const [uploadingImage, setUploadingImage] = React.useState(false);
 
   const handleSubmitNewFilter = (e) => {
     e.preventDefault();
@@ -55,18 +51,21 @@ function AddFlavour() {
     axios
       .post(`${apiUrl}/api/v1/flavour`, payload, config)
       .then((res) => {
-        // setIsLoadingState(false);
         console.log(res.data);
+
         toast.update(id, {
-          render: "Created Filter Successfully",
+          render: "Created Flavour Successfully",
           type: "success",
           isLoading: false,
           autoClose: 3000,
         });
+
+        if (uploadingImage) handleUploadImage(res.data.data._id);
+
         setSelectedOption("");
         setFilterName("");
         setPriorityNum(1);
-        available("true");
+        setAvailable("true");
         setSubFlavoursArray([]);
       })
       .catch((err) => {
@@ -80,6 +79,46 @@ function AddFlavour() {
           autoClose: 3000,
         });
       });
+  };
+
+  const handleUploadImage = (fId) => {
+    const id = toast.loading("Uploading Flavour Image...");
+    let formData = new FormData();
+    formData.append("image", selectedFile);
+
+    axios
+      .post(`${apiUrl}/api/v1/flavour/imageUpload?flavourId=${fId}`, formData)
+      .then((res) => {
+        console.log(res.data);
+        console.log("uploaded image");
+
+        toast.update(id, {
+          render: "Uploaded Flavour Image Successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+
+        setSelectedFile(null);
+        setUploadingImage(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render:
+            err.response?.data?.message ||
+            "Flavour Image Upload Error! See more using console!",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      });
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+    setUploadingImage(true);
   };
 
   return (
