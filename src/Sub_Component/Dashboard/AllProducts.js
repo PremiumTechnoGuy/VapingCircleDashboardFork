@@ -137,6 +137,7 @@ function AllProducts() {
                               "/product",
                               "/tr:ar-1-1,w-285.5/product"
                             )}
+                            loading="lazy"
                             alt=""
                             class="transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105 duration-150"
                           />
@@ -156,7 +157,7 @@ function AllProducts() {
                               e.preventDefault();
                               handleDelete(el._id);
                             }}
-                            class="rounded-1 p-2 w-26 font-semibold  bg-[#1B94A0] text-white"
+                            class="rounded-1 p-2 w-26 font-semibold  bg-[#1B94A0] text-white text-[14px]"
                           >
                             Delete
                           </button>

@@ -71,6 +71,7 @@ function AllCategory() {
                               "/category",
                               "/tr:ar-1-1,w-285.5/category"
                             )}
+                            loading="lazy"
                             alt=""
                             class="transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105 duration-150"
                             id="image"
