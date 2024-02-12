@@ -5,6 +5,7 @@ import axios from "axios";
 import { apiUrl } from "../../data/env";
 import { MdDeleteForever } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function chunkArray(array, size) {
   const chunkedArray = [];
@@ -15,6 +16,7 @@ function chunkArray(array, size) {
 }
 
 function AllCategory() {
+  const nav = useNavigate();
   // const [allCategories, setAllCategories] = React.useState([]);
   const [chunkedArr, setChunkedArr] = React.useState([]);
 
@@ -79,15 +81,27 @@ function AllCategory() {
                               <p class="text-black font-semibold my-2 text-center text-[15px]">
                                 {cat.name}
                               </p>
-                              <button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  handleDelete(cat._id);
-                                }}
-                                class="rounded-1 p-2 w-32 font-semibold  bg-[#1B94A0] text-white"
-                              >
-                                Delete Category
-                              </button>
+                              <div className="d-flex justify-between">
+                                <button
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleDelete(cat._id);
+                                  }}
+                                  class="rounded-1 p-1 w-24 font-semibold  bg-[#1B94A0] text-white text-[14px]"
+                                >
+                                  Delete Category
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    // handleDelete(cat._id);
+                                    nav(`/dashboard/editCategory/${cat._id}`);
+                                  }}
+                                  class="rounded-1 p-1 w-24 font-semibold  bg-[#1B94A0] text-white text-[14px]"
+                                >
+                                  Edit Category
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
