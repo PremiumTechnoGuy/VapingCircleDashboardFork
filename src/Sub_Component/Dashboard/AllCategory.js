@@ -65,9 +65,13 @@ function AllCategory() {
                       <Col>
                         <div id="content" class="m-2 relative">
                           <img
-                            src={cat.image}
+                            src={cat.image.replace(
+                              "/category",
+                              "/tr:ar-1-1,w-285.5/category"
+                            )}
                             alt=""
-                            class=" w-[45rem] xs:h-[13rem] md:h-[21rem] transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105 duration-150"
+                            class="transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105 duration-150"
+                            id="image"
                           />
                           <div className="">
                             {" "}

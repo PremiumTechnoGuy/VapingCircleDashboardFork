@@ -133,9 +133,12 @@ function AllProducts() {
                       <Col>
                         <div id="content" class="m-2 relative">
                           <img
-                            src={el.coverImage}
+                            src={el.coverImage.replace(
+                              "/product",
+                              "/tr:ar-1-1,w-285.5/product"
+                            )}
                             alt=""
-                            //   class=" w-[45rem] xs:h-[13rem] md:h-[21rem] transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105 duration-150"
+                            class="transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105 duration-150"
                           />
                           <div className="d-flex flex-row gap-5">
                             {" "}
