@@ -10,6 +10,7 @@ import AllProducts from "./Sub_Component/Dashboard/AllProducts";
 import AllCategory from "./Sub_Component/Dashboard/AllCategory";
 import AddFlavour from "./Sub_Component/Dashboard/AddFlavour";
 import EditCategory from "./Sub_Component/Dashboard/EditCategory";
+import EditProduct from "./Sub_Component/Dashboard/EditProduct";
 
 const App = () => {
   return (
@@ -23,6 +24,10 @@ const App = () => {
             <Route
               path="/dashboard/editCategory/:catId"
               element={<EditCategory />}
+            />
+            <Route
+              path="/dashboard/editProduct/:catId/:catName/:prodId"
+              element={<EditProduct />}
             />
             <Route path="/dashboard/all_category" element={<AllCategory />} />
             <Route path="/dashboard/addProduct" element={<AddProduct />} />

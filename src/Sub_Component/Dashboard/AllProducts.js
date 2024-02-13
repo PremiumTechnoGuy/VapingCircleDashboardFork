@@ -6,6 +6,7 @@ import DashboardNavbar from "./DashboardNavbar";
 import axios from "axios";
 import { apiUrl } from "../../data/env";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function chunkArray(array, size) {
   const chunkedArray = [];
@@ -16,6 +17,9 @@ function chunkArray(array, size) {
 }
 
 function AllProducts() {
+  const nav = useNavigate();
+
+  const [selectedCategoryName, setSelectedCategoryName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [allProducts, setAllProducts] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
@@ -93,7 +97,15 @@ function AllProducts() {
     <div>
       <DashboardNavbar />
       <div class=" mt-24 absolute lg:left-[250px]">
-        <h2 class="text-xl font-bold mb-5 text-center">All Products</h2>
+        <div className="d-flex justify-between">
+          <h2 class="text-xl font-bold mb-5 text-center">All Products</h2>
+          <button
+            onClick={() => nav("/dashboard/addProduct")}
+            class="rounded-1 p-1 w-28 font-semibold  bg-[#1B94A0] text-white text-[14px]"
+          >
+            Add New Product
+          </button>
+        </div>
         <span class="flex justify-center items-center  ">
           {allCategories?.map((cat) => {
             return (
@@ -109,6 +121,7 @@ function AllProducts() {
                   checked={selectedCategory === cat._id}
                   onChange={() => {
                     handleCategoryChange(cat._id);
+                    setSelectedCategoryName(cat.name);
                     handleFilterProducts(cat._id);
                   }}
                 />
@@ -152,15 +165,28 @@ function AllProducts() {
                               £{el.basePrice}
                             </p>
                           </div>
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleDelete(el._id);
-                            }}
-                            class="rounded-1 p-2 w-26 font-semibold  bg-[#1B94A0] text-white text-[14px]"
-                          >
-                            Delete
-                          </button>
+                          <div className="d-flex justify-between w-100">
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleDelete(el._id);
+                              }}
+                              class="rounded-1 p-1 w-24 font-semibold  bg-[#1B94A0] text-white text-[14px]"
+                            >
+                              Delete
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                nav(
+                                  `/dashboard/editProduct/${selectedCategory}/${selectedCategoryName}/${el._id}`
+                                );
+                              }}
+                              class="rounded-1 p-1 w-24 font-semibold  bg-[#1B94A0] text-white text-[14px]"
+                            >
+                              Edit
+                            </button>
+                          </div>
                         </div>
                       </Col>
                     );

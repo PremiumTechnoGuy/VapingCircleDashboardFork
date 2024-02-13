@@ -1,6 +1,6 @@
 import React from "react";
 import DashboardNavbar from "./DashboardNavbar";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, NavLink } from "react-bootstrap";
 import axios from "axios";
 import { apiUrl } from "../../data/env";
 import { MdDeleteForever } from "react-icons/md";
@@ -57,7 +57,15 @@ function AllCategory() {
       <DashboardNavbar />
       <div>
         <div class=" mt-24 absolute lg:left-[260px]">
-          <h2 class="text-xl font-bold mb-5 text-center">All Categories</h2>
+          <div className="d-flex justify-between">
+            <h2 class="text-xl font-bold mb-5 text-center">All Categories</h2>
+            <button
+              onClick={() => nav("/dashboard/addCategory")}
+              class="rounded-1 p-1 w-28 font-semibold  bg-[#1B94A0] text-white text-[14px]"
+            >
+              Add New Category
+            </button>
+          </div>
           <Container fluid className="my-5">
             {chunkedArr?.map((chunk) => {
               return (
