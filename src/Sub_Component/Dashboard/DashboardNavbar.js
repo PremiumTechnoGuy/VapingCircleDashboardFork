@@ -190,13 +190,13 @@ function DashboardNavbar() {
             style={{ marginLeft: -48 }}
           >
             <NavLink
-              to="/dashboard/addFilter"
+              to="/dashboard/allFilters"
               className="flex hover:text-black align-baseline"
             >
               <span className="mr-4 py-1">
                 <IoGridSharp />
               </span>
-              <span>Create Filter</span>
+              <span>Filters</span>
             </NavLink>
           </p>
         </div>

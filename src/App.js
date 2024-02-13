@@ -11,6 +11,8 @@ import AllCategory from "./Sub_Component/Dashboard/AllCategory";
 import AddFlavour from "./Sub_Component/Dashboard/AddFlavour";
 import EditCategory from "./Sub_Component/Dashboard/EditCategory";
 import EditProduct from "./Sub_Component/Dashboard/EditProduct";
+import AllFilters from "./Sub_Component/Dashboard/AllFilters";
+import EditFilter from "./Sub_Component/Dashboard/EditFilter";
 
 const App = () => {
   return (
@@ -31,7 +33,12 @@ const App = () => {
             />
             <Route path="/dashboard/all_category" element={<AllCategory />} />
             <Route path="/dashboard/addProduct" element={<AddProduct />} />
+            <Route path="/dashboard/allFilters" element={<AllFilters />} />
             <Route path="/dashboard/addFilter" element={<AddFilter />} />
+            <Route
+              path="/dashboard/editFilter/:catId/:catName/:filId"
+              element={<EditFilter />}
+            />
             <Route path="/dashboard/addFlavour" element={<AddFlavour />} />
             <Route path="/dashboard/all_product" element={<AllProducts />} />
             <Route path="/dashboard/orders" element={<Orders />} />
