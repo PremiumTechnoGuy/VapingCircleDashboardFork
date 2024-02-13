@@ -262,13 +262,13 @@ function DashboardNavbar() {
             style={{ marginLeft: -48 }}
           >
             <NavLink
-              to="/dashboard/addFlavour"
+              to="/dashboard/allFlavours"
               className="flex hover:text-black align-baseline"
             >
               <span className="mr-4 py-1">
                 <IoGridSharp />
               </span>
-              <span>Create Flavour</span>
+              <span>Flavours</span>
             </NavLink>
           </p>
         </div>

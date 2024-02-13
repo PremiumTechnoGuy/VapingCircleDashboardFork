@@ -11,8 +11,42 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { apiUrl } from "../../data/env";
+import { useParams } from "react-router-dom";
 
-function AddFlavour() {
+function EditFlavour() {
+  const { flavId } = useParams();
+
+  React.useEffect(() => {
+    const id = toast.loading("Fetching Data... Please Wait!");
+
+    axios
+      .get(`${apiUrl}/api/v1/flavour/${flavId}`)
+      .then((res) => {
+        // setFetchedFilter(res.data.data);
+        toast.update(id, {
+          render: "Successfully Fetched Data!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+
+        setFilterName(res.data.data.name);
+        setPriorityNum(res.data.data.priority);
+        setAvailable(`${res.data.data.available}`);
+        setSubFlavoursArray(res.data.data.subFlavours);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render:
+            err.response?.data?.message || "Error! Try Again & See Console",
+          type: "error",
+          isLoading: false,
+          autoClose: 3500,
+        });
+      });
+  }, []);
+
   // hooks for post request
   const [selectedOption, setSelectedOption] = React.useState("");
   const [typedOption, setTypedOption] = React.useState("");
@@ -311,10 +345,10 @@ function AddFlavour() {
                         onChange={(e) => setSelectedOption(e.target.value)}
                         aria-label="Default select example"
                       >
-                        <option value={""}></option>
+                        <option value={""}>--select subflavour--</option>
                         {subFlavoursArray?.map((opt, i) => (
-                          <option key={i} value={opt}>
-                            {opt}
+                          <option key={i} value={opt.name}>
+                            {opt.name}
                           </option>
                         ))}
                       </Form.Select>
@@ -358,4 +392,4 @@ function AddFlavour() {
   );
 }
 
-export default AddFlavour;
+export default EditFlavour;
