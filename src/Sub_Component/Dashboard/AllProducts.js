@@ -69,7 +69,7 @@ function AllProducts() {
   }, []);
 
   const handleDelete = (pId) => {
-    const id = toast.loading("Deleting Category...");
+    const id = toast.loading("Deleting Product...");
 
     axios
       .delete(`${apiUrl}/api/v1/product/${pId}`)
@@ -79,7 +79,7 @@ function AllProducts() {
         handleCategoryChange("");
         handleFilterProducts("");
         toast.update(id, {
-          render: "Deleted Category Successfully!",
+          render: "Deleted Product Successfully!",
           type: "success",
           isLoading: false,
           autoClose: 3000,
