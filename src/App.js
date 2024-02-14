@@ -16,6 +16,8 @@ import EditFilter from "./Sub_Component/Dashboard/EditFilter";
 import AllFlavours from "./Sub_Component/Dashboard/AllFlavours";
 import EditFlavour from "./Sub_Component/Dashboard/EditFlavour";
 
+import ProfilePage from "./Sub_Component/Dashboard/ProfilePage";
+
 const App = () => {
   return (
     <>
@@ -49,6 +51,7 @@ const App = () => {
             />
             <Route path="/dashboard/all_product" element={<AllProducts />} />
             <Route path="/dashboard/orders" element={<Orders />} />
+            <Route path="/dashboard/profile" element={<ProfilePage />} />
           </Routes>
         </ScrollToTop>
       </BrowserRouter>

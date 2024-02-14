@@ -95,35 +95,35 @@ function DashboardNavbar() {
                     <Nav.Link href="/dashboard" class="mb-3 text-xl">
                       Dashboard
                     </Nav.Link>
-                    <Nav.Link
+                    {/* <Nav.Link
                       href="/dashboard/addCategory"
                       class="mb-3 text-xl "
                     >
                       Create Category
-                    </Nav.Link>
+                    </Nav.Link> */}
                     <Nav.Link
                       href="/dashboard/all_category"
                       class="mb-3 text-xl "
                     >
                       Categories
                     </Nav.Link>
-                    <Nav.Link href="/dashboard/addFilter" class="mb-3 text-xl">
-                      Create Filters
+                    <Nav.Link href="/dashboard/allFilter" class="mb-3 text-xl">
+                      Filters
                     </Nav.Link>
-                    <Nav.Link href="/dashboard/addFlavour" class="mb-3 text-xl">
-                      Create Flavour
-                    </Nav.Link>
-                    <Nav.Link href="/dashboard/addProduct" class="mb-3 text-xl">
-                      Create Products
-                    </Nav.Link>
-                    <Nav.Link
-                      href="/dashboard/all_product"
-                      class="mb-3 text-xl"
-                    >
+                    <Nav.Link href="/dashboard/allProduct" class="mb-3 text-xl">
                       Products
                     </Nav.Link>
                     <Nav.Link href="/dashboard/orders" class="mb-3 text-xl">
                       Orders
+                    </Nav.Link>
+                    <Nav.Link
+                      href="/dashboard/allFlavours"
+                      class="mb-3 text-xl"
+                    >
+                      Flavours
+                    </Nav.Link>
+                    <Nav.Link href="/dashboard/profile" class="mb-3 text-xl">
+                      Profile
                     </Nav.Link>
                   </Nav>
                 </Offcanvas.Body>
@@ -273,23 +273,23 @@ function DashboardNavbar() {
           </p>
         </div>
 
-        {/* <div className="d-flex flex-row w-48 gap-3">
+        <div className="d-flex text-white flex-row w-48 gap-3">
           <p
             className="flex items-center gap-2  w-48 text-base text-white hover:text-black  p-3
             focus-within:bg-white border-y border-[#1B94A0]"
             style={{ marginLeft: -48 }}
           >
             <NavLink
-              to="/dashboard/addProduct"
+              to="/dashboard/profile"
               className="flex hover:text-black align-baseline"
             >
               <span className="mr-4 py-1">
                 <IoGridSharp />
               </span>
-              <span>Create Products</span>
+              <span>My Profile</span>
             </NavLink>
           </p>
-        </div> */}
+        </div>
       </div>
     </div>
   );
