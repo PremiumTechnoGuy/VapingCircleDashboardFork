@@ -18,6 +18,7 @@ import EditFlavour from "./Sub_Component/Dashboard/EditFlavour";
 
 import ProfilePage from "./Sub_Component/Dashboard/ProfilePage";
 import Register from "./Main_Component/Register";
+import Login from "./Main_Component/Login";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/signup" element={<Register />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<MainPage />} />
             <Route path="/dashboard/addCategory" element={<AddCategory />} />
             <Route
