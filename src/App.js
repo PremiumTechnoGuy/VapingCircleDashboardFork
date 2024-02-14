@@ -17,6 +17,7 @@ import AllFlavours from "./Sub_Component/Dashboard/AllFlavours";
 import EditFlavour from "./Sub_Component/Dashboard/EditFlavour";
 
 import ProfilePage from "./Sub_Component/Dashboard/ProfilePage";
+import Register from "./Main_Component/Register";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         <ScrollToTop>
           <Routes>
             <Route path="/" element={<MainPage />} />
+            <Route path="/signup" element={<Register />} />
             <Route path="/dashboard" element={<MainPage />} />
             <Route path="/dashboard/addCategory" element={<AddCategory />} />
             <Route
