@@ -1,11 +1,13 @@
 import React from "react";
 import DashboardNavbar from "./DashboardNavbar";
-import { Container, Row, Col, NavLink } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import axios from "axios";
 import { apiUrl } from "../../data/env";
 import { MdDeleteForever } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import "./AllCatogery.css";
+; // Import your CSS file
 
 function chunkArray(array, size) {
   const chunkedArray = [];
@@ -17,14 +19,12 @@ function chunkArray(array, size) {
 
 function AllCategory() {
   const nav = useNavigate();
-  // const [allCategories, setAllCategories] = React.useState([]);
   const [chunkedArr, setChunkedArr] = React.useState([]);
 
   const getAllCat = () => {
     axios
       .get(`${apiUrl}/api/v1/category`)
       .then((res) => {
-        // setAllCategories(res.data.data);
         setChunkedArr(chunkArray(res.data.data, 4));
       })
       .catch((err) => console.log(err));
@@ -56,86 +56,56 @@ function AllCategory() {
     <div>
       <DashboardNavbar />
       <div>
-        <div class=" mt-24 absolute lg:left-[260px]">
+        <div className="mt-24 absolute lg:left-[260px]">
           <div className="d-flex justify-between">
-            <h2 class="text-xl font-bold mb-5 text-center">All Categories</h2>
-            <button
+            <h2 className="text-xl font-bold mb-5 text-center">All Categories</h2>
+            <Button
               onClick={() => nav("/dashboard/addCategory")}
-              class="rounded-1 p-1 w-28 font-semibold  bg-[#1B94A0] text-white text-[14px]"
+              className="rounded-1 p-1 font-semibold bg-[#1B94A0] text-white text-[16px] position-fixed  end-0 m-4"
             >
-              Add New Category
-            </button>
+              + Add Category
+            </Button>
           </div>
           <Container fluid className="my-5">
-            {chunkedArr?.map((chunk) => {
-              return (
-                <Row>
-                  {chunk.map((cat) => {
-                    return (
-                      <Col>
-                        <div id="content" class="m-2 relative">
-                          <img
-                            src={cat.image.replace(
-                              "/category",
-                              "/tr:ar-1-1,w-285.5/category"
-                            )}
-                            loading="lazy"
-                            alt=""
-                            class="transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105 duration-150"
-                            id="image"
-                          />
-                          <div className="">
-                            {" "}
-                            <div>
-                              <p class="text-black font-semibold my-2 text-center text-[15px]">
-                                {cat.name}
-                              </p>
-                              <div className="d-flex justify-between">
-                                <button
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    handleDelete(cat._id);
-                                  }}
-                                  class="rounded-1 p-1 w-24 font-semibold  bg-[#1B94A0] text-white text-[14px]"
-                                >
-                                  Delete Category
-                                </button>
-                                <button
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    // handleDelete(cat._id);
-                                    nav(`/dashboard/editCategory/${cat._id}`);
-                                  }}
-                                  class="rounded-1 p-1 w-24 font-semibold  bg-[#1B94A0] text-white text-[14px]"
-                                >
-                                  Edit Category
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </Col>
-                    );
-                  })}
-                </Row>
-              );
-            })}
+            {chunkedArr?.map((chunk, index) => (
+              <Row key={index}>
+                {chunk.map((cat) => (
+                  <Col key={cat._id}>
+                    <div className="card " style={{ width: "18rem" }}>
+                      <div className=" m-2 relative image-container ">
+                        <img style={{ width: "18rem", height: "14rem" }}
+                          src={cat.image.replace(
+                            "/category",
+                            "/tr:ar-1-1,w-285.5/category"
+                          )}
+                          loading="lazy"
+                          alt=""
+                          className="category-image"
+                        />
+                        <div className="overlay-buttons">
+                          <MdDeleteForever
+                            className="delete-icon"
+                            onClick={() => handleDelete(cat._id)}
 
-            {/* <Row className="md:block hidden">
-              <Col md={3}>
-                <div>
-                  <img src="https://ik.imagekit.io/p2slevyg1/pod-system-1.d5bee5d451c2fb3fb0c5.png?updatedAt=1705784663074" />
-                  <div className="">
-                    {" "}
-                    <div>
-                      <p class="text-black font-semibold my-2 text-center text-[15px]">
-                        Pods
-                      </p>
+                          />
+                          <button
+                            onClick={() => nav(`/dashboard/editCategory/${cat._id}`)}
+                            className="edit-button"
+                          >
+                            Edit
+                          </button>
+                        </div>
+                        <div className=" category-details ">
+                          <p className="text-black font-semibold my-2 text-center text-[15px]">
+                            {cat.name}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </Col>
-            </Row> */}
+                  </Col>
+                ))}
+              </Row>
+            ))}
           </Container>
         </div>
       </div>

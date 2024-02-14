@@ -1,6 +1,5 @@
-import { useState } from "react";
-import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { Container } from "react-bootstrap";
 import "./allproduct.css";
 import DashboardNavbar from "./DashboardNavbar";
 import axios from "axios";
@@ -23,12 +22,11 @@ function AllFilters() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [allFilters, setAllFilters] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
+  const [chunkedArr, setChunkedArr] = useState([]);
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
-
-  const [chunkedArr, setChunkedArr] = React.useState([]);
 
   const getAllCat = () => {
     const id = toast.loading("Fetching Categories...");
@@ -62,16 +60,16 @@ function AllFilters() {
       .catch((err) => console.log(err));
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getAllCat();
     getAllFilters();
   }, []);
 
-  const handleDelete = (pId) => {
+  const handleDelete = (filterId) => {
     const id = toast.loading("Deleting Filter...");
 
     axios
-      .delete(`${apiUrl}/api/v1/filter/${pId}`)
+      .delete(`${apiUrl}/api/v1/filter/${filterId}`)
       .then((res) => {
         getAllFilters();
         handleCategoryChange("");
@@ -87,107 +85,85 @@ function AllFilters() {
   };
 
   const handleFilterProducts = (catId) => {
-    const filteredProducts = allFilters.filter((p) => p.categoryId === catId);
+    const filteredProducts = allFilters.filter((filter) => filter.categoryId === catId);
     setChunkedArr(chunkArray(filteredProducts, 4));
   };
 
   return (
     <div>
       <DashboardNavbar />
-      <div class=" mt-24 absolute lg:left-[250px]">
+      <div className="mt-24 absolute lg:left-[250px]">
         <div className="d-flex justify-between">
-          <h2 class="text-xl font-bold mb-5 text-center">All Filters</h2>
+          <h2 className="text-xl font-bold mb-5 text-center">All Filters</h2>
           <button
             onClick={() => nav("/dashboard/addFilter")}
-            class="rounded-1 p-1 w-28 font-semibold  bg-[#1B94A0] text-white text-[14px]"
+            className="rounded-1 p-1 font-semibold bg-[#1B94A0] text-white text-[16px] position-fixed end-0 m-4"
           >
-            Add New Filter
+            + Add Filter
           </button>
         </div>
-        <span class="flex justify-center items-center  ">
-          {allCategories?.map((cat) => {
-            return (
-              <div
-                class="bg-[#f5f5f5] rounded-full  w-[115px] h-[60px] flex justify-center items-center mr-3"
-                style={{ boxShadow: "1px 3px 3px 0px #dee2e6" }}
-              >
-                <input
-                  type="radio"
-                  id={cat._id}
-                  name="category"
-                  value={cat._id}
-                  checked={selectedCategory === cat._id}
-                  onChange={() => {
+        <div className="dropdown">
+          <button
+            className="btn bg-[#1b94a0] btn-light text-white dropdown-toggle"
+            type="button"
+            id="categoryDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {selectedCategoryName || "Select Category"}
+          </button>
+          <ul className="dropdown-menu" aria-labelledby="categoryDropdown">
+            {allCategories.map((cat) => (
+              <li key={cat._id}>
+                <button
+                  className="dropdown-item"
+                  onClick={() => {
                     handleCategoryChange(cat._id);
                     setSelectedCategoryName(cat.name);
                     handleFilterProducts(cat._id);
                   }}
-                />
-                <label
-                  htmlFor={cat._id}
-                  class="text-[#555555] text-[18px] font-semibold"
                 >
                   {cat.name}
-                </label>
-              </div>
-            );
-          })}
-        </span>
-
-        <div>
-          <Container fluid className="my-5">
-            {chunkedArr?.map((four) => {
-              return (
-                <Row>
-                  {four.map((el) => {
-                    return (
-                      <Col>
-                        <div id="content" class="m-2 relative">
-                          {/* <img
-                            src={el.coverImage.replace(
-                              "/product",
-                              "/tr:ar-1-1,w-285.5/product"
-                            )}
-                            loading="lazy"
-                            alt=""
-                            class="transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105 duration-150"
-                          /> */}
-                          <div className="d-flex flex-row gap-5">
-                            <p class="text-black font-semibold text-[12px]">
-                              {el.name}
-                            </p>
-                          </div>
-                          <div className="d-flex justify-between w-100">
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handleDelete(el._id);
-                              }}
-                              class="rounded-1 p-1 w-24 font-semibold  bg-[#1B94A0] text-white text-[14px]"
-                            >
-                              Delete
-                            </button>
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                nav(
-                                  `/dashboard/editFilter/${selectedCategory}/${selectedCategoryName}/${el._id}`
-                                );
-                              }}
-                              class="rounded-1 p-1 w-24 font-semibold  bg-[#1B94A0] text-white text-[14px]"
-                            >
-                              Edit
-                            </button>
-                          </div>
-                        </div>
-                      </Col>
-                    );
-                  })}
-                </Row>
-              );
-            })}
-          </Container>
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
+        <Container fluid className="my-5">
+          {chunkedArr?.map((four, rowIndex) => (
+            <div key={rowIndex} className=" mb-3">
+              {four.map((el) => (
+                <div key={el._id} className="border p-3 rounded mb-2">
+                  <div className="d-flex flex-column gap-3">
+                    <p className="text-black font-semibold text-[12px]">{el.name}</p>
+                    <div className="d-flex justify-between w-100 gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleDelete(el._id);
+                        }}
+                        className="rounded-1 p-1 w-24 font-semibold bg-[#1B94A0]  text-white text-[14px]"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          nav(
+                            `/dashboard/editFilter/${selectedCategory}/${selectedCategoryName}/${el._id}`
+                          );
+                        }}
+                        className="rounded-1 p-1 w-24 font-semibold bg-[#1B94A0] text-white text-[14px]"
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </Container>
       </div>
       <ToastContainer />
     </div>
