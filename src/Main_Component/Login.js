@@ -6,7 +6,9 @@ import { FiMinus } from "react-icons/fi";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { BiShow, BiHide } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+
+import { useAuth } from "./../utils/auth";
 
 function Login() {
   const [password, setPassword] = useState("");
@@ -21,6 +23,19 @@ function Login() {
   const handleShowConfirmPassword = () => {
     setShowConfirmPassword((preve) => !preve);
   };
+
+  const [user, setUser] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const auth = useAuth();
+
+  const redirectPath = location.state?.path || "/";
+
+  const handleLogin = () => {
+    auth.login(user);
+    navigate(redirectPath, { replace: true });
+  };
+
   return (
     <div class="mt-0 ">
       {/* About Start */}
@@ -68,7 +83,11 @@ function Login() {
             <div class="pl-2 md:pl-[13%]">
               <Form>
                 <Form.Group className="mb-3" controlId="">
-                  <Form.Control type="email" placeholder="Email" />
+                  <Form.Control
+                    type="text"
+                    placeholder="Email"
+                    onChange={(e) => setUser(e.target.value)}
+                  />
                 </Form.Group>
 
                 <div className="flex mb-3 border rounded-md px-2 py-2 w-full  bg-nonfocus-within:outline-gray-700">
@@ -90,11 +109,14 @@ function Login() {
                 </div>
 
                 <div class="flex flex-col justify-center items-center mt-5">
-                  <Link to="/">
-                    <button class="bg-[#59A0B8] text-white px-5  py-2  rounded-[24px]">
-                      Login
-                    </button>
-                  </Link>
+                  {/* <Link to="/"> */}
+                  <button
+                    onClick={handleLogin}
+                    class="bg-[#59A0B8] text-white px-5  py-2  rounded-[24px]"
+                  >
+                    Login
+                  </button>
+                  {/* </Link> */}
                   <p class="text-[#000000] px-1 p-2">
                     Create an account
                     <Link to="/register">

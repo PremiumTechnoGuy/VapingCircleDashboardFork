@@ -20,44 +20,149 @@ import ProfilePage from "./Sub_Component/Dashboard/ProfilePage";
 import Register from "./Main_Component/Register";
 import Login from "./Main_Component/Login";
 
+import { AuthProvider } from "./utils/auth";
+import { RequireAuth } from "./utils/RequireAuth";
+
 const App = () => {
   return (
     <>
       <BrowserRouter>
-        <ScrollToTop>
-          <Routes>
-            <Route path="/" element={<MainPage />} />
-            <Route path="/signup" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<MainPage />} />
-            <Route path="/dashboard/addCategory" element={<AddCategory />} />
-            <Route
-              path="/dashboard/editCategory/:catId"
-              element={<EditCategory />}
-            />
-            <Route
-              path="/dashboard/editProduct/:catId/:catName/:prodId"
-              element={<EditProduct />}
-            />
-            <Route path="/dashboard/all_category" element={<AllCategory />} />
-            <Route path="/dashboard/addProduct" element={<AddProduct />} />
-            <Route path="/dashboard/allFlavours" element={<AllFlavours />} />
-            <Route path="/dashboard/addFlavour" element={<AddFlavour />} />
-            <Route
-              path="/dashboard/editFlavour/:flavId"
-              element={<EditFlavour />}
-            />
-            <Route path="/dashboard/allFilters" element={<AllFilters />} />
-            <Route path="/dashboard/addFilter" element={<AddFilter />} />
-            <Route
-              path="/dashboard/editFilter/:catId/:catName/:filId"
-              element={<EditFilter />}
-            />
-            <Route path="/dashboard/all_product" element={<AllProducts />} />
-            <Route path="/dashboard/orders" element={<Orders />} />
-            <Route path="/dashboard/profile" element={<ProfilePage />} />
-          </Routes>
-        </ScrollToTop>
+        <AuthProvider>
+          <ScrollToTop>
+            <Routes>
+              <Route path="/signup" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route
+                path="/"
+                element={
+                  <RequireAuth>
+                    <MainPage />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <RequireAuth>
+                    <MainPage />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard/addCategory"
+                element={
+                  <RequireAuth>
+                    <AddCategory />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard/editCategory/:catId"
+                element={
+                  <RequireAuth>
+                    <EditCategory />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard/editProduct/:catId/:catName/:prodId"
+                element={
+                  <RequireAuth>
+                    <EditProduct />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard/all_category"
+                element={
+                  <RequireAuth>
+                    <AllCategory />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard/addProduct"
+                element={
+                  <RequireAuth>
+                    <AddProduct />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard/allFlavours"
+                element={
+                  <RequireAuth>
+                    <AllFlavours />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard/addFlavour"
+                element={
+                  <RequireAuth>
+                    <AddFlavour />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard/editFlavour/:flavId"
+                element={
+                  <RequireAuth>
+                    <EditFlavour />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard/allFilters"
+                element={
+                  <RequireAuth>
+                    <AllFilters />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard/addFilter"
+                element={
+                  <RequireAuth>
+                    <AddFilter />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard/editFilter/:catId/:catName/:filId"
+                element={
+                  <RequireAuth>
+                    <EditFilter />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard/all_product"
+                element={
+                  <RequireAuth>
+                    <AllProducts />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard/orders"
+                element={
+                  <RequireAuth>
+                    <Orders />{" "}
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/dashboard/profile"
+                element={
+                  <RequireAuth>
+                    <ProfilePage />
+                  </RequireAuth>
+                }
+              />
+            </Routes>
+          </ScrollToTop>
+        </AuthProvider>
       </BrowserRouter>
     </>
   );

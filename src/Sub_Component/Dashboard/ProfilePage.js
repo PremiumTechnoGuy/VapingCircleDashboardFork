@@ -7,7 +7,17 @@ import TextField from "@mui/material/TextField";
 import Button from "react-bootstrap/Button";
 import DashboardNavbar from "./DashboardNavbar";
 
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./../../utils/auth";
+
 function ProfilePage() {
+  const navigate = useNavigate();
+  const auth = useAuth();
+  const handleLogout = () => {
+    auth.logout();
+    navigate("/");
+  };
+
   return (
     <div>
       <DashboardNavbar />
@@ -28,7 +38,7 @@ function ProfilePage() {
                 <TextField
                   id="standard-read-only-input"
                   label="First Name"
-                  defaultValue="Abdullah"
+                  defaultValue={auth.user || "none"}
                   InputProps={{
                     readOnly: true,
                   }}
@@ -100,8 +110,11 @@ function ProfilePage() {
                   }}
                 />
               </div>
-              <Button className="mt-6 border-0 rounded-full bg-[#59A0B8] hover:bg-[#0b428b]  text-white px-14 py-2 font-semibold text-sm">
-                Save
+              <Button
+                onClick={handleLogout}
+                className="mt-6 border-0 rounded-full bg-[#59A0B8] hover:bg-[#0b428b]  text-white px-14 py-2 font-semibold text-sm"
+              >
+                Logout
               </Button>
 
               {/* Password Part */}
