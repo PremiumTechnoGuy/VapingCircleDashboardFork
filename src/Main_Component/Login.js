@@ -49,7 +49,7 @@ function Login() {
         });
 
         setTimeout(() => {
-          auth.login('--token-- "when successful"');
+          auth.login('--token-- "when successful"', "admin");
           navigate(redirectPath, { replace: true });
         }, 500);
       } else {

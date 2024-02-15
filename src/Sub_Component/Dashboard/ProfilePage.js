@@ -38,7 +38,7 @@ function ProfilePage() {
                 <TextField
                   id="standard-read-only-input"
                   label="First Name"
-                  defaultValue={auth.user || "none"}
+                  defaultValue={auth.role || "none"}
                   InputProps={{
                     readOnly: true,
                   }}
