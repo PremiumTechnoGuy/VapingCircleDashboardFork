@@ -40,7 +40,7 @@ function Login() {
     const id = toast.loading("Please wait...");
 
     setTimeout(() => {
-      if (userName === "hanzlasaadi" && pass === "test1234") {
+      if (userName === "admin_shahid" && pass === "test1234") {
         toast.update(id, {
           render: "Logged In Successfully",
           type: "success",
@@ -112,7 +112,7 @@ function Login() {
                 <Form.Group className="mb-3" controlId="">
                   <Form.Control
                     type="text"
-                    placeholder="Username (try: hanzlasaadi)"
+                    placeholder="Username (try: admin_shahid)"
                     onChange={(e) => setUserName(e.target.value)}
                   />
                 </Form.Group>
