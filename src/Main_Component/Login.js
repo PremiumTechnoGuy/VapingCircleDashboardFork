@@ -9,6 +9,7 @@ import { BiShow, BiHide } from "react-icons/bi";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { useAuth } from "./../utils/auth";
+import { ToastContainer, toast } from "react-toastify";
 
 function Login() {
   const [password, setPassword] = useState("");
@@ -24,16 +25,42 @@ function Login() {
     setShowConfirmPassword((preve) => !preve);
   };
 
-  const [user, setUser] = useState("");
+  const [userName, setUserName] = useState("");
+  const [pass, setPass] = useState("");
+
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
 
   const redirectPath = location.state?.path || "/";
 
-  const handleLogin = () => {
-    auth.login(user);
-    navigate(redirectPath, { replace: true });
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    const id = toast.loading("Please wait...");
+
+    setTimeout(() => {
+      if (userName === "hanzlasaadi" && pass === "test1234") {
+        toast.update(id, {
+          render: "Logged In Successfully",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+
+        setTimeout(() => {
+          auth.login('--token-- "when successful"');
+          navigate(redirectPath, { replace: true });
+        }, 500);
+      } else {
+        toast.update(id, {
+          render: "Login Unsuccessfull!",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        });
+      }
+    }, 4500);
   };
 
   return (
@@ -85,19 +112,28 @@ function Login() {
                 <Form.Group className="mb-3" controlId="">
                   <Form.Control
                     type="text"
-                    placeholder="Email"
-                    onChange={(e) => setUser(e.target.value)}
+                    placeholder="Username (try: hanzlasaadi)"
+                    onChange={(e) => setUserName(e.target.value)}
                   />
                 </Form.Group>
 
-                <div className="flex mb-3 border rounded-md px-2 py-2 w-full  bg-nonfocus-within:outline-gray-700">
+                <Form.Group className="mb-3" controlId="">
+                  <Form.Control
+                    type="text"
+                    placeholder="Password (try: test1234)"
+                    onChange={(e) => setPass(e.target.value)}
+                  />
+                </Form.Group>
+
+                {/* <div className="flex mb-3 border rounded-md px-2 py-2 w-full  bg-nonfocus-within:outline-gray-700">
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
                     name="password"
                     placeholder="Password"
                     className="  w-full  border-none outline-none "
-                    value={password}
+                    value={pass}
+                    onChange={(e) => setPass(e.target.value)}
                     required
                   />
                   <span
@@ -106,7 +142,7 @@ function Login() {
                   >
                     {showPassword ? <BiShow /> : <BiHide />}
                   </span>
-                </div>
+                </div> */}
 
                 <div class="flex flex-col justify-center items-center mt-5">
                   {/* <Link to="/"> */}
@@ -121,7 +157,7 @@ function Login() {
                     Create an account
                     <Link to="/register">
                       <span class="text-[#8dc9cf] px-1 font-bold underline underline-offset-2">
-                        Sign In
+                        Sign Up
                       </span>
                     </Link>
                   </p>
@@ -131,6 +167,7 @@ function Login() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

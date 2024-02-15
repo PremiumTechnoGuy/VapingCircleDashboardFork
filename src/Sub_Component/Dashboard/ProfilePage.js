@@ -67,7 +67,7 @@ function ProfilePage() {
                   style={{ width: "381px" }}
                 />
               </div>
-              <div>
+              {/* <div>
                 <TextField
                   id="standard-read-only-input"
                   label="Phone Number"
@@ -77,8 +77,8 @@ function ProfilePage() {
                   }}
                   style={{ width: "381px" }}
                 />
-              </div>
-              <div>
+              </div> */}
+              {/* <div>
                 <TextField
                   id="standard-read-only-input"
                   label="Address"
@@ -88,8 +88,8 @@ function ProfilePage() {
                   }}
                   style={{ width: "381px" }}
                 />
-              </div>
-              <div>
+              </div> */}
+              {/* <div>
                 <TextField
                   id="standard-read-only-input"
                   label="Country"
@@ -99,12 +99,12 @@ function ProfilePage() {
                   }}
                   style={{ width: "381px" }}
                 />
-              </div>
+              </div> */}
               <div>
                 <TextField
                   id="standard-read-only-input"
-                  label="Date"
-                  defaultValue="21/02/2023"
+                  label="Role"
+                  defaultValue="admin"
                   InputProps={{
                     readOnly: true,
                   }}

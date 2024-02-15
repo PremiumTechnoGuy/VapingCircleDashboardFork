@@ -36,7 +36,7 @@ const App = () => {
                 path="/"
                 element={
                   <RequireAuth>
-                    <MainPage />{" "}
+                    <MainPage />
                   </RequireAuth>
                 }
               />
@@ -44,7 +44,7 @@ const App = () => {
                 path="/dashboard"
                 element={
                   <RequireAuth>
-                    <MainPage />{" "}
+                    <MainPage />
                   </RequireAuth>
                 }
               />
@@ -52,7 +52,7 @@ const App = () => {
                 path="/dashboard/addCategory"
                 element={
                   <RequireAuth>
-                    <AddCategory />{" "}
+                    <AddCategory />
                   </RequireAuth>
                 }
               />
@@ -60,7 +60,7 @@ const App = () => {
                 path="/dashboard/editCategory/:catId"
                 element={
                   <RequireAuth>
-                    <EditCategory />{" "}
+                    <EditCategory />
                   </RequireAuth>
                 }
               />
@@ -68,7 +68,7 @@ const App = () => {
                 path="/dashboard/editProduct/:catId/:catName/:prodId"
                 element={
                   <RequireAuth>
-                    <EditProduct />{" "}
+                    <EditProduct />
                   </RequireAuth>
                 }
               />
@@ -76,7 +76,7 @@ const App = () => {
                 path="/dashboard/all_category"
                 element={
                   <RequireAuth>
-                    <AllCategory />{" "}
+                    <AllCategory />
                   </RequireAuth>
                 }
               />
@@ -84,7 +84,7 @@ const App = () => {
                 path="/dashboard/addProduct"
                 element={
                   <RequireAuth>
-                    <AddProduct />{" "}
+                    <AddProduct />
                   </RequireAuth>
                 }
               />
@@ -92,7 +92,7 @@ const App = () => {
                 path="/dashboard/allFlavours"
                 element={
                   <RequireAuth>
-                    <AllFlavours />{" "}
+                    <AllFlavours />
                   </RequireAuth>
                 }
               />
@@ -100,7 +100,7 @@ const App = () => {
                 path="/dashboard/addFlavour"
                 element={
                   <RequireAuth>
-                    <AddFlavour />{" "}
+                    <AddFlavour />
                   </RequireAuth>
                 }
               />
@@ -108,7 +108,7 @@ const App = () => {
                 path="/dashboard/editFlavour/:flavId"
                 element={
                   <RequireAuth>
-                    <EditFlavour />{" "}
+                    <EditFlavour />
                   </RequireAuth>
                 }
               />
@@ -116,7 +116,7 @@ const App = () => {
                 path="/dashboard/allFilters"
                 element={
                   <RequireAuth>
-                    <AllFilters />{" "}
+                    <AllFilters />
                   </RequireAuth>
                 }
               />
@@ -124,7 +124,7 @@ const App = () => {
                 path="/dashboard/addFilter"
                 element={
                   <RequireAuth>
-                    <AddFilter />{" "}
+                    <AddFilter />
                   </RequireAuth>
                 }
               />
@@ -132,7 +132,7 @@ const App = () => {
                 path="/dashboard/editFilter/:catId/:catName/:filId"
                 element={
                   <RequireAuth>
-                    <EditFilter />{" "}
+                    <EditFilter />
                   </RequireAuth>
                 }
               />
@@ -140,7 +140,7 @@ const App = () => {
                 path="/dashboard/all_product"
                 element={
                   <RequireAuth>
-                    <AllProducts />{" "}
+                    <AllProducts />
                   </RequireAuth>
                 }
               />
@@ -148,7 +148,7 @@ const App = () => {
                 path="/dashboard/orders"
                 element={
                   <RequireAuth>
-                    <Orders />{" "}
+                    <Orders />
                   </RequireAuth>
                 }
               />
