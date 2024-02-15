@@ -6,7 +6,10 @@ import { FiMinus } from "react-icons/fi";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { BiShow, BiHide } from "react-icons/bi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+
+import { useAuth } from "./../utils/auth";
+import { ToastContainer, toast } from "react-toastify";
 
 function Login() {
   const [password, setPassword] = useState("");
@@ -21,6 +24,45 @@ function Login() {
   const handleShowConfirmPassword = () => {
     setShowConfirmPassword((preve) => !preve);
   };
+
+  const [userName, setUserName] = useState("");
+  const [pass, setPass] = useState("");
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const auth = useAuth();
+
+  const redirectPath = location.state?.path || "/";
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    const id = toast.loading("Please wait...");
+
+    setTimeout(() => {
+      if (userName === "admin_shahid" && pass === "test1234") {
+        toast.update(id, {
+          render: "Logged In Successfully",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+
+        setTimeout(() => {
+          auth.login('--token-- "when successful"');
+          navigate(redirectPath, { replace: true });
+        }, 500);
+      } else {
+        toast.update(id, {
+          render: "Login Unsuccessfull!",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        });
+      }
+    }, 4500);
+  };
+
   return (
     <div class="mt-0 ">
       {/* About Start */}
@@ -68,17 +110,30 @@ function Login() {
             <div class="pl-2 md:pl-[13%]">
               <Form>
                 <Form.Group className="mb-3" controlId="">
-                  <Form.Control type="email" placeholder="Email" />
+                  <Form.Control
+                    type="text"
+                    placeholder="Username (try: admin_shahid)"
+                    onChange={(e) => setUserName(e.target.value)}
+                  />
                 </Form.Group>
 
-                <div className="flex mb-3 border rounded-md px-2 py-2 w-full  bg-nonfocus-within:outline-gray-700">
+                <Form.Group className="mb-3" controlId="">
+                  <Form.Control
+                    type="text"
+                    placeholder="Password (try: test1234)"
+                    onChange={(e) => setPass(e.target.value)}
+                  />
+                </Form.Group>
+
+                {/* <div className="flex mb-3 border rounded-md px-2 py-2 w-full  bg-nonfocus-within:outline-gray-700">
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
                     name="password"
                     placeholder="Password"
                     className="  w-full  border-none outline-none "
-                    value={password}
+                    value={pass}
+                    onChange={(e) => setPass(e.target.value)}
                     required
                   />
                   <span
@@ -87,19 +142,22 @@ function Login() {
                   >
                     {showPassword ? <BiShow /> : <BiHide />}
                   </span>
-                </div>
+                </div> */}
 
                 <div class="flex flex-col justify-center items-center mt-5">
-                  <Link to="/">
-                    <button class="bg-[#59A0B8] text-white px-5  py-2  rounded-[24px]">
-                      Login
-                    </button>
-                  </Link>
+                  {/* <Link to="/"> */}
+                  <button
+                    onClick={handleLogin}
+                    class="bg-[#59A0B8] text-white px-5  py-2  rounded-[24px]"
+                  >
+                    Login
+                  </button>
+                  {/* </Link> */}
                   <p class="text-[#000000] px-1 p-2">
                     Create an account
                     <Link to="/register">
                       <span class="text-[#8dc9cf] px-1 font-bold underline underline-offset-2">
-                        Sign In
+                        Sign Up
                       </span>
                     </Link>
                   </p>
@@ -109,6 +167,7 @@ function Login() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

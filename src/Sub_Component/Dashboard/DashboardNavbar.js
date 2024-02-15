@@ -11,10 +11,11 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { IoIosSearch } from "react-icons/io";
 import { RiContactsLine } from "react-icons/ri";
 import { IoGridSharp } from "react-icons/io5";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
 function DashboardNavbar() {
+  const nav = useNavigate();
   return (
     <div>
       <div class="relative">
@@ -76,6 +77,10 @@ function DashboardNavbar() {
                     //   class="py-3"
                     alt="icon img"
                     src="https://ik.imagekit.io/p2slevyg1/profile%20(1).png?updatedAt=1704099476479"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      nav("/dashboard/profile");
+                    }}
                   />
                 </span>
               </Navbar.Brand>
@@ -122,9 +127,9 @@ function DashboardNavbar() {
                     >
                       Flavours
                     </Nav.Link>
-                    <Nav.Link href="/dashboard/profile" class="mb-3 text-xl">
+                    {/* <Nav.Link href="/dashboard/profile" class="mb-3 text-xl">
                       Profile
-                    </Nav.Link>
+                    </Nav.Link> */}
                   </Nav>
                 </Offcanvas.Body>
               </Navbar.Offcanvas>
@@ -273,7 +278,7 @@ function DashboardNavbar() {
           </p>
         </div>
 
-        <div className="d-flex text-white flex-row w-48 gap-3">
+        {/* <div className="d-flex text-white flex-row w-48 gap-3">
           <p
             className="flex items-center gap-2  w-48 text-base text-white hover:text-black  p-3
             focus-within:bg-white border-y border-[#1B94A0]"
@@ -289,7 +294,7 @@ function DashboardNavbar() {
               <span>My Profile</span>
             </NavLink>
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
