@@ -10,19 +10,14 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { useAuth } from "./../utils/auth";
 import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
+import { apiUrl } from "../data/env";
 
 function Login() {
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleShowPassword = () => {
     setShowPassword((preve) => !preve);
-  };
-
-  const handleShowConfirmPassword = () => {
-    setShowConfirmPassword((preve) => !preve);
   };
 
   const [userName, setUserName] = useState("");
@@ -37,30 +32,33 @@ function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    const id = toast.loading("Please wait...");
+    const id = toast.loading("Logging In...");
 
-    setTimeout(() => {
-      if (userName === "admin_shahid" && pass === "test1234") {
+    axios
+      .post(`${apiUrl}/api/v1/users/login`, { email: userName, password: pass })
+      .then((res) => {
+        // console.log(res.data);
         toast.update(id, {
-          render: "Logged In Successfully",
+          render: "Log In Successfull",
           type: "success",
           isLoading: false,
           autoClose: 2000,
         });
 
         setTimeout(() => {
-          auth.login('--token-- "when successful"', "admin");
+          auth.login(res.data.token, res.data.data);
           navigate(redirectPath, { replace: true });
         }, 500);
-      } else {
+      })
+      .catch((err) => {
+        console.log(err);
         toast.update(id, {
           render: "Login Unsuccessfull!",
           type: "error",
           isLoading: false,
           autoClose: 2000,
         });
-      }
-    }, 4500);
+      });
   };
 
   return (
@@ -112,17 +110,29 @@ function Login() {
                 <Form.Group className="mb-3" controlId="">
                   <Form.Control
                     type="text"
-                    placeholder="Username (try: admin_shahid)"
+                    placeholder="Email"
                     onChange={(e) => setUserName(e.target.value)}
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="">
+                <Form.Group className="mb-3 d-flex" controlId="">
                   <Form.Control
-                    type="text"
-                    placeholder="Password (try: test1234)"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    value={pass}
                     onChange={(e) => setPass(e.target.value)}
                   />
+                  <span
+                    className="flex text-xl cursor-pointer"
+                    onClick={handleShowPassword}
+                    style={{
+                      width: "5%",
+                      marginTop: "9px",
+                      marginLeft: "9px",
+                    }}
+                  >
+                    {showPassword ? <BiShow /> : <BiHide />}
+                  </span>
                 </Form.Group>
 
                 {/* <div className="flex mb-3 border rounded-md px-2 py-2 w-full  bg-nonfocus-within:outline-gray-700">
@@ -131,13 +141,16 @@ function Login() {
                     id="password"
                     name="password"
                     placeholder="Password"
-                    className="  w-full  border-none outline-none "
+                    className="w-full border-none outline-none "
                     value={pass}
                     onChange={(e) => setPass(e.target.value)}
                     required
                   />
                   <span
                     className="flex text-xl cursor-pointer"
+                    style={{
+                      right: 0,
+                    }}
                     onClick={handleShowPassword}
                   >
                     {showPassword ? <BiShow /> : <BiHide />}
@@ -155,7 +168,7 @@ function Login() {
                   {/* </Link> */}
                   <p class="text-[#000000] px-1 p-2">
                     Create an account
-                    <Link to="/register">
+                    <Link to="/signup">
                       <span class="text-[#8dc9cf] px-1 font-bold underline underline-offset-2">
                         Sign Up
                       </span>
