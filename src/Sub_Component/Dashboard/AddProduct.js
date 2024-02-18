@@ -136,6 +136,7 @@ function AddProduct() {
   React.useEffect(() => {
     const id1 = toast.loading("Fetching Categories... Please Wait!");
     const id2 = toast.loading("Fetching Filters... Please Wait!");
+    const id3 = toast.loading("Fetching Flavours... Please Wait!");
 
     axios
       .get(`${apiUrl}/api/v1/category`)
@@ -174,7 +175,29 @@ function AddProduct() {
       })
       .catch((err) => {
         console.log(err);
-        toast.update(id1, {
+        toast.update(id2, {
+          render:
+            err.response?.data?.message || "Error! Try Again & See Console",
+          type: "error",
+          isLoading: false,
+          autoClose: 3500,
+        });
+      });
+
+    axios
+      .get(`${apiUrl}/api/v1/flavour`)
+      .then((res) => {
+        setAllFlavours(res.data.data);
+        toast.update(id3, {
+          render: "Successfully Fetched Flavours!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id3, {
           render:
             err.response?.data?.message || "Error! Try Again & See Console",
           type: "error",
@@ -201,6 +224,18 @@ function AddProduct() {
     React.useState("");
   const [chosenFiltersArray, setChosenFiltersArray] = React.useState([]);
   const [finalFiltersObjArray, setFinalFiltersObjArray] = React.useState([]);
+
+  const [allFlavours, setAllFlavours] = React.useState([]);
+  const [chosenFlavoursArray, setChosenFlavoursArray] = React.useState([]);
+  const [finalFlavoursObjArray, setFinalFlavoursObjArray] = React.useState([]);
+  const [selectedFlavour, setSelectedFlavour] = React.useState("");
+  const [selectedFlavourObj, setSelectedFlavourObj] = React.useState(null);
+  const [filteredFlavourSubFlavours, setFilteredFlavourSubFlavours] =
+    React.useState([]);
+  const [
+    selectedFilteredFlavourSubFlavour,
+    setSelectedFilteredFlavourSubFlavour,
+  ] = React.useState("");
 
   const [variantsArray, setVariantsArray] = React.useState([]);
   const [selectedVariantType, setSelectedVariantType] = React.useState("");
@@ -264,43 +299,45 @@ function AddProduct() {
       category: selectedCategory,
       variants: finalVariantsArray,
       chosenFilters: finalFiltersObjArray,
+      chosenFlavours: finalFlavoursObjArray,
     };
+    console.log(payload);
 
-    axios
-      .post(`${apiUrl}/api/v1/product`, payload)
-      .then((res) => {
-        console.log(res.data);
-        toast.update(id, {
-          render: "Created Product Successfully!",
-          type: "success",
-          isLoading: false,
-          autoClose: 3000,
-        });
+    // axios
+    //   .post(`${apiUrl}/api/v1/product`, payload)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     toast.update(id, {
+    //       render: "Created Product Successfully!",
+    //       type: "success",
+    //       isLoading: false,
+    //       autoClose: 3000,
+    //     });
 
-        // Upload Cover Image
-        if (uploadingImage) handleUploadImage(res.data.data._id);
+    //     // Upload Cover Image
+    //     if (uploadingImage) handleUploadImage(res.data.data._id);
 
-        // Upload Multiple Images
-        if (multipleUpload) handleUploadImages(res.data.data._id);
+    //     // Upload Multiple Images
+    //     if (multipleUpload) handleUploadImages(res.data.data._id);
 
-        setProductName("");
-        setDescription("");
-        setBasePrice(0);
-        setFinalVariantsArray([]);
-        setVariantsArray([]);
-        setSelectedVariantType("");
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.update(id, {
-          render:
-            err.response?.data?.message ||
-            "Error Occured! See more using console!",
-          type: "error",
-          isLoading: false,
-          autoClose: 3000,
-        });
-      });
+    //     setProductName("");
+    //     setDescription("");
+    //     setBasePrice(0);
+    //     setFinalVariantsArray([]);
+    //     setVariantsArray([]);
+    //     setSelectedVariantType("");
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     toast.update(id, {
+    //       render:
+    //         err.response?.data?.message ||
+    //         "Error Occured! See more using console!",
+    //       type: "error",
+    //       isLoading: false,
+    //       autoClose: 3000,
+    //     });
+    //   });
   };
 
   const [image, setImage] = React.useState({ preview: "", data: "" });
@@ -397,6 +434,45 @@ function AddProduct() {
           autoClose: 3000,
         });
       });
+  };
+
+  const handleConfirmChoice = () => {
+    // Construct chosenFilters array
+    const chosenFlavours = [];
+
+    // Find selected flavour
+    const selectedFlavourObj = allFlavours.find(
+      (flavour) => flavour._id === selectedFlavour
+    );
+
+    if (selectedFlavourObj) {
+      chosenFlavours.push({
+        flavourId: selectedFlavourObj._id,
+        flavourName: selectedFlavourObj.name,
+        chosenOption: selectedFilteredFlavourSubFlavour,
+      });
+    }
+
+    setFinalFlavoursObjArray((flv) => {
+      // let newArr = [];
+
+      // const alreadyFlav = flv.find(f => f.flavourId === selectedFlavour);
+
+      // if (alreadyFlav) {
+      //   newArr = flv.filter(f => f.flavourId === selectedFlavour)
+      // }
+
+      const newArr = flv.filter((f) => f.flavourId !== selectedFlavour);
+      if (newArr.length > flv) console.log("already flavour edited");
+      else console.log("new flavour");
+
+      return [...flv, chosenFlavours];
+    });
+
+    // Reset state after extracting data
+    setSelectedFlavour("");
+    setSelectedFilteredFlavourSubFlavour("");
+    setSelectedFlavourObj();
   };
 
   return (
@@ -511,7 +587,12 @@ function AddProduct() {
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="">
-                      <Form.Label class="text-[#707070]  font-semibold py-2">
+                      <Form.Label
+                        onClick={() =>
+                          console.log(finalFlavoursObjArray, "final")
+                        }
+                        class="text-[#707070]  font-semibold py-2"
+                      >
                         Name
                       </Form.Label>
                       <Form.Control
@@ -753,6 +834,103 @@ function AddProduct() {
                           setSelectedFilter("");
                           setSelectedFilteredFilterOption("");
                           setSelectedFilterObj(null);
+                        }}
+                        variant="info"
+                      >
+                        Confirm Choice
+                      </Button>
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      controlId=""
+                      md={4}
+                      style={{ marginTop: 15 }}
+                    >
+                      <Form.Label class="text-[#707070]  font-semibold py-2">
+                        1. Select Flavours
+                      </Form.Label>
+                      <Form.Select
+                        onChange={(e) => {
+                          // console.log(e.target.value);
+                          const [fil] = allFlavours.filter(
+                            (fil) => fil._id === e.target.value
+                          );
+
+                          setSelectedFlavour(() => {
+                            setFilteredFlavourSubFlavours(fil.subFlavours);
+                            setSelectedFlavourObj(fil);
+                            return e.target.value;
+                          });
+                        }}
+                        aria-label="Default select example"
+                        value={selectedFlavour}
+                      >
+                        <option value={""}></option>
+                        {allFlavours?.map((flavour) => (
+                          <option key={flavour._id} value={flavour._id}>
+                            {flavour.name}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      controlId=""
+                      md={4}
+                      style={{ marginTop: 15 }}
+                    >
+                      <Form.Label class="text-[#707070]  font-semibold py-2">
+                        2. Select Subflavours
+                      </Form.Label>
+                      <Form.Select
+                        onChange={(e) => {
+                          console.log(e.target.value);
+                          setSelectedFilteredFlavourSubFlavour(e.target.value);
+                        }}
+                        aria-label="Default select example"
+                        value={selectedFilteredFlavourSubFlavour}
+                      >
+                        <option value={""}></option>
+                        {filteredFlavourSubFlavours?.map((option) => (
+                          <option key={option._id} value={option.name}>
+                            {option.name}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="" class="flex ">
+                      <Button
+                        // class="rounded-1  bg-[#1B94A0] text-white"
+                        style={{
+                          marginTop: 50,
+                          backgroundColor: "#1B94A0",
+                          color: "white",
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleConfirmChoice();
+
+                          // setFinalFlavoursObjArray((f) => {
+                          //   const test = f?.map((finalObj) => {
+                          //     if (finalObj.flavourId === selectedFlavour)
+                          //       return {
+                          //         flavourId: selectedFlavour,
+                          //         flavourName: selectedFlavourObj.name,
+                          //         chosenSubFlavour:
+                          //           selectedFilteredFlavourSubFlavour,
+                          //       };
+                          //     else return finalObj;
+                          //   });
+
+                          //   return test;
+                          // });
+
+                          // setSelectedFlavour("");
+                          // setSelectedFilteredFlavourSubFlavour("");
+                          // setSelectedFlavourObj(null);
                         }}
                         variant="info"
                       >
