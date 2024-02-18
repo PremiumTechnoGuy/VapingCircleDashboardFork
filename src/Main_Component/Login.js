@@ -76,7 +76,7 @@ function Login() {
               />
             </Link>
             <h3 class="text-white text-2xl font-semibold text-wrap  hidden md:block w-50 ">
-              Welcome to Vaping CIRCLE!
+              Vaping CIRCLE <br></br> <span style={{ color: 'black', fontSize: '34px' }}>ADMIN PANEL</span> !
             </h3>
           </div>
 
@@ -90,7 +90,7 @@ function Login() {
             <h3 class=" text-3xl font-bold text-center pt-5 pl-2 md:pl-[5rem] pb-4">
               Log In
             </h3>
-            <div class="flex justify-center items-center pl-2 md:pl-[5rem] cursor-pointer">
+            {/* <div class="flex justify-center items-center pl-2 md:pl-[5rem] cursor-pointer">
               <p class="flex justify-center items-center border p-2 mx-2 rounded-md">
                 <FcGoogle class="mx-2 text-2xl" />
                 Login with Google
@@ -99,12 +99,12 @@ function Login() {
                 <FaFacebookF class="mx-2 text-xl text-blue-800" />
                 Login with Facebook
               </p>
-            </div>
-            <p class="flex justify-center items-center pt-3 pb-3 pl-2 md:pl-[5rem]">
+            </div> */}
+            {/* <p class="flex justify-center items-center pt-3 pb-3 pl-2 md:pl-[5rem]">
               <FiMinus />
               OR
               <FiMinus />
-            </p>
+            </p> */}
             <div class="pl-2 md:pl-[13%]">
               <Form>
                 <Form.Group className="mb-3" controlId="">
@@ -166,14 +166,14 @@ function Login() {
                     Login
                   </button>
                   {/* </Link> */}
-                  <p class="text-[#000000] px-1 p-2">
+                  {/* <p class="text-[#000000] px-1 p-2">
                     Create an account
                     <Link to="/signup">
                       <span class="text-[#8dc9cf] px-1 font-bold underline underline-offset-2">
                         Sign Up
                       </span>
                     </Link>
-                  </p>
+                  </p> */}
                 </div>
               </Form>
             </div>
