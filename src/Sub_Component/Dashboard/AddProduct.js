@@ -7,11 +7,13 @@ import Form from "react-bootstrap/Form";
 import { RiDeleteBinLine } from "react-icons/ri";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { IoCaretBackCircleOutline } from "react-icons/io5";
 
 import { FiEdit } from "react-icons/fi";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { apiUrl } from "../../data/env";
+import { useNavigate } from "react-router-dom";
 
 function slugify(str) {
   return String(str)
@@ -116,6 +118,8 @@ function VariantOption({ variantOptionsObj, selectedVariant, i }) {
 }
 
 function AddProduct() {
+  const nav = useNavigate();
+
   const [show, setShow] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
 
@@ -401,7 +405,19 @@ function AddProduct() {
       <div>
         <div class=" mt-24 absolute lg:left-[260px] z-5">
           <Container class="">
-            <h2 class="font-bold text-xl">Add Product</h2>
+            <div className="d-flex gap-4 align-items-center">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  nav("/dashboard/all_product");
+                }}
+                class="d-flex gap-2 align-items-center rounded-1 p-2 w-32 font-semibold bg-[#1B94A0] text-white"
+              >
+                <IoCaretBackCircleOutline />
+                <span>Go Back</span>
+              </button>
+              <h2 class="font-bold text-xl">Add Product</h2>
+            </div>
             <Row class="">
               {/* Images Components */}
               <Col md={4}>
