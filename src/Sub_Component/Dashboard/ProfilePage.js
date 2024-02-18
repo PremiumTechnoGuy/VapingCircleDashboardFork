@@ -37,19 +37,8 @@ function ProfilePage() {
               <div>
                 <TextField
                   id="standard-read-only-input"
-                  label="First Name"
-                  defaultValue={auth.user || "none"}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  style={{ width: "381px" }}
-                />
-              </div>
-              <div>
-                <TextField
-                  id="standard-read-only-input"
-                  label="Last Name"
-                  defaultValue="Aslam"
+                  label="Name"
+                  defaultValue={auth.username}
                   InputProps={{
                     readOnly: true,
                   }}
@@ -60,51 +49,18 @@ function ProfilePage() {
                 <TextField
                   id="standard-read-only-input"
                   label="Email"
-                  defaultValue="profileinfo@gmail.com"
+                  defaultValue={auth.email}
                   InputProps={{
                     readOnly: true,
                   }}
                   style={{ width: "381px" }}
                 />
               </div>
-              {/* <div>
-                <TextField
-                  id="standard-read-only-input"
-                  label="Phone Number"
-                  defaultValue="234398242029"
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  style={{ width: "381px" }}
-                />
-              </div> */}
-              {/* <div>
-                <TextField
-                  id="standard-read-only-input"
-                  label="Address"
-                  defaultValue="118 Rd.Derby ED1 1FE"
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  style={{ width: "381px" }}
-                />
-              </div> */}
-              {/* <div>
-                <TextField
-                  id="standard-read-only-input"
-                  label="Country"
-                  defaultValue="United Kingdom"
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  style={{ width: "381px" }}
-                />
-              </div> */}
               <div>
                 <TextField
                   id="standard-read-only-input"
                   label="Role"
-                  defaultValue="admin"
+                  defaultValue={auth.role}
                   InputProps={{
                     readOnly: true,
                   }}
