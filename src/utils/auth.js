@@ -1,9 +1,12 @@
+import axios from "axios";
 import { useState, createContext, useContext } from "react";
+import { apiUrl } from "../data/env";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [checkLoggedIn, setCheckLoggedIn] = useState(false);
   const [token, setToken] = useState(null);
   const [role, setRole] = useState(null);
   const [username, setUsername] = useState(null);
@@ -27,9 +30,29 @@ export const AuthProvider = ({ children }) => {
     setLoggedIn(false);
   };
 
+  const verifyToken = (token) => {
+    // axios.get(`${apiUrl}/api/v1/users/verifyToken`).then(res => {
+    //   console.log(res);
+    // }).catch(err => console.log(err));
+    setTimeout(() => {
+      localStorage.setItem("token", token);
+      setLoggedIn(true);
+      return true;
+    }, 3500);
+  };
+
   return (
     <AuthContext.Provider
-      value={{ loggedIn, token, role, username, email, login, logout }}
+      value={{
+        loggedIn,
+        token,
+        role,
+        username,
+        email,
+        login,
+        logout,
+        verifyToken,
+      }}
     >
       {children}
     </AuthContext.Provider>
