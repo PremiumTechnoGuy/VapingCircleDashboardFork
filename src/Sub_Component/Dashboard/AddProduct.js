@@ -301,7 +301,6 @@ function AddProduct() {
       chosenFilters: finalFiltersObjArray,
       chosenFlavours: finalFlavoursObjArray,
     };
-    // console.log(payload);
 
     axios
       .post(`${apiUrl}/api/v1/product`, payload)
@@ -449,24 +448,14 @@ function AddProduct() {
       chosenFlavours.push({
         flavourId: selectedFlavourObj._id,
         flavourName: selectedFlavourObj.name,
-        chosenOption: selectedFilteredFlavourSubFlavour,
+        chosenSubFlavour: selectedFilteredFlavourSubFlavour,
       });
     }
 
     setFinalFlavoursObjArray((flv) => {
-      // let newArr = [];
+      const newArr = flv.flat().filter((f) => f.flavourId !== selectedFlavour);
 
-      // const alreadyFlav = flv.find(f => f.flavourId === selectedFlavour);
-
-      // if (alreadyFlav) {
-      //   newArr = flv.filter(f => f.flavourId === selectedFlavour)
-      // }
-
-      const newArr = flv.filter((f) => f.flavourId !== selectedFlavour);
-      if (newArr.length > flv) console.log("already flavour edited");
-      else console.log("new flavour");
-
-      return [...flv, chosenFlavours];
+      return [...newArr, ...chosenFlavours];
     });
 
     // Reset state after extracting data
@@ -912,25 +901,6 @@ function AddProduct() {
                         onClick={(e) => {
                           e.preventDefault();
                           handleConfirmChoice();
-
-                          // setFinalFlavoursObjArray((f) => {
-                          //   const test = f?.map((finalObj) => {
-                          //     if (finalObj.flavourId === selectedFlavour)
-                          //       return {
-                          //         flavourId: selectedFlavour,
-                          //         flavourName: selectedFlavourObj.name,
-                          //         chosenSubFlavour:
-                          //           selectedFilteredFlavourSubFlavour,
-                          //       };
-                          //     else return finalObj;
-                          //   });
-
-                          //   return test;
-                          // });
-
-                          // setSelectedFlavour("");
-                          // setSelectedFilteredFlavourSubFlavour("");
-                          // setSelectedFlavourObj(null);
                         }}
                         variant="info"
                       >
