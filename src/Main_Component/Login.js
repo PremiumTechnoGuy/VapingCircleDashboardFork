@@ -16,6 +16,41 @@ import { apiUrl } from "../data/env";
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
+  const token = localStorage.getItem("token");
+
+  React.useEffect(() => {
+    if (token) {
+      const id = toast.loading("Trying to log in...");
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+      axios
+        .get(`${apiUrl}/api/v1/users/verifyToken`, config)
+        .then((res) => {
+          toast.update(id, {
+            render: "Log In Successful!",
+            type: "success",
+            isLoading: false,
+            autoClose: 2000,
+          });
+          // console.log(res.data);
+          setTimeout(() => {
+            auth.login(token, res.data.data);
+            navigate(redirectPath, { replace: true });
+          }, 500);
+        })
+        .catch((err) => {
+          toast.update(id, {
+            render: err.response?.data?.message || "Log In Unsuccessful!",
+            type: "error",
+            isLoading: false,
+            autoClose: 2000,
+          });
+          console.log(err);
+        });
+    }
+  }, []);
+
   const handleShowPassword = () => {
     setShowPassword((preve) => !preve);
   };
@@ -76,7 +111,11 @@ function Login() {
               />
             </Link>
             <h3 class="text-white text-2xl font-semibold text-wrap  hidden md:block w-50 ">
-              Vaping CIRCLE <br></br> <span style={{ color: 'black', fontSize: '34px' }}>ADMIN PANEL</span> !
+              Vaping CIRCLE <br></br>{" "}
+              <span style={{ color: "black", fontSize: "34px" }}>
+                ADMIN PANEL
+              </span>{" "}
+              !
             </h3>
           </div>
 
