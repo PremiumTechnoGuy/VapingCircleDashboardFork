@@ -152,6 +152,7 @@ function EditProduct() {
         setDescription(res.data.data.description);
         setBasePrice(res.data.data.basePrice);
         setAvailable(`${res.data.data.available}`);
+        setFeatured(`${res.data.data.featured}`);
         setSku(res.data.data.sku);
         setFetchedVariants(res.data.data.variants);
         setFinalVariantsArray(res.data.data.variants);
@@ -216,6 +217,8 @@ function EditProduct() {
   const [typedNewVariant, setTypedNewVariant] = React.useState("");
   const [finalVariantsArray, setFinalVariantsArray] = React.useState([]);
   const [newVariantSelected, setNewVariantSelected] = React.useState(true);
+
+  const [featured, setFeatured] = React.useState("false");
 
   const [selectedVariantOptionsArr, setSelectedVariantOptionsArr] =
     React.useState([
@@ -282,6 +285,7 @@ function EditProduct() {
     // };
     const payload = {
       available: available === "true" ? true : false,
+      featured: featured === "true" ? true : false,
       name: productName,
       basePrice,
       sku,
@@ -549,6 +553,20 @@ function EditProduct() {
                       <Form.Select
                         value={available}
                         onChange={(e) => setAvailable(e.target.value)}
+                        aria-label="Default select example"
+                      >
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                      </Form.Select>
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="">
+                      <Form.Label class="text-[#707070] font-semibold py-2">
+                        Featured
+                      </Form.Label>
+                      <Form.Select
+                        value={featured}
+                        onChange={(e) => setFeatured(e.target.value)}
                         aria-label="Default select example"
                       >
                         <option value="true">Yes</option>
