@@ -301,43 +301,43 @@ function AddProduct() {
       chosenFilters: finalFiltersObjArray,
       chosenFlavours: finalFlavoursObjArray,
     };
-    console.log(payload);
+    // console.log(payload);
 
-    // axios
-    //   .post(`${apiUrl}/api/v1/product`, payload)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     toast.update(id, {
-    //       render: "Created Product Successfully!",
-    //       type: "success",
-    //       isLoading: false,
-    //       autoClose: 3000,
-    //     });
+    axios
+      .post(`${apiUrl}/api/v1/product`, payload)
+      .then((res) => {
+        console.log(res.data);
+        toast.update(id, {
+          render: "Created Product Successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
 
-    //     // Upload Cover Image
-    //     if (uploadingImage) handleUploadImage(res.data.data._id);
+        // Upload Cover Image
+        if (uploadingImage) handleUploadImage(res.data.data._id);
 
-    //     // Upload Multiple Images
-    //     if (multipleUpload) handleUploadImages(res.data.data._id);
+        // Upload Multiple Images
+        if (multipleUpload) handleUploadImages(res.data.data._id);
 
-    //     setProductName("");
-    //     setDescription("");
-    //     setBasePrice(0);
-    //     setFinalVariantsArray([]);
-    //     setVariantsArray([]);
-    //     setSelectedVariantType("");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     toast.update(id, {
-    //       render:
-    //         err.response?.data?.message ||
-    //         "Error Occured! See more using console!",
-    //       type: "error",
-    //       isLoading: false,
-    //       autoClose: 3000,
-    //     });
-    //   });
+        setProductName("");
+        setDescription("");
+        setBasePrice(0);
+        setFinalVariantsArray([]);
+        setVariantsArray([]);
+        setSelectedVariantType("");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render:
+            err.response?.data?.message ||
+            "Error Occured! See more using console!",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      });
   };
 
   const [image, setImage] = React.useState({ preview: "", data: "" });
