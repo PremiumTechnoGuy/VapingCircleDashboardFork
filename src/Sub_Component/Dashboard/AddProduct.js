@@ -438,6 +438,37 @@ function AddProduct() {
       });
   };
 
+  // filters confirm choice
+  const handleConfirmFilter = () => {
+    // Construct chosenFilters array
+    const chosenFilters = [];
+
+    // Find selected flavour
+    const selectedFilterObj = filteredFilters.find(
+      (filter) => filter._id === selectedFilter
+    );
+
+    if (selectedFilterObj) {
+      chosenFilters.push({
+        filterId: selectedFilterObj._id,
+        filterName: selectedFilterObj.name,
+        chosenOption: selectedFilteredFilterOption,
+      });
+    }
+
+    setFinalFiltersObjArray((fil) => {
+      const newArr = fil.flat().filter((f) => f.filterId !== selectedFilter);
+
+      return [...newArr, ...chosenFilters];
+    });
+
+    // Reset state after extracting data
+    setSelectedFilter("");
+    setSelectedFilteredFilterOption("");
+    setSelectedFilterObj();
+  };
+
+  // flavours confirm choice
   const handleConfirmChoice = () => {
     // Construct chosenFilters array
     const chosenFlavours = [];
@@ -814,32 +845,7 @@ function AddProduct() {
                         }}
                         onClick={(e) => {
                           e.preventDefault();
-
-                          setFinalFiltersObjArray((f) => {
-                            const test = f?.map((finalObj) => {
-                              if (finalObj.filterId === selectedFilter)
-                                return {
-                                  filterId: selectedFilter,
-                                  filterName: selectedFilterObj.name,
-                                  chosenOption: selectedFilteredFilterOption,
-                                };
-                              else return finalObj;
-                            });
-
-                            return test;
-                          });
-
-                          // setChosenFiltersArray((arr) => [
-                          //   ...arr,
-                          //   {
-                          //     filterId: selectedFilter,
-                          //     filterName: selectedFilterObj.name,
-                          //     chosenOption: selectedFilteredFilterOption,
-                          //   },
-                          // ]);
-                          setSelectedFilter("");
-                          setSelectedFilteredFilterOption("");
-                          setSelectedFilterObj(null);
+                          handleConfirmFilter();
                         }}
                         variant="info"
                       >
