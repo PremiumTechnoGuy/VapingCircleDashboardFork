@@ -14,7 +14,7 @@ import { IoGridSharp } from "react-icons/io5";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
-function DashboardNavbar() {
+function DashboardNavbar({ setQuery, handleSearchClick, query }) {
   const nav = useNavigate();
   return (
     <div>
@@ -31,17 +31,26 @@ function DashboardNavbar() {
               />
 
               <NavbarBrand className="hidden md:block">
-                <InputGroup className="w-96  ">
+                <InputGroup className="w-96">
+                  {/* search input element */}
                   <Form.Control
                     placeholder="Search"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
                     style={{ height: 35 }}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
                   />
+                  {/* search button */}
                   <InputGroup.Text
                     id="basic-addon1"
                     className="text-white"
-                    style={{ height: 36, backgroundColor: "#1B94A0" }}
+                    style={{
+                      height: 36,
+                      backgroundColor: "#1B94A0",
+                      cursor: "pointer",
+                    }}
+                    onClick={handleSearchClick}
                   >
                     <IoIosSearch className="text-2xl" />
                   </InputGroup.Text>

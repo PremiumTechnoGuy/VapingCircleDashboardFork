@@ -19,6 +19,8 @@ function chunkArray(array, size) {
 function AllProducts() {
   const nav = useNavigate();
 
+  const [query, setQuery] = useState("");
+
   const [selectedCategoryName, setSelectedCategoryName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [allProducts, setAllProducts] = useState([]);
@@ -52,7 +54,8 @@ function AllProducts() {
       .get(`${apiUrl}/api/v1/product`)
       .then((res) => {
         setAllProducts(res.data.data);
-        console.log(res.data.data);
+        // console.log(res.data.data);
+        setChunkedArr(chunkArray(res.data.data, 3));
         toast.update(id, {
           render: "Loaded Products Successfully!",
           type: "success",
@@ -64,6 +67,9 @@ function AllProducts() {
   };
 
   React.useEffect(() => {
+    setSelectedCategory("");
+    setSelectedCategoryName("");
+    setQuery("");
     getAllCat();
     getAllProducts();
   }, []);
@@ -90,15 +96,39 @@ function AllProducts() {
 
   const handleFilterProducts = (catId) => {
     const filteredProducts = allProducts.filter((p) => p.category === catId);
-    setChunkedArr(chunkArray(filteredProducts, 4));
+    setChunkedArr(chunkArray(filteredProducts, 3));
+  };
+
+  // Search Click Func
+  const keys = ["name", "description"];
+
+  const handleSearchFunc = (e) => {
+    e.preventDefault();
+    setSelectedCategoryName("");
+    setSelectedCategory("");
+    const searchedProds = allProducts.filter((p) =>
+      keys.some((k) => p[k].toLowerCase().includes(query))
+    );
+    setChunkedArr(chunkArray(searchedProds, 3));
   };
 
   return (
     <div>
-      <DashboardNavbar />
+      <DashboardNavbar
+        handleSearchClick={handleSearchFunc}
+        setQuery={setQuery}
+        query={query}
+      />
       <div className="mt-24 absolute lg:left-[250px]">
         <div className="d-flex justify-between">
-          <h2 className="text-xl font-bold mb-5 text-center">All Products</h2>
+          <h2 className="text-xl font-bold mb-5 text-center">
+            All Products{" "}
+            {selectedCategoryName ? (
+              <span className="text-l font-medium">
+                ({selectedCategoryName})
+              </span>
+            ) : null}
+          </h2>
           <button
             onClick={() => nav("/dashboard/addProduct")}
             className="rounded-1 p-1 font-semibold bg-[#1B94A0] text-white text-[16px] position-fixed  end-0 m-4"
@@ -125,6 +155,7 @@ function AllProducts() {
                     handleCategoryChange(cat._id);
                     setSelectedCategoryName(cat.name);
                     handleFilterProducts(cat._id);
+                    setQuery("");
                   }}
                 >
                   {cat.name}
@@ -133,18 +164,18 @@ function AllProducts() {
             ))}
           </ul>
         </div>
-        <div>
-        </div>
+        <div></div>
 
         <div>
           <Container fluid className="my-5">
             {chunkedArr?.map((four) => (
-              <Row key={four[0]._id}>
+              <Row key={four[0]._id} className="mb-5">
                 {four.map((el) => (
                   <Col key={el._id}>
                     <div className="card" style={{ width: "18rem" }}>
                       <div className="m-2 relative product-card">
-                        <img style={{ width: "18rem", height: "14rem" }}
+                        <img
+                          style={{ width: "18rem", height: "14rem" }}
                           src={el.coverImage.replace(
                             "/product",
                             "/tr:ar-1-1,w-285.5/product"
