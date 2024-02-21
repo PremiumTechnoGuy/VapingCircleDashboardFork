@@ -137,6 +137,7 @@ function AddProduct() {
     const id1 = toast.loading("Fetching Categories... Please Wait!");
     const id2 = toast.loading("Fetching Filters... Please Wait!");
     const id3 = toast.loading("Fetching Flavours... Please Wait!");
+    const id4 = toast.loading("Fetching Offers... Please Wait!");
 
     axios
       .get(`${apiUrl}/api/v1/category`)
@@ -205,6 +206,28 @@ function AddProduct() {
           autoClose: 3500,
         });
       });
+
+    axios
+      .get(`${apiUrl}/api/v1/offer`)
+      .then((res) => {
+        setAllOffers(res.data.data);
+        toast.update(id4, {
+          render: "Successfully Fetched Offers!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id4, {
+          render:
+            err.response?.data?.message || "Error! Try Again & See Console",
+          type: "error",
+          isLoading: false,
+          autoClose: 3500,
+        });
+      });
   }, []);
 
   // form states
@@ -213,8 +236,8 @@ function AddProduct() {
   const [basePrice, setBasePrice] = React.useState(0);
   const [sku, setSku] = React.useState("");
   const [description, setDescription] = React.useState("");
-  const [coverImage, setCoverImage] = React.useState("");
-  const [imagesArr, setImagesArr] = React.useState([]);
+  // const [coverImage, setCoverImage] = React.useState("");
+  // const [imagesArr, setImagesArr] = React.useState([]);
   const [selectedCategory, setSelectedCategory] = React.useState("");
   const [filteredFilters, setFilteredFilters] = React.useState([]);
   const [selectedFilter, setSelectedFilter] = React.useState("");
@@ -222,11 +245,10 @@ function AddProduct() {
   const [filteredFilterOptions, setFilteredFilterOptions] = React.useState([]);
   const [selectedFilteredFilterOption, setSelectedFilteredFilterOption] =
     React.useState("");
-  const [chosenFiltersArray, setChosenFiltersArray] = React.useState([]);
   const [finalFiltersObjArray, setFinalFiltersObjArray] = React.useState([]);
 
   const [allFlavours, setAllFlavours] = React.useState([]);
-  const [chosenFlavoursArray, setChosenFlavoursArray] = React.useState([]);
+  // const [chosenFlavoursArray, setChosenFlavoursArray] = React.useState([]);
   const [finalFlavoursObjArray, setFinalFlavoursObjArray] = React.useState([]);
   const [selectedFlavour, setSelectedFlavour] = React.useState("");
   const [selectedFlavourObj, setSelectedFlavourObj] = React.useState(null);
@@ -253,6 +275,13 @@ function AddProduct() {
         optionSku: "",
       },
     ]);
+
+  // hooks vape deals
+  const [selectedOffer, setSelectedOffer] = React.useState({
+    isOffer: false,
+    offerId: "",
+  });
+  const [allOffers, setAllOffers] = React.useState([]);
 
   const handleCloseVariantModal = () => {
     const newArrayOfOptionsObjects = [];
@@ -303,7 +332,9 @@ function AddProduct() {
       variants: finalVariantsArray,
       chosenFilters: finalFiltersObjArray,
       chosenFlavours: finalFlavoursObjArray,
+      offer: selectedOffer,
     };
+    // console.log(payload);
 
     axios
       .post(`${apiUrl}/api/v1/product`, payload)
@@ -624,6 +655,47 @@ function AddProduct() {
                         onChange={(e) => setProductName(e.target.value)}
                       />
                     </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      controlId=""
+                      md={4}
+                      style={{ marginTop: 15 }}
+                    >
+                      <Form.Label class="text-[#707070]  font-semibold py-2">
+                        1. Select Offer
+                      </Form.Label>
+                      <Form.Select
+                        onChange={(e) => {
+                          if (e.target.value === "") {
+                            setSelectedOffer({
+                              isOffer: false,
+                              offerId: "",
+                            });
+                            return;
+                          }
+                          console.log("test console");
+
+                          const [off] = allOffers.filter(
+                            (off) => off._id === e.target.value
+                          );
+
+                          setSelectedOffer({
+                            isOffer: true,
+                            offerId: off._id,
+                          });
+                        }}
+                        aria-label="Default select example"
+                        value={selectedOffer}
+                      >
+                        <option value={""}></option>
+                        {allOffers?.map((offer) => (
+                          <option key={offer._id} value={offer._id}>
+                            {offer.name}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
                   </Row>
 
                   <Row className="mb-3 lg:px-16 mt-3">
@@ -931,10 +1003,7 @@ function AddProduct() {
                       </Button>
                     </Form.Group>
 
-                    <label
-                      onClick={() => console.log(chosenFiltersArray)}
-                      class="text-[#707070] font-semibold py-2"
-                    >
+                    <label class="text-[#707070] font-semibold py-2">
                       Description
                     </label>
 
