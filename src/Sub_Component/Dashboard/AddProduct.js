@@ -280,6 +280,7 @@ function AddProduct() {
   const [selectedOffer, setSelectedOffer] = React.useState({
     isOffer: false,
     offerId: "",
+    offerName: "",
   });
   const [allOffers, setAllOffers] = React.useState([]);
 
@@ -671,26 +672,29 @@ function AddProduct() {
                             setSelectedOffer({
                               isOffer: false,
                               offerId: "",
+                              offerName: "",
                             });
                             return;
+                          } else {
+                            console.log("test console");
+
+                            const [off] = allOffers.filter(
+                              (off) => off.name === e.target.value
+                            );
+
+                            setSelectedOffer({
+                              isOffer: true,
+                              offerId: off._id,
+                              offerName: off.name,
+                            });
                           }
-                          console.log("test console");
-
-                          const [off] = allOffers.filter(
-                            (off) => off._id === e.target.value
-                          );
-
-                          setSelectedOffer({
-                            isOffer: true,
-                            offerId: off._id,
-                          });
                         }}
                         aria-label="Default select example"
-                        value={selectedOffer}
+                        value={selectedOffer.offerName}
                       >
                         <option value={""}></option>
                         {allOffers?.map((offer) => (
-                          <option key={offer._id} value={offer._id}>
+                          <option key={offer._id} value={offer.name}>
                             {offer.name}
                           </option>
                         ))}
