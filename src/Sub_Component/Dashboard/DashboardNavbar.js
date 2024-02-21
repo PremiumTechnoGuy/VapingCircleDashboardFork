@@ -139,6 +139,9 @@ function DashboardNavbar({ setQuery, handleSearchClick, query }) {
                     >
                       Flavours
                     </Nav.Link>
+                    <Nav.Link href="/dashboard/allOffers" class="mb-3 text-xl">
+                      Offers
+                    </Nav.Link>
                     {/* <Nav.Link href="/dashboard/profile" class="mb-3 text-xl">
                       Profile
                     </Nav.Link> */}
@@ -286,6 +289,24 @@ function DashboardNavbar({ setQuery, handleSearchClick, query }) {
                 <IoGridSharp />
               </span>
               <span>Flavours</span>
+            </NavLink>
+          </p>
+        </div>
+
+        <div className="d-flex text-white flex-row w-48 gap-3">
+          <p
+            className="flex items-center gap-2  w-48 text-base text-white hover:text-black  p-3
+            focus-within:bg-white border-y border-[#1B94A0]"
+            style={{ marginLeft: -48 }}
+          >
+            <NavLink
+              to="/dashboard/allOffers"
+              className="flex hover:text-black align-baseline"
+            >
+              <span className="mr-4 py-1">
+                <IoGridSharp />
+              </span>
+              <span>Offers</span>
             </NavLink>
           </p>
         </div>
