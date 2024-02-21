@@ -40,6 +40,9 @@ function DashboardNavbar({ setQuery, handleSearchClick, query }) {
                     style={{ height: 35 }}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={(e) =>
+                      e.key === "Enter" ? handleSearchClick(e) : null
+                    }
                   />
                   {/* search button */}
                   <InputGroup.Text
