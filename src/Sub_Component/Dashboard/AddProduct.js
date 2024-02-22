@@ -843,6 +843,17 @@ function AddProduct() {
                       </Button> */}
                     </Form.Group>
 
+                    <span className="mt-3 mb-0">
+                      <h1>
+                        Filters (
+                        {finalFiltersObjArray?.map((fil) => (
+                          <span>
+                            {fil.filterName}: {fil.chosenOption},{" "}
+                          </span>
+                        ))}{" "}
+                        )
+                      </h1>
+                    </span>
                     <Form.Group
                       as={Col}
                       controlId=""
