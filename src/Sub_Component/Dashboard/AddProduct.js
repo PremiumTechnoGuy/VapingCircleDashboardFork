@@ -233,7 +233,7 @@ function AddProduct() {
   // form states
   const [productName, setProductName] = React.useState("");
   const [available, setAvailable] = React.useState("true");
-  const [basePrice, setBasePrice] = React.useState(0);
+  const [basePrice, setBasePrice] = React.useState(null);
   const [sku, setSku] = React.useState("");
   const [description, setDescription] = React.useState("");
   // const [coverImage, setCoverImage] = React.useState("");
@@ -665,6 +665,7 @@ function AddProduct() {
                               isOffer: false,
                               offerId: "",
                               offerName: "",
+                              offerPrice: undefined,
                             });
                             return;
                           } else {
@@ -678,6 +679,7 @@ function AddProduct() {
                               isOffer: true,
                               offerId: off._id,
                               offerName: off.name,
+                              offerPrice: off.discountedPrice,
                             });
                           }
                         }}
