@@ -53,10 +53,46 @@ function AddFilter() {
   const [showInNavbar, setShowInNavbar] = React.useState("true");
   const [showInFilterbar, setShowInFilterbar] = React.useState("true");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadImg, setUploadImg] = useState(false);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
+    setUploadImg(true);
+  };
+
+  const handleUploadImage = (pId) => {
+    const id = toast.loading("Uploading Image...");
+    let formData = new FormData();
+    formData.append("image", selectedFile);
+
+    axios
+      .post(`${apiUrl}/api/v1/filter/imageUpload?filterId=${pId}`, formData)
+      .then((res) => {
+        console.log(res.data);
+        console.log("uploaded image");
+        // alert("successfully uploaded image!");
+        // return 'success';
+        toast.update(id, {
+          render: "Uploaded Filter Image Successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+
+        setUploadImg(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render:
+            err.response?.data?.message ||
+            "Filter Image Upload Error! See more using console!",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      });
   };
 
   const handleSubmitNewFilter = (e) => {
@@ -82,6 +118,7 @@ function AddFilter() {
     axios
       .post(`${apiUrl}/api/v1/filter`, payload, config)
       .then((res) => {
+        if (uploadImg) handleUploadImage(res.data.data._id);
         // setIsLoadingState(false);
         console.log(res.data);
         toast.update(id, {
