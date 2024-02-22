@@ -931,6 +931,18 @@ function AddProduct() {
                       </Button>
                     </Form.Group>
 
+                    <span className="mt-3 mb-0">
+                      <h1>
+                        Flavours (
+                        {finalFlavoursObjArray?.map((flav) => (
+                          <span>
+                            {flav.flavourName}: {flav.chosenSubFlavour},{" "}
+                          </span>
+                        ))}{" "}
+                        )
+                      </h1>
+                    </span>
+
                     <Form.Group
                       as={Col}
                       controlId=""
