@@ -239,9 +239,10 @@ function AddProduct() {
   // const [coverImage, setCoverImage] = React.useState("");
   // const [imagesArr, setImagesArr] = React.useState([]);
   const [selectedCategory, setSelectedCategory] = React.useState("");
+
   const [filteredFilters, setFilteredFilters] = React.useState([]);
   const [selectedFilter, setSelectedFilter] = React.useState("");
-  const [selectedFilterObj, setSelectedFilterObj] = React.useState(null);
+  // const [selectedFilterObj, setSelectedFilterObj] = React.useState(null);
   const [filteredFilterOptions, setFilteredFilterOptions] = React.useState([]);
   const [selectedFilteredFilterOption, setSelectedFilteredFilterOption] =
     React.useState("");
@@ -251,7 +252,7 @@ function AddProduct() {
   // const [chosenFlavoursArray, setChosenFlavoursArray] = React.useState([]);
   const [finalFlavoursObjArray, setFinalFlavoursObjArray] = React.useState([]);
   const [selectedFlavour, setSelectedFlavour] = React.useState("");
-  const [selectedFlavourObj, setSelectedFlavourObj] = React.useState(null);
+  // const [selectedFlavourObj, setSelectedFlavourObj] = React.useState(null);
   const [filteredFlavourSubFlavours, setFilteredFlavourSubFlavours] =
     React.useState([]);
   const [
@@ -497,7 +498,6 @@ function AddProduct() {
     // Reset state after extracting data
     setSelectedFilter("");
     setSelectedFilteredFilterOption("");
-    setSelectedFilterObj();
   };
 
   // flavours confirm choice
@@ -527,7 +527,6 @@ function AddProduct() {
     // Reset state after extracting data
     setSelectedFlavour("");
     setSelectedFilteredFlavourSubFlavour("");
-    setSelectedFlavourObj();
   };
 
   return (
@@ -621,15 +620,8 @@ function AddProduct() {
                             const newFilters = fetchedFilters.filter(
                               (f) => f.categoryId === changedCat
                             );
-                            const finalFiltersArray = newFilters?.map((f) => {
-                              return {
-                                filterId: f._id,
-                                filterName: f.name,
-                                chosenOption: "",
-                              };
-                            });
                             setFilteredFilters(newFilters);
-                            setFinalFiltersObjArray(finalFiltersArray);
+                            // setFinalFiltersObjArray(finalFiltersArray);
                             return changedCat;
                           });
                         }}
@@ -869,7 +861,6 @@ function AddProduct() {
 
                           setSelectedFilter(() => {
                             setFilteredFilterOptions(fil.options);
-                            setSelectedFilterObj(fil);
                             return e.target.value;
                           });
                         }}
@@ -947,7 +938,6 @@ function AddProduct() {
 
                           setSelectedFlavour(() => {
                             setFilteredFlavourSubFlavours(fil.subFlavours);
-                            setSelectedFlavourObj(fil);
                             return e.target.value;
                           });
                         }}
