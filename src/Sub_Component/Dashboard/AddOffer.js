@@ -18,8 +18,8 @@ function AddOffer() {
   const [alternateName, setAlternateName] = React.useState("");
   const [priorityNum, setPriorityNum] = React.useState(1);
   const [available, setAvailable] = React.useState("true");
-  const [productQuantity, setProductQuantity] = React.useState(0);
-  const [discountedPrice, setDiscountedPrice] = React.useState(0);
+  const [productQuantity, setProductQuantity] = React.useState(null);
+  const [discountedPrice, setDiscountedPrice] = React.useState(null);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadingImage, setUploadingImage] = React.useState(false);
@@ -38,12 +38,11 @@ function AddOffer() {
       name: offerName,
       alternateName,
       priority: priorityNum,
-      image: "placeholder.jpeg",
       available: available === "true" ? true : false,
       productQuantity,
       discountedPrice,
     };
-    console.log(payload);
+    // console.log(payload);
 
     axios
       .post(`${apiUrl}/api/v1/offer`, payload, config)
@@ -79,13 +78,13 @@ function AddOffer() {
       });
   };
 
-  const handleUploadImage = (fId) => {
+  const handleUploadImage = (offId) => {
     const id = toast.loading("Uploading offer Image...");
     let formData = new FormData();
     formData.append("image", selectedFile);
 
     axios
-      .post(`${apiUrl}/api/v1/offer/imageUpload?flavourId=${fId}`, formData)
+      .post(`${apiUrl}/api/v1/offer/imageUpload?offerId=${offId}`, formData)
       .then((res) => {
         console.log(res.data);
         console.log("uploaded image");
