@@ -198,10 +198,13 @@ function EditProduct() {
 
   // custom hooks
   const [fetchedProduct, setFetchedProduct] = React.useState(null);
+  const [selectedOffer, setSelectedOffer] = React.useState(null);
+  const [allOffers, setAllOffers] = React.useState([]);
 
   React.useEffect(() => {
     const id1 = toast.loading("Fetching Product Details... Please Wait!");
     const id2 = toast.loading("Fetching Filters... Please Wait!");
+    const id3 = toast.loading("Fetching Offers... Please Wait!");
 
     axios
       .get(`${apiUrl}/api/v1/product/${prodId}`)
@@ -226,6 +229,7 @@ function EditProduct() {
         const varArray = res.data.data.variants.map((v) => v.variantType);
         setVariantsArray(varArray);
         setFinalFiltersObjArray(res.data.data.chosenFilters);
+        setSelectedOffer(res.data.data.offer);
       })
       .catch((err) => {
         console.log(err);
@@ -254,6 +258,28 @@ function EditProduct() {
       .catch((err) => {
         console.log(err);
         toast.update(id1, {
+          render:
+            err.response?.data?.message || "Error! Try Again & See Console",
+          type: "error",
+          isLoading: false,
+          autoClose: 3500,
+        });
+      });
+
+    axios
+      .get(`${apiUrl}/api/v1/offer?sort=priority`)
+      .then((res) => {
+        setAllOffers(res.data.data);
+        toast.update(id3, {
+          render: "Successfully Fetched Offers!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id3, {
           render:
             err.response?.data?.message || "Error! Try Again & See Console",
           type: "error",
@@ -346,7 +372,7 @@ function EditProduct() {
 
   const handleSubmitNewProduct = (e) => {
     e.preventDefault();
-    // const id = toast.loading("Creating New Product...");
+    const id = toast.loading("Creating New Product...");
 
     // const token = localStorage.getItem("token");
     // const config = {
@@ -361,44 +387,45 @@ function EditProduct() {
       description,
       variants: finalVariantsArray,
       chosenFilters: finalFiltersObjArray,
+      offer: selectedOffer,
     };
     console.log(payload);
 
-    //   axios
-    //     .patch(`${apiUrl}/api/v1/product/${prodId}`, payload)
-    //     .then((res) => {
-    //       console.log(res.data);
-    //       toast.update(id, {
-    //         render: "Edited Product Successfully!",
-    //         type: "success",
-    //         isLoading: false,
-    //         autoClose: 3000,
-    //       });
+    axios
+      .patch(`${apiUrl}/api/v1/product/${prodId}`, payload)
+      .then((res) => {
+        console.log(res.data);
+        toast.update(id, {
+          render: "Edited Product Successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
 
-    //       // Upload Cover Image
-    //       if (uploadingImage) handleUploadImage(res.data.data._id);
+        // Upload Cover Image
+        if (uploadingImage) handleUploadImage(res.data.data._id);
 
-    //       // Upload Multiple Images
-    //       if (multipleUpload) handleUploadImages(res.data.data._id);
+        // Upload Multiple Images
+        if (multipleUpload) handleUploadImages(res.data.data._id);
 
-    //       setProductName("");
-    //       setDescription("");
-    //       setBasePrice(0);
-    //       setFinalVariantsArray([]);
-    //       setVariantsArray([]);
-    //       setSelectedVariantType("");
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //       toast.update(id, {
-    //         render:
-    //           err.response?.data?.message ||
-    //           "Error Occured! See more using console!",
-    //         type: "error",
-    //         isLoading: false,
-    //         autoClose: 3000,
-    //       });
-    //     });
+        setProductName("");
+        setDescription("");
+        setBasePrice(0);
+        setFinalVariantsArray([]);
+        setVariantsArray([]);
+        setSelectedVariantType("");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render:
+            err.response?.data?.message ||
+            "Error Occured! See more using console!",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      });
   };
 
   const [image, setImage] = React.useState({ preview: "", data: "" });
@@ -644,6 +671,52 @@ function EditProduct() {
                         value={productName}
                         onChange={(e) => setProductName(e.target.value)}
                       />
+                    </Form.Group>
+
+                    <Form.Group
+                      as={Col}
+                      controlId=""
+                      md={4}
+                      style={{ marginTop: 15 }}
+                    >
+                      <Form.Label class="text-[#707070]  font-semibold py-2">
+                        1. Select Offer
+                      </Form.Label>
+                      <Form.Select
+                        onChange={(e) => {
+                          if (e.target.value === "") {
+                            setSelectedOffer({
+                              isOffer: false,
+                              offerId: "",
+                              offerName: "",
+                              offerPrice: undefined,
+                            });
+                            return;
+                          } else {
+                            console.log("test console");
+
+                            const [off] = allOffers.filter(
+                              (off) => off.name === e.target.value
+                            );
+
+                            setSelectedOffer({
+                              isOffer: true,
+                              offerId: off._id,
+                              offerName: off.name,
+                              offerPrice: off.discountedPrice,
+                            });
+                          }
+                        }}
+                        aria-label="Default select example"
+                        value={selectedOffer?.offerName}
+                      >
+                        <option value={""}></option>
+                        {allOffers?.map((offer) => (
+                          <option key={offer._id} value={offer.name}>
+                            {offer.name}
+                          </option>
+                        ))}
+                      </Form.Select>
                     </Form.Group>
                   </Row>
 
