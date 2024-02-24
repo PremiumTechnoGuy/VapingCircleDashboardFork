@@ -742,11 +742,12 @@ function EditProduct() {
                           const [currentVariant] = finalVariantsArray?.filter(
                             (v) => v.variantType === e.target.value
                           );
-                          if (currentVariant)
+                          if (currentVariant) {
                             setSelectedVariantOptionsArr(
                               currentVariant.options
                             );
-                          else
+                            setNewVariantSelected(false);
+                          } else {
                             setSelectedVariantOptionsArr([
                               {
                                 optionValue: "",
@@ -756,6 +757,8 @@ function EditProduct() {
                                 optionImg: "",
                               },
                             ]);
+                            setNewVariantSelected(true);
+                          }
                         }}
                         aria-label="Default select example"
                       >
