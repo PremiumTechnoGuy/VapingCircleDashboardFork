@@ -36,9 +36,7 @@ function VariantOption({ variantOptionsObj, selectedVariant, i }) {
   const [optionQuant, setOptionQuant] = React.useState(
     variantOptionsObj.optionQuantity
   );
-  const [optionStk, setOptionStk] = React.useState(variantOptionsObj.optionSku);
-
-  // const [optionImg, setOptionImg] = React.useState(variantOptionsObj.optionImg);
+  const [optionSku, setOptionSku] = React.useState(variantOptionsObj.optionSku);
 
   return (
     <span>
@@ -85,22 +83,9 @@ function VariantOption({ variantOptionsObj, selectedVariant, i }) {
             type=""
             placeholder=""
             id={`${slugify(selectedVariant)}-${i}`}
-            data-sku={optionStk}
-            value={optionStk}
-            onChange={(e) => setOptionStk(e.target.value)}
-          />
-        </Form.Group>
-
-        <Form.Group as={Col} xs={2} controlId="">
-          <img
-            // src={el.coverImage.replace(
-            //   "/product",
-            //   "/tr:ar-1-1,w-285.5/product"
-            // )}
-            src="https://ik.imagekit.io/ql8u22y4o/tr:ar-1-1,h-50/products/product-65d96482fe65cfbe77e4a2d6-1708745859904.jpeg"
-            loading="lazy"
-            alt=""
-            className="product-image border-2 mt-2"
+            data-sku={optionSku}
+            value={optionSku}
+            onChange={(e) => setOptionSku(e.target.value)}
           />
         </Form.Group>
 
@@ -864,7 +849,7 @@ function AddProduct() {
                         onClick={handleShow}
                         variant="info"
                       >
-                        Add Options
+                        Add/Edit Options
                       </Button>
                       {/* <Button
                         // class="rounded-1  bg-[#1B94A0] text-white"
@@ -1129,7 +1114,7 @@ function AddProduct() {
                           variant="info"
                           class="rounded-1 py-2 px-2 bg-[#1B94A0] text-white hover:bg-[#1B94A0] hover:text-white"
                         >
-                          Add Model
+                          Confirm Options & Close
                         </Button>
                       </Modal.Footer>
                     </Modal>

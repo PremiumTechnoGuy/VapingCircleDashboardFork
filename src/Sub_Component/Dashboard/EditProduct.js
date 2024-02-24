@@ -26,18 +26,52 @@ function slugify(str) {
 }
 
 function VariantOption({ variantOptionsObj, selectedVariant, i }) {
-  const [optionVal, setOptionVal] = React.useState("");
-  const [optionPrc, setOptionPrc] = React.useState(0);
-  const [optionQuant, setOptionQuant] = React.useState(0);
-  const [optionStk, setOptionStk] = React.useState("");
+  const [optionVal, setOptionVal] = React.useState(
+    variantOptionsObj.optionValue
+  );
+  const [optionPrc, setOptionPrc] = React.useState(
+    variantOptionsObj.optionPrice
+  );
+  const [optionQuant, setOptionQuant] = React.useState(
+    variantOptionsObj.optionQuantity
+  );
+  const [optionStk, setOptionStk] = React.useState(variantOptionsObj.optionSku);
 
-  React.useEffect(() => {
-    console.log(variantOptionsObj);
-    setOptionVal(variantOptionsObj.optionValue);
-    setOptionPrc(variantOptionsObj.optionPrice);
-    setOptionQuant(variantOptionsObj.optionQuantity);
-    setOptionStk(variantOptionsObj.optionSku);
-  }, []);
+  const [optionImg, setOptionImg] = React.useState(variantOptionsObj.optionImg);
+
+  const handleUploadImage = (e) => {
+    const id = toast.loading("Uploading Option Image...");
+    let formData = new FormData();
+    formData.append("image", e.target.files[0]);
+
+    axios
+      .post(`${apiUrl}/api/v1/product/imageUpload/variant`, formData)
+      .then((res) => {
+        console.log(res.data);
+        console.log("uploaded image");
+        // alert("successfully uploaded image!");
+        // return 'success';
+        toast.update(id, {
+          render: "Uploaded Option Image Successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+
+        setOptionImg(res.data.url);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render:
+            err.response?.data?.message ||
+            "Option Image Upload Error! See more using console!",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      });
+  };
 
   return (
     <span>
@@ -88,6 +122,34 @@ function VariantOption({ variantOptionsObj, selectedVariant, i }) {
             value={optionStk}
             onChange={(e) => setOptionStk(e.target.value)}
           />
+        </Form.Group>
+
+        <Form.Group as={Col} xs={2} controlId="">
+          {optionImg ? (
+            <img
+              src={optionImg.replace("/product", "/tr:ar-1-1,h-50/product")}
+              loading="lazy"
+              alt="option Img"
+              className="product-image border-2 mt-2"
+            />
+          ) : (
+            <>
+              <Form.Label class="font-semibold" style={{ fontSize: "12px" }}>
+                Option Img
+              </Form.Label>
+              <Form.Control
+                type="file"
+                style={{ height: "35px", width: "70px", fontSize: "10px" }}
+                onChange={(e) => handleUploadImage(e)}
+              />
+              {/* <button
+                // onClick={handleUploadImage}
+                class="rounded-1 p-0 w-[35px] font-semibold   m-0 bg-[#1B94A0] text-white"
+              >
+                Confirm Upload
+              </button> */}
+            </>
+          )}
         </Form.Group>
 
         {/* <Form.Group as={Col} xs={2} controlId="">
@@ -224,9 +286,10 @@ function EditProduct() {
     React.useState([
       {
         optionValue: "",
-        optionPrice: 0,
-        optionQuantity: 1,
+        optionPrice: null,
+        optionQuantity: null,
         optionSku: "",
+        optionImg: "",
       },
     ]);
 
@@ -392,6 +455,49 @@ function EditProduct() {
   };
 
   const handleUploadImages = (pId) => {
+    const id = toast.loading("Uploading Multiple Images...");
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append(`images`, file);
+    });
+
+    axios
+      .post(
+        `${apiUrl}/api/v1/product/multipleImageUpload?productId=${pId}`,
+        formData
+      )
+      .then((res) => {
+        toast.update(id, {
+          render: "Multiple Images Uploaded!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+        console.log(res.data);
+        setFiles([]);
+        setMultipleUpload(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render:
+            err.response?.data?.message ||
+            "Multiple Image Upload Error! See more using console!",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      });
+  };
+
+  // Multiple Image Upload
+  const [optionImages, setOptionImages] = useState([]);
+
+  const handleMultipleOptionFileChange = (e) => {
+    setOptionImages((imgs) => [...imgs, e.target.files[0]]);
+  };
+
+  const handleUploadOptionImages = (pId) => {
     const id = toast.loading("Uploading Multiple Images...");
     const formData = new FormData();
     files.forEach((file) => {
@@ -624,27 +730,26 @@ function EditProduct() {
                       </Form.Label>
                       <Form.Select
                         onChange={(e) => {
-                          const [selectedVariant] = fetchedVariants.filter(
+                          setSelectedVariantType(e.target.value);
+                          const [currentVariant] = finalVariantsArray?.filter(
                             (v) => v.variantType === e.target.value
                           );
-                          if (selectedVariant) {
+                          if (currentVariant) {
                             setSelectedVariantOptionsArr(
-                              selectedVariant.options
+                              currentVariant.options
                             );
-                            setNewVariantSelected(false);
                           } else {
                             setSelectedVariantOptionsArr([
                               {
                                 optionValue: "",
-                                optionPrice: 0,
-                                optionQuantity: 1,
+                                optionPrice: null,
+                                optionQuantity: null,
                                 optionSku: "",
+                                optionImg: "",
                               },
                             ]);
                             setNewVariantSelected(true);
                           }
-
-                          setSelectedVariantType(e.target.value);
                         }}
                         aria-label="Default select example"
                       >
@@ -871,9 +976,10 @@ function EditProduct() {
                               const newArr = [...arr];
                               newArr.push({
                                 optionValue: "",
-                                optionPrice: "",
-                                optionQuantity: 1,
+                                optionPrice: null,
+                                optionQuantity: null,
                                 optionSku: "",
+                                optionImg: "",
                               });
                               return newArr;
                             });

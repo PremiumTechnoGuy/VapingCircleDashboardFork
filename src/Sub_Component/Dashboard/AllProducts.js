@@ -45,7 +45,16 @@ function AllProducts() {
           autoClose: 1500,
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render:
+            err.response?.data?.message || "Error! Try Again & See Console",
+          type: "error",
+          isLoading: false,
+          autoClose: 3500,
+        });
+      });
   };
 
   const getAllProducts = () => {
@@ -63,7 +72,16 @@ function AllProducts() {
           autoClose: 1500,
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render:
+            err.response?.data?.message || "Error! Try Again & See Console",
+          type: "error",
+          isLoading: false,
+          autoClose: 3500,
+        });
+      });
   };
 
   React.useEffect(() => {
@@ -91,7 +109,16 @@ function AllProducts() {
           autoClose: 3000,
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render:
+            err.response?.data?.message || "Error! Try Again & See Console",
+          type: "error",
+          isLoading: false,
+          autoClose: 3500,
+        });
+      });
   };
 
   const handleFilterProducts = (catId) => {
@@ -147,7 +174,7 @@ function AllProducts() {
             Select Category
           </button>
           <ul className="dropdown-menu" aria-labelledby="categoryDropdown">
-            {allCategories.map((cat) => (
+            {allCategories?.map((cat) => (
               <li key={cat._id}>
                 <button
                   className="dropdown-item"
@@ -195,17 +222,19 @@ function AllProducts() {
                             >
                               Delete
                             </button>
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                nav(
-                                  `/dashboard/editProduct/${selectedCategory}/${selectedCategoryName}/${el._id}`
-                                );
-                              }}
-                              className="rounded-1 p-1 w-24 font-semibold bg-[#1B94A0] text-white text-[14px] edit-button"
-                            >
-                              Edit
-                            </button>
+                            {selectedCategory ? (
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  nav(
+                                    `/dashboard/editProduct/${selectedCategory}/${selectedCategoryName}/${el._id}`
+                                  );
+                                }}
+                                className="rounded-1 p-1 w-24 font-semibold bg-[#1B94A0] text-white text-[14px] edit-button"
+                              >
+                                Edit
+                              </button>
+                            ) : null}
                           </div>
                         </div>
                         <div className=" card-body product-info">
