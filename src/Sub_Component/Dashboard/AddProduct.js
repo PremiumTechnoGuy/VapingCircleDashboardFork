@@ -609,9 +609,9 @@ function AddProduct() {
     }
 
     setFinalFlavoursObjArray((flv) => {
-      const newArr = flv.flat().filter((f) => f.flavourId !== selectedFlavour);
+      // const newArr = flv.flat().filter((f) => f.flavourId !== selectedFlavour);
 
-      return [...newArr, ...chosenFlavours];
+      return [...flv, ...chosenFlavours];
     });
 
     // Reset state after extracting data
