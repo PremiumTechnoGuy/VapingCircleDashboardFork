@@ -38,6 +38,8 @@ function VariantOption({ variantOptionsObj, selectedVariant, i }) {
   );
   const [optionStk, setOptionStk] = React.useState(variantOptionsObj.optionSku);
 
+  // const [optionImg, setOptionImg] = React.useState(variantOptionsObj.optionImg);
+
   return (
     <span>
       <h1 class="font-bold text-xl underline">Option Info:</h1>
@@ -86,6 +88,19 @@ function VariantOption({ variantOptionsObj, selectedVariant, i }) {
             data-sku={optionStk}
             value={optionStk}
             onChange={(e) => setOptionStk(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group as={Col} xs={2} controlId="">
+          <img
+            // src={el.coverImage.replace(
+            //   "/product",
+            //   "/tr:ar-1-1,w-285.5/product"
+            // )}
+            src="https://ik.imagekit.io/ql8u22y4o/tr:ar-1-1,h-50/products/product-65d96482fe65cfbe77e4a2d6-1708745859904.jpeg"
+            loading="lazy"
+            alt=""
+            className="product-image border-2 mt-2"
           />
         </Form.Group>
 
@@ -271,9 +286,10 @@ function AddProduct() {
     React.useState([
       {
         optionValue: "",
-        optionPrice: 0,
-        optionQuantity: 1,
+        optionPrice: null,
+        optionQuantity: null,
         optionSku: "",
+        optionImg: "",
       },
     ]);
 
@@ -784,7 +800,26 @@ function AddProduct() {
                         Current Variant Types
                       </Form.Label>
                       <Form.Select
-                        onChange={(e) => setSelectedVariantType(e.target.value)}
+                        onChange={(e) => {
+                          setSelectedVariantType(e.target.value);
+                          const [currentVariant] = finalVariantsArray?.filter(
+                            (v) => v.variantType === e.target.value
+                          );
+                          if (currentVariant)
+                            setSelectedVariantOptionsArr(
+                              currentVariant.options
+                            );
+                          else
+                            setSelectedVariantOptionsArr([
+                              {
+                                optionValue: "",
+                                optionPrice: null,
+                                optionQuantity: null,
+                                optionSku: "",
+                                optionImg: "",
+                              },
+                            ]);
+                        }}
                         aria-label="Default select example"
                       >
                         <option value={""}></option>
@@ -1072,9 +1107,10 @@ function AddProduct() {
                               const newArr = [...arr];
                               newArr.push({
                                 optionValue: "",
-                                optionPrice: "",
-                                optionQuantity: 1,
+                                optionPrice: null,
+                                optionQuantity: null,
                                 optionSku: "",
+                                optionImg: "",
                               });
                               return newArr;
                             });
