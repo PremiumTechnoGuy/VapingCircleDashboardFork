@@ -71,7 +71,7 @@ function AllOffers() {
                       <div className="m-2 relative image-container">
                         <img
                           style={{ width: "18rem", height: "12rem" }}
-                          src={offr.image.replace(
+                          src={offr?.image?.replace(
                             "/offer",
                             "/tr:ar-1-1,w-285.5/offer"
                           )}
