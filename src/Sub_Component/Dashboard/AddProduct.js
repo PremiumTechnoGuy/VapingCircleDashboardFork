@@ -282,6 +282,7 @@ function AddProduct() {
     isOffer: false,
     offerId: "",
     offerName: "",
+    offerPrice: 0,
   });
   const [allOffers, setAllOffers] = React.useState([]);
 
