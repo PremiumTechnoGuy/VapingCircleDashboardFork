@@ -25,7 +25,7 @@ function slugify(str) {
     .replace(/-+/g, "-"); // remove consecutive hyphens
 }
 
-function VariantOption({ variantOptionsObj, selectedVariant, i }) {
+function VariantOption({ variantOptionsObj, selectedVariant, i, pId }) {
   const [optionVal, setOptionVal] = React.useState(
     variantOptionsObj.optionValue
   );
@@ -45,7 +45,10 @@ function VariantOption({ variantOptionsObj, selectedVariant, i }) {
     formData.append("image", e.target.files[0]);
 
     axios
-      .post(`${apiUrl}/api/v1/product/imageUpload/variant`, formData)
+      .post(
+        `${apiUrl}/api/v1/product/imageUpload/variant?productId=${pId}`,
+        formData
+      )
       .then((res) => {
         console.log(res.data);
         console.log("uploaded image");
@@ -130,6 +133,8 @@ function VariantOption({ variantOptionsObj, selectedVariant, i }) {
               src={optionImg.replace("/product", "/tr:ar-1-1,h-50/product")}
               loading="lazy"
               alt="option Img"
+              id={`${slugify(selectedVariant)}-${i}`}
+              data-img={optionImg}
               className="product-image border-2 mt-2"
             />
           ) : (
@@ -305,6 +310,7 @@ function EditProduct() {
           if (el.dataset.quantity)
             newObj.optionQuantity = Number(el.dataset.quantity);
           if (el.dataset.sku) newObj.optionSku = el.dataset.sku;
+          if (el.dataset.img) newObj.optionImg = el.dataset.img;
         });
       newArrayOfOptionsObjects.push(newObj);
     });
@@ -340,7 +346,7 @@ function EditProduct() {
 
   const handleSubmitNewProduct = (e) => {
     e.preventDefault();
-    const id = toast.loading("Creating New Product...");
+    // const id = toast.loading("Creating New Product...");
 
     // const token = localStorage.getItem("token");
     // const config = {
@@ -356,42 +362,43 @@ function EditProduct() {
       variants: finalVariantsArray,
       chosenFilters: finalFiltersObjArray,
     };
+    console.log(payload);
 
-    axios
-      .patch(`${apiUrl}/api/v1/product/${prodId}`, payload)
-      .then((res) => {
-        console.log(res.data);
-        toast.update(id, {
-          render: "Edited Product Successfully!",
-          type: "success",
-          isLoading: false,
-          autoClose: 3000,
-        });
+    //   axios
+    //     .patch(`${apiUrl}/api/v1/product/${prodId}`, payload)
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       toast.update(id, {
+    //         render: "Edited Product Successfully!",
+    //         type: "success",
+    //         isLoading: false,
+    //         autoClose: 3000,
+    //       });
 
-        // Upload Cover Image
-        if (uploadingImage) handleUploadImage(res.data.data._id);
+    //       // Upload Cover Image
+    //       if (uploadingImage) handleUploadImage(res.data.data._id);
 
-        // Upload Multiple Images
-        if (multipleUpload) handleUploadImages(res.data.data._id);
+    //       // Upload Multiple Images
+    //       if (multipleUpload) handleUploadImages(res.data.data._id);
 
-        setProductName("");
-        setDescription("");
-        setBasePrice(0);
-        setFinalVariantsArray([]);
-        setVariantsArray([]);
-        setSelectedVariantType("");
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.update(id, {
-          render:
-            err.response?.data?.message ||
-            "Error Occured! See more using console!",
-          type: "error",
-          isLoading: false,
-          autoClose: 3000,
-        });
-      });
+    //       setProductName("");
+    //       setDescription("");
+    //       setBasePrice(0);
+    //       setFinalVariantsArray([]);
+    //       setVariantsArray([]);
+    //       setSelectedVariantType("");
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //       toast.update(id, {
+    //         render:
+    //           err.response?.data?.message ||
+    //           "Error Occured! See more using console!",
+    //         type: "error",
+    //         isLoading: false,
+    //         autoClose: 3000,
+    //       });
+    //     });
   };
 
   const [image, setImage] = React.useState({ preview: "", data: "" });
@@ -450,6 +457,7 @@ function EditProduct() {
         type: "warning",
         autoClose: 2500,
         isLoading: false,
+        handleCloseFilter,
       });
     } else setFiles(Array.from(e.target.files));
   };
@@ -734,11 +742,11 @@ function EditProduct() {
                           const [currentVariant] = finalVariantsArray?.filter(
                             (v) => v.variantType === e.target.value
                           );
-                          if (currentVariant) {
+                          if (currentVariant)
                             setSelectedVariantOptionsArr(
                               currentVariant.options
                             );
-                          } else {
+                          else
                             setSelectedVariantOptionsArr([
                               {
                                 optionValue: "",
@@ -748,8 +756,6 @@ function EditProduct() {
                                 optionImg: "",
                               },
                             ]);
-                            setNewVariantSelected(true);
-                          }
                         }}
                         aria-label="Default select example"
                       >
@@ -959,6 +965,7 @@ function EditProduct() {
                               key={i}
                               selectedVariant={selectedVariantType}
                               variantOptionsObj={variantOptionsObj}
+                              pId={prodId}
                               i={i}
                             />
                           )
