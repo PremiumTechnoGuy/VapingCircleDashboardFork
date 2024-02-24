@@ -584,7 +584,7 @@ function AddProduct() {
                   <Col>
                     <Form.Group as={Col} controlId="" sm={4} className="">
                       <Form.Label class="text-[#707070] font-semibold py-2">
-                        Choose Images (Max 4)
+                        Choose Extra Images
                       </Form.Label>
                       <Form.Control
                         type="file"
