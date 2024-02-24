@@ -26,7 +26,7 @@ function slugify(str) {
     .replace(/-+/g, "-"); // remove consecutive hyphens
 }
 
-function VariantOption({ variantOptionsObj, selectedVariant, i }) {
+function VariantOption({ variantOptionsObj, selectedVariant, i, pId }) {
   const [optionVal, setOptionVal] = React.useState(
     variantOptionsObj.optionValue
   );
@@ -37,6 +37,45 @@ function VariantOption({ variantOptionsObj, selectedVariant, i }) {
     variantOptionsObj.optionQuantity
   );
   const [optionSku, setOptionSku] = React.useState(variantOptionsObj.optionSku);
+
+  const [optionImg, setOptionImg] = React.useState(variantOptionsObj.optionImg);
+
+  const handleUploadImage = (e) => {
+    const id = toast.loading("Uploading Option Image...");
+    let formData = new FormData();
+    formData.append("image", e.target.files[0]);
+
+    axios
+      .post(
+        `${apiUrl}/api/v1/product/imageUpload/variant?productId=${pId}`,
+        formData
+      )
+      .then((res) => {
+        console.log(res.data);
+        console.log("uploaded image");
+        // alert("successfully uploaded image!");
+        // return 'success';
+        toast.update(id, {
+          render: "Uploaded Option Image Successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+
+        setOptionImg(res.data.url);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render:
+            err.response?.data?.message ||
+            "Option Image Upload Error! See more using console!",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      });
+  };
 
   return (
     <span>
@@ -87,6 +126,36 @@ function VariantOption({ variantOptionsObj, selectedVariant, i }) {
             value={optionSku}
             onChange={(e) => setOptionSku(e.target.value)}
           />
+        </Form.Group>
+
+        <Form.Group as={Col} xs={2} controlId="">
+          {optionImg ? (
+            <img
+              src={optionImg.replace("/product", "/tr:ar-1-1,h-50/product")}
+              loading="lazy"
+              alt="option Img"
+              id={`${slugify(selectedVariant)}-${i}`}
+              data-img={optionImg}
+              className="product-image border-2 mt-2"
+            />
+          ) : (
+            <>
+              <Form.Label class="font-semibold" style={{ fontSize: "12px" }}>
+                Option Img
+              </Form.Label>
+              <Form.Control
+                type="file"
+                style={{ height: "35px", width: "70px", fontSize: "10px" }}
+                onChange={(e) => handleUploadImage(e)}
+              />
+              {/* <button
+                // onClick={handleUploadImage}
+                class="rounded-1 p-0 w-[35px] font-semibold   m-0 bg-[#1B94A0] text-white"
+              >
+                Confirm Upload
+              </button> */}
+            </>
+          )}
         </Form.Group>
 
         {/* <Form.Group as={Col} xs={2} controlId="">
@@ -264,6 +333,7 @@ function AddProduct() {
   const [selectedVariantType, setSelectedVariantType] = React.useState("");
   const [typedNewVariant, setTypedNewVariant] = React.useState("");
   const [finalVariantsArray, setFinalVariantsArray] = React.useState([]);
+  const [newVariantSelected, setNewVariantSelected] = React.useState(true);
 
   const [featured, setFeatured] = React.useState("false");
 
@@ -299,18 +369,36 @@ function AddProduct() {
           if (el.dataset.quantity)
             newObj.optionQuantity = Number(el.dataset.quantity);
           if (el.dataset.sku) newObj.optionSku = el.dataset.sku;
+          if (el.dataset.img) newObj.optionImg = el.dataset.img;
         });
       newArrayOfOptionsObjects.push(newObj);
     });
     console.log(newArrayOfOptionsObjects);
 
-    setFinalVariantsArray((arr) => [
-      ...arr,
-      {
-        variantType: selectedVariantType,
-        options: newArrayOfOptionsObjects,
-      },
-    ]);
+    if (newVariantSelected) {
+      setFinalVariantsArray((arr) => [
+        ...arr,
+        {
+          variantType: selectedVariantType,
+          options: newArrayOfOptionsObjects,
+        },
+      ]);
+    } else {
+      setFinalVariantsArray((arr) => {
+        const newArr = arr.map((variant) => {
+          if (variant.variantType === selectedVariantType) {
+            return {
+              variantType: selectedVariantType,
+              options: newArrayOfOptionsObjects,
+            };
+          } else {
+            return variant;
+          }
+        });
+        console.log(newArr, "hahah");
+        return newArr;
+      });
+    }
     console.log(finalVariantsArray);
     setSelectedVariantType("");
   };
@@ -338,7 +426,7 @@ function AddProduct() {
       chosenFlavours: finalFlavoursObjArray,
       offer: selectedOffer,
     };
-    // console.log(payload);
+    console.log(payload);
 
     axios
       .post(`${apiUrl}/api/v1/product`, payload)
@@ -790,11 +878,12 @@ function AddProduct() {
                           const [currentVariant] = finalVariantsArray?.filter(
                             (v) => v.variantType === e.target.value
                           );
-                          if (currentVariant)
+                          if (currentVariant) {
                             setSelectedVariantOptionsArr(
                               currentVariant.options
                             );
-                          else
+                            setNewVariantSelected(false);
+                          } else {
                             setSelectedVariantOptionsArr([
                               {
                                 optionValue: "",
@@ -804,6 +893,8 @@ function AddProduct() {
                                 optionImg: "",
                               },
                             ]);
+                            setNewVariantSelected(true);
+                          }
                         }}
                         aria-label="Default select example"
                       >
@@ -1075,6 +1166,7 @@ function AddProduct() {
                               key={i}
                               selectedVariant={selectedVariantType}
                               variantOptionsObj={variantOptionsObj}
+                              pId={"123456789abc"}
                               i={i}
                             />
                           )
