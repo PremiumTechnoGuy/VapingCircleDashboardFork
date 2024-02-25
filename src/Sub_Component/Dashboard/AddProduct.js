@@ -419,7 +419,7 @@ function AddProduct() {
       name: productName,
       basePrice,
       sku,
-      description,
+      description,overview,
       coverImage: "cover.jpeg",
       images: ["1.jpeg", "2.jpeg", "3.jpeg"],
       category: selectedCategory,
