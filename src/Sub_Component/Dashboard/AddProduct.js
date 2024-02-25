@@ -98,15 +98,13 @@ function VariantOption({
           />
         </Form.Group>
         <Form.Group as={Col} controlId="">
-          <Form.Label class="font-semibold">
-            New Price: {(basePrice + optionPrc).toPrecision(4)}
-          </Form.Label>
+          <Form.Label class="font-semibold">Price</Form.Label>
           <Form.Control
             type="number"
             min={0}
             id={`${slugify(selectedVariant)}-${i}`}
             data-price={optionPrc}
-            value={optionPrc}
+            value={optionPrc || basePrice}
             onChange={(e) => setOptionPrc(Number(e.target.value))}
           />
         </Form.Group>
