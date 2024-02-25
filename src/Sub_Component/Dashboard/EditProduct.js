@@ -220,6 +220,8 @@ function EditProduct() {
         // setting fetched values
         setProductName(res.data.data.name);
         setDescription(res.data.data.description);
+        setOverview(res.data.data.overview);
+
         setBasePrice(res.data.data.basePrice);
         setAvailable(`${res.data.data.available}`);
         setFeatured(`${res.data.data.featured}`);
@@ -295,6 +297,8 @@ function EditProduct() {
   const [basePrice, setBasePrice] = React.useState(0);
   const [sku, setSku] = React.useState("");
   const [description, setDescription] = React.useState("");
+  const [overview, setOverview] = React.useState("");
+
   const [filteredFilters, setFilteredFilters] = React.useState([]);
   const [selectedFilter, setSelectedFilter] = React.useState("");
   const [selectedFilterObj, setSelectedFilterObj] = React.useState(null);
@@ -384,7 +388,7 @@ function EditProduct() {
       name: productName,
       basePrice,
       sku,
-      description,
+      description, overview,
       variants: finalVariantsArray,
       chosenFilters: finalFiltersObjArray,
       offer: selectedOffer,
@@ -410,6 +414,7 @@ function EditProduct() {
 
         setProductName("");
         setDescription("");
+        setOverview("");
         setBasePrice(0);
         setFinalVariantsArray([]);
         setVariantsArray([]);
@@ -636,24 +641,24 @@ function EditProduct() {
                       <Form.Select
                         aria-label="Default select example"
                         disabled
-                        // onChange={(e) => {
-                        //   setSelectedCategory(() => {
-                        //     const changedCat = e.target.value;
-                        //     const newFilters = fetchedFilters.filter(
-                        //       (f) => f.categoryId === changedCat
-                        //     );
-                        //     const finalFiltersArray = newFilters?.map((f) => {
-                        //       return {
-                        //         filterId: f._id,
-                        //         filterName: f.name,
-                        //         chosenOption: "",
-                        //       };
-                        //     });
-                        //     setFilteredFilters(newFilters);
-                        //     setFinalFiltersObjArray(finalFiltersArray);
-                        //     return changedCat;
-                        //   });
-                        // }}
+                      // onChange={(e) => {
+                      //   setSelectedCategory(() => {
+                      //     const changedCat = e.target.value;
+                      //     const newFilters = fetchedFilters.filter(
+                      //       (f) => f.categoryId === changedCat
+                      //     );
+                      //     const finalFiltersArray = newFilters?.map((f) => {
+                      //       return {
+                      //         filterId: f._id,
+                      //         filterName: f.name,
+                      //         chosenOption: "",
+                      //       };
+                      //     });
+                      //     setFilteredFilters(newFilters);
+                      //     setFinalFiltersObjArray(finalFiltersArray);
+                      //     return changedCat;
+                      //   });
+                      // }}
                       >
                         <option>{catName}</option>
                         {/* {fetchedCategories?.map((cat) => (
@@ -1016,10 +1021,26 @@ function EditProduct() {
                     <FloatingLabel controlId="floatingTextarea2" label="">
                       <Form.Control
                         as="textarea"
+                        type="text"
+                        maxLength={250}
                         placeholder="Leave a comment here"
                         style={{ height: "100px" }}
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
+                      />
+                    </FloatingLabel>
+
+                    <label class="text-[#707070] font-semibold py-2">
+                      OverView
+                    </label>
+
+                    <FloatingLabel controlId="floatingTextarea2" label="">
+                      <Form.Control
+                        as="textarea"
+                        placeholder="Leave a comment here"
+                        style={{ height: "100px" }}
+                        value={overview}
+                        onChange={(e) => setOverview(e.target.value)}
                       />
                     </FloatingLabel>
 
