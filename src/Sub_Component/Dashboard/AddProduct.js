@@ -329,6 +329,11 @@ function AddProduct() {
     setSelectedFilteredFlavourSubFlavour,
   ] = React.useState("");
 
+  const [
+    selectedFilteredFlavourSubFlavourId,
+    setSelectedFilteredFlavourSubFlavourId,
+  ] = React.useState("");
+
   const [variantsArray, setVariantsArray] = React.useState([]);
   const [selectedVariantType, setSelectedVariantType] = React.useState("");
   const [typedNewVariant, setTypedNewVariant] = React.useState("");
@@ -605,6 +610,7 @@ function AddProduct() {
         flavourId: selectedFlavourObj._id,
         flavourName: selectedFlavourObj.name,
         chosenSubFlavour: selectedFilteredFlavourSubFlavour,
+        chosenSubFlavourId: selectedFilteredFlavourSubFlavourId,
       });
     }
 
@@ -617,6 +623,7 @@ function AddProduct() {
     // Reset state after extracting data
     setSelectedFlavour("");
     setSelectedFilteredFlavourSubFlavour("");
+    setSelectedFilteredFlavourSubFlavourId("");
   };
 
   return (
@@ -1101,15 +1108,31 @@ function AddProduct() {
                       </Form.Label>
                       <Form.Select
                         onChange={(e) => {
-                          console.log(e.target.value);
+                          // console.log(e.target.value);
                           setSelectedFilteredFlavourSubFlavour(e.target.value);
+
+                          const selectedOption =
+                            e.target.options[e.target.selectedIndex];
+
+                          // Extract the _id from the selected option
+                          const selectedOptionId =
+                            selectedOption.getAttribute("data-id");
+
+                          setSelectedFilteredFlavourSubFlavourId(
+                            selectedOptionId
+                          );
                         }}
                         aria-label="Default select example"
+                        data-id={selectedFilteredFlavourSubFlavourId}
                         value={selectedFilteredFlavourSubFlavour}
                       >
                         <option value={""}></option>
                         {filteredFlavourSubFlavours?.map((option) => (
-                          <option key={option._id} value={option.name}>
+                          <option
+                            key={option._id}
+                            value={option.name}
+                            data-id={option._id}
+                          >
                             {option.name}
                           </option>
                         ))}
