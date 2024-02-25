@@ -1021,8 +1021,10 @@ function EditProduct() {
                     <FloatingLabel controlId="floatingTextarea2" label="">
                       <Form.Control
                         as="textarea"
+                        type="text"
+                        maxLength={250}
                         placeholder="Leave a comment here"
-                        style={{ height: "100px" }} maxLength={'300'}
+                        style={{ height: "100px" }}
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                       />
