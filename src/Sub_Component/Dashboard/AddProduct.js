@@ -26,7 +26,13 @@ function slugify(str) {
     .replace(/-+/g, "-"); // remove consecutive hyphens
 }
 
-function VariantOption({ variantOptionsObj, selectedVariant, i, pId }) {
+function VariantOption({
+  variantOptionsObj,
+  selectedVariant,
+  i,
+  pId,
+  basePrice,
+}) {
   const [optionVal, setOptionVal] = React.useState(
     variantOptionsObj.optionValue
   );
@@ -92,7 +98,9 @@ function VariantOption({ variantOptionsObj, selectedVariant, i, pId }) {
           />
         </Form.Group>
         <Form.Group as={Col} controlId="">
-          <Form.Label class="font-semibold">Price</Form.Label>
+          <Form.Label class="font-semibold">
+            New Price: {(basePrice + optionPrc).toPrecision(4)}
+          </Form.Label>
           <Form.Control
             type="number"
             min={0}
@@ -424,7 +432,8 @@ function AddProduct() {
       name: productName,
       basePrice,
       sku,
-      description,overview,
+      description,
+      overview,
       coverImage: "cover.jpeg",
       images: ["1.jpeg", "2.jpeg", "3.jpeg"],
       category: selectedCategory,
@@ -1208,6 +1217,7 @@ function AddProduct() {
                               key={i}
                               selectedVariant={selectedVariantType}
                               variantOptionsObj={variantOptionsObj}
+                              basePrice={basePrice}
                               pId={"123456789abc"}
                               i={i}
                             />
