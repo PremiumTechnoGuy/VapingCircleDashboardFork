@@ -220,7 +220,7 @@ function EditProduct() {
         // setting fetched values
         setProductName(res.data.data.name);
         setDescription(res.data.data.description);
-        setDescription(res.data.data.overview);
+        setOverview(res.data.data.overview);
 
         setBasePrice(res.data.data.basePrice);
         setAvailable(`${res.data.data.available}`);
