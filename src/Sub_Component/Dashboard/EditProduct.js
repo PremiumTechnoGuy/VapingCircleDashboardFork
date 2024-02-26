@@ -579,6 +579,41 @@ function EditProduct() {
       });
   };
 
+  // filters confirm choice
+  const handleConfirmFilter = () => {
+    // Construct chosenFilters array
+    const chosenFilters = [];
+
+    // Find selected flavour
+    const selectedFilterObj = filteredFilters.find(
+      (filter) => filter._id === selectedFilter
+    );
+
+    if (selectedFilterObj) {
+      chosenFilters.push({
+        filterId: selectedFilterObj._id,
+        filterName: selectedFilterObj.name,
+        chosenOption: selectedFilteredFilterOption,
+      });
+    }
+
+    setFinalFiltersObjArray((fil) => {
+      // const newArr = fil.flat().filter((f) => f.filterId !== selectedFilter);
+
+      return [...fil, ...chosenFilters];
+    });
+
+    // Reset state after extracting data
+    setSelectedFilter("");
+    setSelectedFilteredFilterOption("");
+  };
+
+  function removeFilter(filter) {
+    setFinalFiltersObjArray((fil) => {
+      return fil.filter((f) => f.chosenOption !== filter.chosenOption);
+    });
+  }
+
   return (
     <div>
       <DashboardNavbar />
@@ -905,6 +940,22 @@ function EditProduct() {
                       </Button> */}
                     </Form.Group>
 
+                    <span className="mt-3 mb-0">
+                      <h1>
+                        Selected Filters (
+                        {finalFiltersObjArray?.map((fil) => (
+                          <span>
+                            {fil.filterName}: {fil.chosenOption}
+                            <span onClick={() => removeFilter(fil)}>
+                              <RiDeleteBinLine class="text-[#707070] text-s d-inline cursor-pointer" />
+                            </span>
+                            ,{" "}
+                          </span>
+                        ))}{" "}
+                        )
+                      </h1>
+                    </span>
+
                     <Form.Group
                       as={Col}
                       controlId=""
@@ -921,17 +972,8 @@ function EditProduct() {
                             (fil) => fil._id === e.target.value
                           );
 
-                          if (
-                            !fetchedProduct.chosenFilters.some(
-                              (f) => f.filterId === fil._id
-                            )
-                          )
-                            setNewFilter(true);
-                          else setNewFilter(false);
-
                           setSelectedFilter(() => {
                             setFilteredFilterOptions(fil.options);
-                            setSelectedFilterObj(fil);
                             return e.target.value;
                           });
                         }}
@@ -983,36 +1025,7 @@ function EditProduct() {
                         }}
                         onClick={(e) => {
                           e.preventDefault();
-
-                          if (newFilter) {
-                            setFinalFiltersObjArray((f) => {
-                              return [
-                                ...f,
-                                {
-                                  filterId: selectedFilter,
-                                  filterName: selectedFilterObj.name,
-                                  chosenOption: selectedFilteredFilterOption,
-                                },
-                              ];
-                            });
-                          } else {
-                            setFinalFiltersObjArray((f) => {
-                              const test = f?.map((finalObj) => {
-                                if (finalObj.filterId === selectedFilter)
-                                  return {
-                                    filterId: selectedFilter,
-                                    filterName: selectedFilterObj.name,
-                                    chosenOption: selectedFilteredFilterOption,
-                                  };
-                                else return finalObj;
-                              });
-                              return test;
-                            });
-                          }
-
-                          setSelectedFilter("");
-                          setSelectedFilteredFilterOption("");
-                          setSelectedFilterObj(null);
+                          handleConfirmFilter();
                         }}
                         variant="info"
                       >
