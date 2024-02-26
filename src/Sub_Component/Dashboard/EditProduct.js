@@ -12,7 +12,7 @@ import { FiEdit } from "react-icons/fi";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { apiUrl } from "../../data/env";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function slugify(str) {
   return String(str)
@@ -187,6 +187,8 @@ function VariantOption({ variantOptionsObj, selectedVariant, i, pId }) {
 
 function EditProduct() {
   const { prodId, catName, catId } = useParams();
+
+  const nav = useNavigate();
 
   const [show, setShow] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
@@ -388,7 +390,8 @@ function EditProduct() {
       name: productName,
       basePrice,
       sku,
-      description, overview,
+      description,
+      overview,
       variants: finalVariantsArray,
       chosenFilters: finalFiltersObjArray,
       offer: selectedOffer,
@@ -419,6 +422,9 @@ function EditProduct() {
         setFinalVariantsArray([]);
         setVariantsArray([]);
         setSelectedVariantType("");
+        setTimeout(() => {
+          nav(-1);
+        }, 500);
       })
       .catch((err) => {
         console.log(err);
@@ -641,24 +647,24 @@ function EditProduct() {
                       <Form.Select
                         aria-label="Default select example"
                         disabled
-                      // onChange={(e) => {
-                      //   setSelectedCategory(() => {
-                      //     const changedCat = e.target.value;
-                      //     const newFilters = fetchedFilters.filter(
-                      //       (f) => f.categoryId === changedCat
-                      //     );
-                      //     const finalFiltersArray = newFilters?.map((f) => {
-                      //       return {
-                      //         filterId: f._id,
-                      //         filterName: f.name,
-                      //         chosenOption: "",
-                      //       };
-                      //     });
-                      //     setFilteredFilters(newFilters);
-                      //     setFinalFiltersObjArray(finalFiltersArray);
-                      //     return changedCat;
-                      //   });
-                      // }}
+                        // onChange={(e) => {
+                        //   setSelectedCategory(() => {
+                        //     const changedCat = e.target.value;
+                        //     const newFilters = fetchedFilters.filter(
+                        //       (f) => f.categoryId === changedCat
+                        //     );
+                        //     const finalFiltersArray = newFilters?.map((f) => {
+                        //       return {
+                        //         filterId: f._id,
+                        //         filterName: f.name,
+                        //         chosenOption: "",
+                        //       };
+                        //     });
+                        //     setFilteredFilters(newFilters);
+                        //     setFinalFiltersObjArray(finalFiltersArray);
+                        //     return changedCat;
+                        //   });
+                        // }}
                       >
                         <option>{catName}</option>
                         {/* {fetchedCategories?.map((cat) => (
