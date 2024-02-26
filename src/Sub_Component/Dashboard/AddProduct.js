@@ -636,6 +636,18 @@ function AddProduct() {
     setSelectedFilteredFlavourSubFlavourId("");
   };
 
+  function removeFilter(filter) {
+    setFinalFiltersObjArray((fil) => {
+      return fil.filter((f) => f.chosenOption !== filter.chosenOption);
+    });
+  }
+
+  function removeFlavour(flavour) {
+    setFinalFlavoursObjArray((fil) => {
+      return fil.filter((f) => f.chosenSubFlavour !== flavour.chosenSubFlavour);
+    });
+  }
+
   return (
     <div>
       <DashboardNavbar />
@@ -979,7 +991,11 @@ function AddProduct() {
                         Filters (
                         {finalFiltersObjArray?.map((fil) => (
                           <span>
-                            {fil.filterName}: {fil.chosenOption},{" "}
+                            {fil.filterName}: {fil.chosenOption}
+                            <span onClick={() => removeFilter(fil)}>
+                              <RiDeleteBinLine class="text-[#707070] text-s d-inline cursor-pointer" />
+                            </span>
+                            ,{" "}
                           </span>
                         ))}{" "}
                         )
@@ -1067,7 +1083,11 @@ function AddProduct() {
                         Flavours (
                         {finalFlavoursObjArray?.map((flav) => (
                           <span>
-                            {flav.flavourName}: {flav.chosenSubFlavour},{" "}
+                            {flav.flavourName}: {flav.chosenSubFlavour}
+                            <span onClick={() => removeFlavour(flav)}>
+                              <RiDeleteBinLine class="text-[#707070] text-s d-inline cursor-pointer" />
+                            </span>
+                            ,{" "}
                           </span>
                         ))}{" "}
                         )
