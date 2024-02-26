@@ -595,9 +595,9 @@ function AddProduct() {
     }
 
     setFinalFiltersObjArray((fil) => {
-      const newArr = fil.flat().filter((f) => f.filterId !== selectedFilter);
+      // const newArr = fil.flat().filter((f) => f.filterId !== selectedFilter);
 
-      return [...newArr, ...chosenFilters];
+      return [...fil, ...chosenFilters];
     });
 
     // Reset state after extracting data
