@@ -736,6 +736,7 @@ function EditProduct() {
                               offerId: "",
                               offerName: "",
                               offerPrice: undefined,
+                              offerQuantity: undefined,
                             });
                             return;
                           } else {
@@ -750,6 +751,7 @@ function EditProduct() {
                               offerId: off._id,
                               offerName: off.name,
                               offerPrice: off.discountedPrice,
+                              offerQuantity: off.productQuantity,
                             });
                           }
                         }}

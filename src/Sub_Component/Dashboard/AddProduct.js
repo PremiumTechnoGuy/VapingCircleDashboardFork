@@ -367,6 +367,7 @@ function AddProduct() {
     offerId: "",
     offerName: "",
     offerPrice: 0,
+    offerQuantity: 0,
   });
   const [allOffers, setAllOffers] = React.useState([]);
 
@@ -785,6 +786,7 @@ function AddProduct() {
                               offerId: "",
                               offerName: "",
                               offerPrice: undefined,
+                              offerQuantity: undefined,
                             });
                             return;
                           } else {
@@ -799,6 +801,7 @@ function AddProduct() {
                               offerId: off._id,
                               offerName: off.name,
                               offerPrice: off.discountedPrice,
+                              offerQuantity: off.productQuantity,
                             });
                           }
                         }}
