@@ -130,7 +130,7 @@ function VariantOption({ variantOptionsObj, selectedVariant, i, pId }) {
         <Form.Group as={Col} xs={2} controlId="">
           {optionImg ? (
             <img
-              src={optionImg.replace("/product", "/tr:ar-1-1,h-50/product")}
+              src={optionImg.url.replace("/product", "/tr:ar-1-1,h-50/product")}
               loading="lazy"
               alt="option Img"
               id={`${slugify(selectedVariant)}-${i}`}

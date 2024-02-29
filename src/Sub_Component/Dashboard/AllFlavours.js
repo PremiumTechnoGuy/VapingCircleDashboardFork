@@ -70,10 +70,11 @@ function AllFlavour() {
                   <Col key={flav._id}>
                     <div className="card" style={{ width: "18rem" }}>
                       <div className="m-2 relative image-container">
-                        <img style={{ width: "18rem", height: "12rem" }}
-                          src={flav.image.replace(
-                            "/category",
-                            "/tr:ar-1-1,w-285.5/category"
+                        <img
+                          style={{ width: "18rem", height: "12rem" }}
+                          src={flav?.image?.url.replace(
+                            "/flavour",
+                            "/tr:ar-1-1,w-285.5/flavour"
                           )}
                           loading="lazy"
                           alt=""

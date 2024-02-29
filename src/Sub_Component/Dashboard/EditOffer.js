@@ -36,6 +36,7 @@ function EditOffer() {
         setAvailable(`${res.data.data.available}`);
         setProductQuantity(res.data.data.productQuantity);
         setDiscountedPrice(res.data.data.discountedPrice);
+        setImgUrl(res.data.data.image);
       })
       .catch((err) => {
         console.log(err);
@@ -193,7 +194,10 @@ function EditOffer() {
                 </Form.Group>
                 {imgUrl ? (
                   <img
-                    src={imgUrl?.replace("/offer", "/tr:ar-1-1,w-285.5/offer")}
+                    src={imgUrl?.url.replace(
+                      "/offer",
+                      "/tr:ar-1-1,w-285.5/offer"
+                    )}
                     alt="offer img"
                     className="mt-2 m-auto"
                   />

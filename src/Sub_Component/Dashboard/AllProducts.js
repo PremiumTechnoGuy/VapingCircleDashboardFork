@@ -203,7 +203,7 @@ function AllProducts() {
                       <div className="m-2 relative product-card">
                         <img
                           style={{ width: "18rem", height: "14rem" }}
-                          src={el.coverImage.replace(
+                          src={el.coverImage.url.replace(
                             "/product",
                             "/tr:ar-1-1,w-285.5/product"
                           )}
