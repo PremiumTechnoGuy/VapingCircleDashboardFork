@@ -490,14 +490,7 @@ function EditProduct() {
   const [multipleUpload, setMultipleUpload] = useState(false);
 
   const handleMultipleFileChange = (e) => {
-    if (e.target.files.length > 4) {
-      toast("Cannot upload more than 4 images!", {
-        type: "warning",
-        autoClose: 2500,
-        isLoading: false,
-        handleCloseFilter,
-      });
-    } else setFiles(Array.from(e.target.files));
+    if (e.target.files) setFiles(Array.from(e.target.files));
   };
 
   const handleUploadImages = (pId) => {
@@ -650,7 +643,7 @@ function EditProduct() {
                   <Col>
                     <Form.Group as={Col} controlId="" sm={4} className="">
                       <Form.Label class="text-[#707070] font-semibold py-2">
-                        Choose Images (Max 4)
+                        Choose Images
                       </Form.Label>
                       <Form.Control
                         type="file"

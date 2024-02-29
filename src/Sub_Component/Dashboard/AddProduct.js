@@ -532,13 +532,7 @@ function AddProduct() {
   const [multipleUpload, setMultipleUpload] = useState(false);
 
   const handleMultipleFileChange = (e) => {
-    if (e.target.files.length > 4) {
-      toast("Cannot upload more than 4 images!", {
-        type: "warning",
-        autoClose: 2500,
-        isLoading: false,
-      });
-    } else setFiles(Array.from(e.target.files));
+    if (e.target.files) setFiles(Array.from(e.target.files));
   };
 
   const handleUploadImages = (pId) => {
