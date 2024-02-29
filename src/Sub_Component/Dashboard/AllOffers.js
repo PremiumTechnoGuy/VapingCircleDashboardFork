@@ -71,10 +71,12 @@ function AllOffers() {
                       <div className="m-2 relative image-container">
                         <img
                           style={{ width: "18rem", height: "12rem" }}
-                          src={offr?.image?.url?.replace(
-                            "/offer",
-                            "/tr:ar-1-1,w-285.5/offer"
-                          )}
+                          src={
+                            offr?.image?.url?.replace(
+                              "/offer",
+                              "/tr:ar-1-1,w-285.5/offer"
+                            ) || ""
+                          }
                           loading="lazy"
                           alt=""
                           className="offer-image"
