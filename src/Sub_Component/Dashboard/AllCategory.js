@@ -6,9 +6,7 @@ import { apiUrl } from "../../data/env";
 import { MdDeleteForever } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import "./AllCatogery.css";
-; // Import your CSS file
-
+import "./AllCatogery.css"; // Import your CSS file
 function chunkArray(array, size) {
   const chunkedArray = [];
   for (let i = 0; i < array.length; i += size) {
@@ -58,7 +56,9 @@ function AllCategory() {
       <div>
         <div className="mt-24 absolute lg:left-[260px]">
           <div className="d-flex justify-between">
-            <h2 className="text-xl font-bold mb-5 text-center">All Categories</h2>
+            <h2 className="text-xl font-bold mb-5 text-center">
+              All Categories
+            </h2>
             <Button
               onClick={() => nav("/dashboard/addCategory")}
               className="rounded-1 p-1 font-semibold bg-[#1B94A0] text-white text-[16px] position-fixed  end-0 m-4"
@@ -73,11 +73,19 @@ function AllCategory() {
                   <Col key={cat._id}>
                     <div className="card " style={{ width: "18rem" }}>
                       <div className=" m-2 relative image-container ">
-                        <img style={{ width: "18rem", height: "14rem" }}
-                          src={cat.image.replace(
-                            "/category",
-                            "/tr:ar-1-1,w-285.5/category"
-                          )}
+                        <img
+                          style={{ width: "18rem", height: "14rem" }}
+                          src={
+                            cat.image.url
+                              ? cat.image.url.replace(
+                                  "/category",
+                                  "/tr:ar-1-1,w-285.5/category"
+                                )
+                              : cat.image.replace(
+                                  "/category",
+                                  "/tr:ar-1-1,w-285.5/category"
+                                )
+                          }
                           loading="lazy"
                           alt=""
                           className="category-image"
@@ -86,10 +94,11 @@ function AllCategory() {
                           <MdDeleteForever
                             className="delete-icon"
                             onClick={() => handleDelete(cat._id)}
-
                           />
                           <button
-                            onClick={() => nav(`/dashboard/editCategory/${cat._id}`)}
+                            onClick={() =>
+                              nav(`/dashboard/editCategory/${cat._id}`)
+                            }
                             className="edit-button"
                           >
                             Edit
