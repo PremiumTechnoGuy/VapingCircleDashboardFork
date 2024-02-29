@@ -24,6 +24,7 @@ import { AuthProvider } from "./utils/auth";
 import { RequireAuth } from "./utils/RequireAuth";
 import AddOffer from "./Sub_Component/Dashboard/AddOffer";
 import AllOffers from "./Sub_Component/Dashboard/AllOffers";
+import EditOffer from "./Sub_Component/Dashboard/EditOffer";
 
 const App = () => {
   return (
@@ -162,14 +163,14 @@ const App = () => {
                   </RequireAuth>
                 }
               />
-              {/* <Route
-                path="/dashboard/editOffer"
+              <Route
+                path="/dashboard/editOffer/:offerId"
                 element={
                   <RequireAuth>
-                    <AllOffers />
+                    <EditOffer />
                   </RequireAuth>
                 }
-              /> */}
+              />
               <Route
                 path="/dashboard/orders"
                 element={
