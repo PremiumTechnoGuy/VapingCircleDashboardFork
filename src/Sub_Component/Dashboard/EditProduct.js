@@ -128,13 +128,14 @@ function VariantOption({ variantOptionsObj, selectedVariant, i, pId }) {
         </Form.Group>
 
         <Form.Group as={Col} xs={2} controlId="">
-          {optionImg ? (
+          {optionImg.url ? (
             <img
               src={optionImg.url.replace("/product", "/tr:ar-1-1,h-50/product")}
               loading="lazy"
               alt="option Img"
               id={`${slugify(selectedVariant)}-${i}`}
-              data-img={optionImg}
+              data-img={optionImg.url}
+              data-file={optionImg.fileId}
               className="product-image border-2 mt-2"
             />
           ) : (
@@ -326,7 +327,7 @@ function EditProduct() {
         optionPrice: null,
         optionQuantity: null,
         optionSku: "",
-        optionImg: "",
+        optionImg: { url: "" },
       },
     ]);
 
@@ -342,7 +343,8 @@ function EditProduct() {
           if (el.dataset.quantity)
             newObj.optionQuantity = Number(el.dataset.quantity);
           if (el.dataset.sku) newObj.optionSku = el.dataset.sku;
-          if (el.dataset.img) newObj.optionImg = el.dataset.img;
+          if (el.dataset.img)
+            newObj.optionImg = { url: el.dataset.img, fileId: el.dataset.file };
         });
       newArrayOfOptionsObjects.push(newObj);
     });
@@ -868,7 +870,7 @@ function EditProduct() {
                                 optionPrice: null,
                                 optionQuantity: null,
                                 optionSku: "",
-                                optionImg: "",
+                                optionImg: { url: "" },
                               },
                             ]);
                             setNewVariantSelected(true);
@@ -1097,7 +1099,7 @@ function EditProduct() {
                                 optionPrice: null,
                                 optionQuantity: null,
                                 optionSku: "",
-                                optionImg: "",
+                                optionImg: { url: "" },
                               });
                               return newArr;
                             });
