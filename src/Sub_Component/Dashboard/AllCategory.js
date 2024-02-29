@@ -84,7 +84,7 @@ function AllCategory() {
                               : cat.image.replace(
                                   "/category",
                                   "/tr:ar-1-1,w-285.5/category"
-                                )
+                                ) || ""
                           }
                           loading="lazy"
                           alt=""
