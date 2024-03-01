@@ -15,14 +15,36 @@ function chunkArray(array, size) {
   return chunkedArray;
 }
 
+const extractFileIds = (obj) => {
+  const fileIds = [];
+
+  const extract = (obj) => {
+    for (const key in obj) {
+      if (typeof obj[key] === "object") {
+        extract(obj[key]); // Recursively call extract for nested objects
+      } else {
+        if (key === "fileId") {
+          fileIds.push(obj[key]);
+        }
+      }
+    }
+  };
+
+  extract(obj);
+
+  return fileIds;
+};
+
 function AllFlavour() {
   const nav = useNavigate();
   const [chunkedArr, setChunkedArr] = React.useState([]);
+  const [allFlavours, setAllFlavours] = React.useState([]);
 
   const getAllFlavours = () => {
     axios
       .get(`${apiUrl}/api/v1/flavour`)
       .then((res) => {
+        setAllFlavours(res.data.data);
         setChunkedArr(chunkArray(res.data.data, 4));
       })
       .catch((err) => console.log(err));
@@ -34,6 +56,16 @@ function AllFlavour() {
 
   const handleDelete = (flavId) => {
     const id = toast.loading("Deleting Flavour...");
+
+    const [selectedFlavour] = allFlavours.filter((flav) => flav._id === flavId);
+    let fileIds = extractFileIds(selectedFlavour);
+    let bool = fileIds.length !== 0 ? true : false;
+
+    if (bool)
+      axios
+        .post(`${apiUrl}/api/v1/delete/imagesBulk`, { fileIds })
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
 
     axios
       .delete(`${apiUrl}/api/v1/flavour/${flavId}`)
