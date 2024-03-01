@@ -135,7 +135,7 @@ function VariantOption({
         </Form.Group>
 
         <Form.Group as={Col} xs={2} controlId="">
-          {optionImg.url ? (
+          {optionImg?.url ? (
             <img
               src={optionImg.url.replace("/product", "/tr:ar-1-1,h-50/product")}
               loading="lazy"
@@ -415,7 +415,6 @@ function AddProduct() {
         return newArr;
       });
     }
-    console.log(finalVariantsArray);
     setSelectedVariantType("");
   };
 
