@@ -68,6 +68,25 @@ function AllFilters() {
   const handleDelete = (filterId) => {
     const id = toast.loading("Deleting Filter...");
 
+    const [selectedFilter] = allFilters.filter((fil) => fil._id === filterId);
+    let fileIds = [];
+    let bool = false;
+    if (selectedFilter.images) {
+      const ids = selectedFilter.images.map((im) => im.fileId);
+      fileIds.push(...ids);
+      bool = true;
+    }
+    if (selectedFilter.image) {
+      fileIds.push(selectedFilter.image.fileId);
+      bool = true;
+    }
+
+    if (bool)
+      axios
+        .post(`${apiUrl}/api/v1/delete/imagesBulk`, { fileIds })
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
+
     axios
       .delete(`${apiUrl}/api/v1/filter/${filterId}`)
       .then((res) => {
@@ -85,7 +104,9 @@ function AllFilters() {
   };
 
   const handleFilterProducts = (catId) => {
-    const filteredProducts = allFilters.filter((filter) => filter.categoryId === catId);
+    const filteredProducts = allFilters.filter(
+      (filter) => filter.categoryId === catId
+    );
     setChunkedArr(chunkArray(filteredProducts, 4));
   };
 
@@ -135,7 +156,9 @@ function AllFilters() {
               {four.map((el) => (
                 <div key={el._id} className="border p-3 rounded mb-2">
                   <div className="d-flex flex-column gap-3">
-                    <p className="text-black font-semibold text-[12px]">{el.name}</p>
+                    <p className="text-black font-semibold text-[12px]">
+                      {el.name}
+                    </p>
                     <div className="d-flex justify-between w-100 gap-2">
                       <button
                         onClick={(e) => {
