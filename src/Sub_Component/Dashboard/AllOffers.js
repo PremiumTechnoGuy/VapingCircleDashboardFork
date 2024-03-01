@@ -14,15 +14,37 @@ function chunkArray(array, size) {
   return chunkedArray;
 }
 
+const extractFileIds = (obj) => {
+  const fileIds = [];
+
+  const extract = (obj) => {
+    for (const key in obj) {
+      if (typeof obj[key] === "object") {
+        extract(obj[key]); // Recursively call extract for nested objects
+      } else {
+        if (key === "fileId") {
+          fileIds.push(obj[key]);
+        }
+      }
+    }
+  };
+
+  extract(obj);
+
+  return fileIds;
+};
+
 function AllOffers() {
   const nav = useNavigate();
   const [chunkedArr, setChunkedArr] = React.useState([]);
+  const [allOffers, setAllOffers] = React.useState([]);
 
   const getAllOffers = () => {
     axios
       .get(`${apiUrl}/api/v1/offer`)
       .then((res) => {
         setChunkedArr(chunkArray(res.data.data, 4));
+        setAllOffers(res.data.data);
       })
       .catch((err) => console.log(err));
   };
@@ -33,6 +55,16 @@ function AllOffers() {
 
   const handleDelete = (offId) => {
     const id = toast.loading("Deleting Offer...");
+
+    const [selectedOffer] = allOffers.filter((off) => off._id === offId);
+    let fileIds = extractFileIds(selectedOffer);
+    let bool = fileIds.length !== 0 ? true : false;
+
+    if (bool)
+      axios
+        .post(`${apiUrl}/api/v1/delete/imagesBulk`, { fileIds })
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
 
     axios
       .delete(`${apiUrl}/api/v1/offer/${offId}`)
