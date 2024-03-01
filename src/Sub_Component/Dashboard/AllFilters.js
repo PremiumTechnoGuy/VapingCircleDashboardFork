@@ -15,6 +15,26 @@ function chunkArray(array, size) {
   return chunkedArray;
 }
 
+const extractFileIds = (obj) => {
+  const fileIds = [];
+
+  const extract = (obj) => {
+    for (const key in obj) {
+      if (typeof obj[key] === "object") {
+        extract(obj[key]); // Recursively call extract for nested objects
+      } else {
+        if (key === "fileId") {
+          fileIds.push(obj[key]);
+        }
+      }
+    }
+  };
+
+  extract(obj);
+
+  return fileIds;
+};
+
 function AllFilters() {
   const nav = useNavigate();
 
@@ -69,17 +89,8 @@ function AllFilters() {
     const id = toast.loading("Deleting Filter...");
 
     const [selectedFilter] = allFilters.filter((fil) => fil._id === filterId);
-    let fileIds = [];
-    let bool = false;
-    if (selectedFilter.images) {
-      const ids = selectedFilter.images.map((im) => im.fileId);
-      fileIds.push(...ids);
-      bool = true;
-    }
-    if (selectedFilter.image) {
-      fileIds.push(selectedFilter.image.fileId);
-      bool = true;
-    }
+    let fileIds = extractFileIds(selectedFilter);
+    let bool = fileIds.length !== 0 ? true : false;
 
     if (bool)
       axios
