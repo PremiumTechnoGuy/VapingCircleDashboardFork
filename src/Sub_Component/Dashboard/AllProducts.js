@@ -16,6 +16,26 @@ function chunkArray(array, size) {
   return chunkedArray;
 }
 
+const extractFileIds = (obj) => {
+  const fileIds = [];
+
+  const extract = (obj) => {
+    for (const key in obj) {
+      if (typeof obj[key] === "object") {
+        extract(obj[key]); // Recursively call extract for nested objects
+      } else {
+        if (key === "fileId") {
+          fileIds.push(obj[key]);
+        }
+      }
+    }
+  };
+
+  extract(obj);
+
+  return fileIds;
+};
+
 function AllProducts() {
   const nav = useNavigate();
 
@@ -94,6 +114,16 @@ function AllProducts() {
 
   const handleDelete = (pId) => {
     const id = toast.loading("Deleting Product...");
+
+    const [selectedProduct] = allProducts.filter((p) => p._id === pId);
+    let fileIds = extractFileIds(selectedProduct);
+    let bool = fileIds.length !== 0 ? true : false;
+
+    if (bool)
+      axios
+        .post(`${apiUrl}/api/v1/delete/imagesBulk`, { fileIds })
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
 
     axios
       .delete(`${apiUrl}/api/v1/product/${pId}`)
