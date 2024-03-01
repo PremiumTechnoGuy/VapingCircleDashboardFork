@@ -26,6 +26,19 @@ function slugify(str) {
     .replace(/-+/g, "-"); // remove consecutive hyphens
 }
 
+const extractOptionPrices = (optionsArray) => {
+  const optionQuantities = [];
+
+  // Iterate through each object in the optionsArray
+  optionsArray.forEach((variant) => {
+    variant.options.forEach((option) => {
+      optionQuantities.push(option.optionQuantity);
+    });
+  });
+
+  return optionQuantities.reduce((prev, curr) => prev + curr, 0);
+};
+
 function VariantOption({
   variantOptionsObj,
   selectedVariant,
@@ -371,6 +384,8 @@ function AddProduct() {
     offerQuantity: 0,
   });
   const [allOffers, setAllOffers] = React.useState([]);
+  const [totalQuantity, setTotalQuantity] = React.useState(0);
+  const [changeableQuantity, setChangeableQuantity] = React.useState(true);
 
   const handleCloseVariantModal = () => {
     const newArrayOfOptionsObjects = [];
@@ -392,13 +407,24 @@ function AddProduct() {
     console.log(newArrayOfOptionsObjects);
 
     if (newVariantSelected) {
-      setFinalVariantsArray((arr) => [
-        ...arr,
-        {
-          variantType: selectedVariantType,
-          options: newArrayOfOptionsObjects,
-        },
-      ]);
+      setFinalVariantsArray((arr) => {
+        setTotalQuantity(
+          extractOptionPrices([
+            ...arr,
+            {
+              variantType: selectedVariantType,
+              options: newArrayOfOptionsObjects,
+            },
+          ])
+        );
+        return [
+          ...arr,
+          {
+            variantType: selectedVariantType,
+            options: newArrayOfOptionsObjects,
+          },
+        ];
+      });
     } else {
       setFinalVariantsArray((arr) => {
         const newArr = arr.map((variant) => {
@@ -411,11 +437,12 @@ function AddProduct() {
             return variant;
           }
         });
-        console.log(newArr, "hahah");
+        setTotalQuantity(extractOptionPrices(newArr));
         return newArr;
       });
     }
     setSelectedVariantType("");
+    setChangeableQuantity(false);
   };
 
   const handleSubmitNewProduct = (e) => {
@@ -432,6 +459,7 @@ function AddProduct() {
       name: productName,
       basePrice,
       sku,
+      stock: totalQuantity,
       description,
       overview,
       category: selectedCategory,
@@ -860,6 +888,20 @@ function AddProduct() {
                         type="text"
                         value={sku}
                         onChange={(e) => setSku(e.target.value)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="">
+                      <Form.Label class="text-[#707070]  font-semibold py-2">
+                        Stock
+                      </Form.Label>
+                      <Form.Control
+                        disabled={!changeableQuantity}
+                        type="number"
+                        value={totalQuantity}
+                        onChange={(e) =>
+                          setTotalQuantity(Number(e.target.value))
+                        }
                       />
                     </Form.Group>
                   </Row>
