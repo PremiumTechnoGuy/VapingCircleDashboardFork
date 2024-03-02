@@ -105,15 +105,15 @@ function AllFlavour() {
                         <img
                           style={{ width: "18rem", height: "12rem" }}
                           src={
-                            flav.image.url
-                              ? flav.image.url.replace(
-                                  "/flavour",
-                                  "/tr:ar-1-1,w-285.5/flavour"
-                                )
-                              : flav.image.replace(
-                                  "/flavour",
-                                  "/tr:ar-1-1,w-285.5/flavour"
-                                )
+                            flav.image?.url?.replace(
+                              "/flavour",
+                              "/tr:ar-1-1,w-285.5/flavour"
+                            ) ||
+                            flav.image?.replace(
+                              "/flavour",
+                              "/tr:ar-1-1,w-285.5/flavour"
+                            ) ||
+                            ""
                           }
                           loading="lazy"
                           alt=""
