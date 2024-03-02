@@ -11,10 +11,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { apiUrl } from "../../data/env";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function EditFlavour() {
   const { flavId } = useParams();
+
+  const nav = useNavigate();
 
   React.useEffect(() => {
     const id = toast.loading("Fetching Data... Please Wait!");
@@ -30,7 +32,7 @@ function EditFlavour() {
           autoClose: 2000,
         });
 
-        setFilterName(res.data.data.name);
+        setFlavourName(res.data.data.name);
         setPriorityNum(res.data.data.priority);
         setAvailable(`${res.data.data.available}`);
         setSubFlavoursArray(res.data.data.subFlavours);
@@ -51,20 +53,20 @@ function EditFlavour() {
   const [selectedOption, setSelectedOption] = React.useState("");
   const [typedOption, setTypedOption] = React.useState("");
   const [subFlavoursArray, setSubFlavoursArray] = React.useState([]);
-  const [filterName, setFilterName] = React.useState("");
+  const [flavourName, setFlavourName] = React.useState("");
   const [priorityNum, setPriorityNum] = React.useState(1);
   const [available, setAvailable] = React.useState("true");
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadingImage, setUploadingImage] = React.useState(false);
 
-  const handleSubmitNewFilter = (e) => {
+  const handleSubmitNewFlavour = (e) => {
     e.preventDefault();
 
-    const subFlavoursObjArray = subFlavoursArray.map((el) => {
-      return {
-        name: el,
-      };
-    });
+    // const subFlavoursObjArray = subFlavoursArray.map((el) => {
+    //   return {
+    //     name: el,
+    //   };
+    // });
 
     const id = toast.loading("Please wait...");
 
@@ -74,16 +76,15 @@ function EditFlavour() {
     };
 
     const payload = {
-      name: filterName,
+      name: flavourName,
       priority: priorityNum,
-      image: "img.jpeg",
       available: available === "true" ? true : false,
-      subFlavours: subFlavoursObjArray,
+      subFlavours: subFlavoursArray,
     };
-    // console.log(payload);
+    console.log(payload);
 
     axios
-      .post(`${apiUrl}/api/v1/flavour`, payload, config)
+      .patch(`${apiUrl}/api/v1/flavour/${flavId}`, payload, config)
       .then((res) => {
         console.log(res.data);
 
@@ -97,10 +98,15 @@ function EditFlavour() {
         if (uploadingImage) handleUploadImage(res.data.data._id);
 
         setSelectedOption("");
-        setFilterName("");
+        setFlavourName("");
         setPriorityNum(1);
         setAvailable("true");
         setSubFlavoursArray([]);
+
+        if (!uploadingImage)
+          setTimeout(() => {
+            nav("/dashboard/allFlavours");
+          }, 450);
       })
       .catch((err) => {
         console.log(err);
@@ -135,6 +141,10 @@ function EditFlavour() {
 
         setSelectedFile(null);
         setUploadingImage(false);
+
+        setTimeout(() => {
+          nav("/dashboard/allFlavours");
+        }, 450);
       })
       .catch((err) => {
         console.log(err);
@@ -161,7 +171,7 @@ function EditFlavour() {
       <div>
         <div class=" mt-24 absolute lg:left-[260px] z-5">
           <Container class="">
-            <h2 class="font-bold text-xl">Add Flavour</h2>
+            <h2 class="font-bold text-xl">Edit Flavour</h2>
             <Row class="">
               <Col md={4}>
                 <Form.Group as={Col} controlId="" sm={4} className=" mt-3">
@@ -274,8 +284,8 @@ function EditFlavour() {
                       </Form.Label>
                       <Form.Control
                         type="text"
-                        value={filterName}
-                        onChange={(e) => setFilterName(e.target.value)}
+                        value={flavourName}
+                        onChange={(e) => setFlavourName(e.target.value)}
                       />
                     </Form.Group>
                   </Row>
@@ -324,7 +334,10 @@ function EditFlavour() {
                         class="rounded-1 p-2 mt-[4rem] bg-[#1B94A0] text-white"
                         onClick={(e) => {
                           e.preventDefault();
-                          setSubFlavoursArray((arr) => [...arr, typedOption]);
+                          setSubFlavoursArray((arr) => [
+                            ...arr,
+                            { name: typedOption, productCountSubFlavour: 0 },
+                          ]);
                           setTypedOption("");
                         }}
                       >
@@ -360,10 +373,8 @@ function EditFlavour() {
                         onClick={(e) => {
                           e.preventDefault();
                           if (subFlavoursArray.length >= 1) {
-                            const newArr = [...subFlavoursArray];
-                            newArr.splice(
-                              subFlavoursArray.indexOf(selectedOption),
-                              1
+                            const newArr = subFlavoursArray.filter(
+                              (flv) => flv.name !== selectedOption
                             );
                             setSubFlavoursArray(newArr);
                             setSelectedOption("");
@@ -379,7 +390,7 @@ function EditFlavour() {
               </Col>
             </Row>
             <button
-              onClick={handleSubmitNewFilter}
+              onClick={handleSubmitNewFlavour}
               class="rounded-1 p-2 w-32 font-semibold   mt-4 bg-[#1B94A0] text-white"
             >
               Submit
