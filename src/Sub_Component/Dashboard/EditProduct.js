@@ -424,9 +424,10 @@ function EditProduct() {
         setFinalVariantsArray([]);
         setVariantsArray([]);
         setSelectedVariantType("");
-        setTimeout(() => {
-          nav(-1);
-        }, 500);
+        if (!multipleUpload && !uploadingImage)
+          setTimeout(() => {
+            nav("/dashboard/all_product");
+          }, 500);
       })
       .catch((err) => {
         console.log(err);
@@ -448,6 +449,14 @@ function EditProduct() {
     const id = toast.loading("Uploading Cover Image...");
     let formData = new FormData();
     formData.append("image", image.data);
+
+    if (fetchedProduct.coverImage?.fileId || false)
+      axios
+        .post(`${apiUrl}/api/v1/delete/imagesBulk`, {
+          fileIds: [fetchedProduct.coverImage.fileId],
+        })
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
 
     axios
       .post(`${apiUrl}/api/v1/product/imageUpload?productId=${pId}`, formData)
@@ -501,6 +510,15 @@ function EditProduct() {
     files.forEach((file) => {
       formData.append(`images`, file);
     });
+
+    let fileIds = fetchedProduct.images?.map((img) => img.fileId) || [];
+    let bool = fileIds.length !== 0 ? true : false;
+
+    if (bool)
+      axios
+        .post(`${apiUrl}/api/v1/delete/imagesBulk`, { fileIds })
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
 
     axios
       .post(
