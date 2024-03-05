@@ -62,11 +62,9 @@ function EditFlavour() {
   const handleSubmitNewFlavour = (e) => {
     e.preventDefault();
 
-    // const subFlavoursObjArray = subFlavoursArray.map((el) => {
-    //   return {
-    //     name: el,
-    //   };
-    // });
+    const subFlavoursObjArray = subFlavoursArray
+      .slice()
+      .sort((a, b) => a.name.localeCompare(b.name));
 
     const id = toast.loading("Please wait...");
 
@@ -79,7 +77,7 @@ function EditFlavour() {
       name: flavourName,
       priority: priorityNum,
       available: available === "true" ? true : false,
-      subFlavours: subFlavoursArray,
+      subFlavours: subFlavoursObjArray,
     };
     console.log(payload);
 
@@ -359,11 +357,14 @@ function EditFlavour() {
                         aria-label="Default select example"
                       >
                         <option value={""}>--select subflavour--</option>
-                        {subFlavoursArray?.map((opt, i) => (
-                          <option key={i} value={opt.name}>
-                            {opt.name}
-                          </option>
-                        ))}
+                        {subFlavoursArray
+                          ?.slice()
+                          .sort((a, b) => a.name.localeCompare(b.name))
+                          .map((opt, i) => (
+                            <option key={i} value={opt.name}>
+                              {opt.name}
+                            </option>
+                          ))}
                       </Form.Select>
                     </Form.Group>
                     <Form.Group as={Col} controlId="">

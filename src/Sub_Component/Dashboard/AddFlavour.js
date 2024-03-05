@@ -26,11 +26,14 @@ function AddFlavour() {
   const handleSubmitNewFilter = (e) => {
     e.preventDefault();
 
-    const subFlavoursObjArray = subFlavoursArray.map((el) => {
-      return {
-        name: el,
-      };
-    });
+    const subFlavoursObjArray = subFlavoursArray
+      .map((el) => {
+        return {
+          name: el,
+        };
+      })
+      .slice()
+      .sort((a, b) => a.name.localeCompare(b.name));
 
     const id = toast.loading("Please wait...");
 
@@ -46,7 +49,7 @@ function AddFlavour() {
       available: available === "true" ? true : false,
       subFlavours: subFlavoursObjArray,
     };
-    // console.log(payload);
+    console.log(payload);
 
     axios
       .post(`${apiUrl}/api/v1/flavour`, payload, config)
@@ -312,11 +315,14 @@ function AddFlavour() {
                         aria-label="Default select example"
                       >
                         <option value={""}></option>
-                        {subFlavoursArray?.map((opt, i) => (
-                          <option key={i} value={opt}>
-                            {opt}
-                          </option>
-                        ))}
+                        {subFlavoursArray
+                          ?.slice()
+                          .sort((a, b) => a.localeCompare(b))
+                          .map((opt, i) => (
+                            <option key={i} value={opt}>
+                              {opt}
+                            </option>
+                          ))}
                       </Form.Select>
                     </Form.Group>
                     <Form.Group as={Col} controlId="">
