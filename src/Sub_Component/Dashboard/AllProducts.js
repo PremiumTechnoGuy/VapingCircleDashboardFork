@@ -188,7 +188,7 @@ function AllProducts() {
           </h2>
           <button
             onClick={() => nav("/dashboard/addProduct")}
-            className="rounded-1 p-1 font-semibold bg-[#1B94A0] text-white text-[16px] position-fixed  end-0 m-4"
+            className="rounded-1 p-1 font-semibold bg-[#1B94A0] text-white text-[16px]   end-0 m-4"
           >
             + Add New Product
           </button>
