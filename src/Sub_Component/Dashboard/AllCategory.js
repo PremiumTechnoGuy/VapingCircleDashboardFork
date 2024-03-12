@@ -100,7 +100,7 @@ function AllCategory() {
           </div>
           <Container fluid className="my-5">
             {chunkedArr?.map((chunk, index) => (
-              <Row key={index}>
+              <Row className="mb-4" key={index}>
                 {chunk.map((cat) => {
                   let url = "";
                   if (cat.image.url)
@@ -116,7 +116,7 @@ function AllCategory() {
                   else url = "";
                   return (
                     <Col key={cat._id}>
-                      <div className="card " style={{ width: "18rem" }}>
+                      <div className="card " style={{ width: "15rem" }}>
                         <div className=" m-2 relative image-container ">
                           <img
                             style={{ width: "18rem", height: "14rem" }}
