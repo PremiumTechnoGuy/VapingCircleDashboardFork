@@ -93,14 +93,14 @@ function AllCategory() {
             </h2>
             <Button
               onClick={() => nav("/dashboard/addCategory")}
-              className="rounded-1 p-1 font-semibold bg-[#1B94A0] text-white text-[16px] position-fixed  end-0 m-4"
+              className="rounded-1 p-1 font-semibold bg-[#1B94A0] text-white text-[16px] end-0 m-4"
             >
               + Add Category
             </Button>
           </div>
           <Container fluid className="my-5">
             {chunkedArr?.map((chunk, index) => (
-              <Row key={index}>
+              <Row className="mb-4" key={index}>
                 {chunk.map((cat) => {
                   let url = "";
                   if (cat.image.url)
@@ -116,7 +116,7 @@ function AllCategory() {
                   else url = "";
                   return (
                     <Col key={cat._id}>
-                      <div className="card " style={{ width: "18rem" }}>
+                      <div className="card " style={{ width: "15rem" }}>
                         <div className=" m-2 relative image-container ">
                           <img
                             style={{ width: "18rem", height: "14rem" }}
