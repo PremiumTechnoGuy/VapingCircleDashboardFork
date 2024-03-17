@@ -1,6 +1,44 @@
+import axios from "axios";
 import React from "react";
+import { apiUrl } from "../../data/env";
+import { toast } from "react-toastify";
 
 function OrderRow({ order }) {
+  const [status, setStatus] = React.useState(order.status); // Initial status
+
+  const statusOptions = [
+    "pending",
+    "cancelled",
+    "paid",
+    "processing",
+    "dispatching",
+    "delivered",
+  ];
+  const handleStatusChange = (e) => {
+    const id = toast.loading("Changing Status...");
+    const { value } = e.target;
+    setStatus(value);
+    axios
+      .patch(`${apiUrl}/api/v1/order/${order._id}`, { status: value })
+      .then((res) => {
+        console.log(res.data);
+        toast.update(id, {
+          render: "Status changed successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.update(id, {
+          render: err.response?.data?.message || "Unsuccessful!",
+          type: "error",
+          isLoading: false,
+          autoClose: 2000,
+        });
+      });
+  };
   return (
     <>
       <tr style={{ textAlign: "center" }}>
@@ -31,7 +69,15 @@ function OrderRow({ order }) {
             );
           })}
         </td>
-        <td className="align-middle">{order.status}</td>
+        <td className="align-middle">
+          <select value={status} onChange={handleStatusChange}>
+            {statusOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </td>
         <td className="py-1 align-middle">
           <span
             className="cursor-pointer underline"

@@ -17,7 +17,7 @@ function Orders() {
       .then((res) => {
         setAllOrders(res.data.data);
         toast.update(id, {
-          render: "Log In Successful!",
+          render: "Fetched Successfully!",
           type: "success",
           isLoading: false,
           autoClose: 2000,
@@ -26,7 +26,7 @@ function Orders() {
       .catch((err) => {
         console.log(err);
         toast.update(id, {
-          render: err.response?.data?.message || "Log In Unsuccessful!",
+          render: err.response?.data?.message || "Unsuccessful!",
           type: "error",
           isLoading: false,
           autoClose: 2000,
@@ -54,7 +54,7 @@ function Orders() {
                   {/* <th className="border-top-0 pt-0 pb-2">Sales Type</th> */}
                   <th className="border-top-0 pt-0 pb-2">Total Amount</th>
                   {/* <th className="border-top-0 pt-0 pb-2">Vat</th> */}
-                  <th className="border-top-0 pt-0 pb-2">Delivery Charges</th>
+                  <th className="border-top-0 pt-0 pb-2">Delivery Info</th>
                   {/* <th className="border-top-0 pt-0 pb-2">Paid</th> */}
                   {/* <th className="border-top-0 pt-0 pb-2">Actions</th> */}
                 </tr>
