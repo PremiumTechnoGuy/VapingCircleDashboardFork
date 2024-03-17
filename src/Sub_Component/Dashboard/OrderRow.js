@@ -1,30 +1,6 @@
-import React, { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
-import { Form } from "react-router-dom";
+import React from "react";
 
 function OrderRow({ order }) {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const [isEditing, setIsEditing] = useState(false);
-  const [totalPrice, setTotalPrice] = useState("£34.99"); // Initial total price
-
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleCancelClick = () => {
-    setIsEditing(false);
-    // Reset totalPrice to its initial value when canceling edit
-    setTotalPrice("£34.99");
-  };
-
-  const handleInputChange = (e) => {
-    const { value } = e.target;
-    setTotalPrice(value);
-  };
-
   return (
     <>
       <tr style={{ textAlign: "center" }}>
@@ -57,8 +33,15 @@ function OrderRow({ order }) {
         </td>
         <td className="align-middle">{order.status}</td>
         <td className="py-1 align-middle">
-          <span className="cursor-pointer text-underline">
-            {order.customerId?.firstName || ""}
+          <span
+            className="cursor-pointer underline"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
+            See Customer Info
           </span>
         </td>
         {/* <td className="align-middle">
@@ -109,30 +92,53 @@ function OrderRow({ order }) {
           )}
         </td> */}
       </tr>
-      {/* <Modal show={show} onHide={handleClose}>
-        <Modal.Body>
-          <Form.Group className="mb-3 flex justify-center items-center">
-            <Form.Label class="font-semibold">Variant Type:</Form.Label>
-            <Form.Control
-              placeholder=""
-              // value={selectedVariantType}
-            />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              // handleCloseVariantModal();
-              // handleClose();
-            }}
-            variant="info"
-            class="rounded-1 py-2 px-2 bg-[#1B94A0] text-white hover:bg-[#1B94A0] hover:text-white"
-          >
-            Confirm Options & Close
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
+      <div
+        className="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title text-black" id="exampleModalLabel">
+                Customer Info
+              </h5>
+              <button
+                type="button"
+                className="btn-close text-black"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                X
+              </button>
+            </div>
+            <div className="modal-body">
+              <p>
+                Name: {order.customerId?.firstName} {order.customerId?.lastName}
+              </p>
+              <p>Email: {order.customerId?.email}</p>
+              <p>Phone: {order.customerId?.phone}</p>
+              <p>Address: {order.customerId?.address}</p>
+              <p>
+                Postcode: {order.customerId?.postcode} -{" "}
+                {order.customerId?.distanceFromOrigin} from centre
+              </p>
+              <p>City: {order.customerId?.city}</p>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary text-black"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
