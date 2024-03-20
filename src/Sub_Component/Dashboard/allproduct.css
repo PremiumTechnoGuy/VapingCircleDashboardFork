@@ -16,7 +16,7 @@ input {
 
 /* Style the checked radio button background and text */
 input:checked+label {
-  background-color: white;
+  background-color: #3498db;
   color: black;
   padding: 14px 20px;
   border-radius: 50px;
